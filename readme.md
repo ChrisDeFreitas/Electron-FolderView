@@ -1,4 +1,4 @@
-Electron FolderView
+# Electron FolderView
 
 I originally created this as a nodejs app to view local images.  I was frustrated with the complexity of the free and paid image viewing apps I had.  With the many wonderful image handling libraries available for the web, I thought it would be simple enough to throw something together in node...then I found the awesomeness of Electron!
 
@@ -7,7 +7,7 @@ This app is intended for my personal use--not to make a million dollars dominati
 Therefore, this is a work in progress.  Feel free to use and modify as you wish.  It should be pretty easy to dig into the code and tweak.
 
 
-Functions
+## Functions
 ===
 - display folder contents in customizeable grid
 - double click to launch file with OS's default app
@@ -18,44 +18,46 @@ Functions
 - some functions: auto-scroll, copy path/src, delete, filter by file ext, image scale
 
 
-App Notes
+## App Notes
 ===
 0. Windows only
-- I use it on Win8.1 and Win7
+..- I use it on Win8.1 and Win7
 
 1. to install
-- requires node.js/npm
-- after downloading to a folder: npm install
+..- requires node.js/npm
+..- after downloading to a folder: npm install
 
 2. npm test
-- executes scripts/test.bat
-- these are specific tests based on my OS and functionality needs
+..- executes scripts/test.bat
+..- these are specific tests based on my OS and functionality needs
 
 2. npm run build
-- executes buid... from package.json
-- builds and zips electron Win64 version in local folder
-- you will need to modify this to use for your own purposes
+..- executes buid... from package.json
+..- builds and zips electron Win64 version in local folder
+..- you will need to modify this to use for your own purposes
 
 3. to manually run:
-- electron version = electron main.js
-- node version = node main.js
+..- electron version = electron main.js
+..- node version = node main.js
 
 4. command line switches
-- handled by "argv-to-object"
-- documented in main.js:
-var argmap = {
+..- handled by "argv-to-object"
+..- documented in main.js:
+var argmap = `
+{
 			devtools:{		keypath:'devtools', 	type:'boolean', default:false },
-			fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the item captions.' },
+			fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px'
+							,	notes:'set the default font size for the item captions.' },
 			fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 			layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall']
-		 				, notes:'isotope translations: cols=masonry, width=300px; rows=fitRows,height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size'},
+		 					, notes:'isotope translations: cols=masonry, width=300px; rows=fitRows,height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size'},
 			path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 			scale:{				keypath:'scale',			type:'number',  default:1,		range:{min:0.1, max:'infinity'}, notes:"scale size of grid items." },
 			shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:'randomize display of items'}
 	}
+`
 
-
-5. ToDo
+## 5. ToDo
 ===
 - fixup this doc
 - add screen shots of grid layouts
@@ -65,7 +67,7 @@ var argmap = {
 - add scale dialog to simplify scaling grid images
 
 
-Thanks To
+## Thanks To
 ===
 - http://electron.atom.io/
 - https://nodejs.org/
