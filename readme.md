@@ -22,7 +22,7 @@ Therefore, this is a work in progress.  Feel free to use and modify as you wish.
   * I use it on Win8.1 and Win7
 
 1. to install
-  * requires node.js/npm
+  * requires node.js and electron to be installed
   * after downloading to a folder: npm install
 
 2. npm test
@@ -44,16 +44,16 @@ Therefore, this is a work in progress.  Feel free to use and modify as you wish.
 ```Javascript
 var argmap =
 {
-			devtools:{		keypath:'devtools', 	type:'boolean', default:false },
-			fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px'
-							,	notes:'set the default font size for the item captions.' },
-			fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
-			layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall']
-		 					, notes:'isotope translations: cols=masonry, width=300px; rows=fitRows,height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size'},
-			path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-			scale:{				keypath:'scale',			type:'number',  default:1,		range:{min:0.1, max:'infinity'}, notes:"scale size of grid items." },
-			shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:'randomize display of items'}
-	}
+	devtools:{ keypath:'devtools', 	type:'boolean', default:false },
+	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px'
+					,	notes:'set the default font size for the item captions.' },
+	fullscreen:{ keypath:'fullscreen', type:'boolean', default:false },
+	layout:{ keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall']
+						, notes:'isotope translations: cols=masonry, width=300px; rows=fitRows,height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size'},
+	path:{ keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
+	scale:{ keypath:'scale',			type:'number',  default:1,		range:{min:0.1, max:'infinity'}, notes:"scale size of grid items." },
+	shuffle:{ keypath:'shuffle',		type:'boolean',	default:false,	notes:'randomize display of items'}
+}
 ```
 
 ## 5. ToDo
