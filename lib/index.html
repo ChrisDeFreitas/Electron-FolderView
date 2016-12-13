@@ -1,0 +1,376 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Lang" content="en">
+<meta name="author" content="Chris DeFreitas">
+<meta http-equiv="Reply-to" content="chrisd@europa.com">
+<title>Folder View - folderDisplayed</title>
+<!--script src="http://code.jquery.com/jquery-3.1.0.min.js" ></script-->
+
+<link rel="stylesheet" href="file:///C:/website/node/imageView/lib/photoswipe.css">
+<link rel="stylesheet" href="file:///C:/website/node/imageView/lib/default-skin/default-skin.css">
+<script src="file:///C:/website/node/imageView/lib/photoswipe.js"></script>
+<script src="file:///C:/website/node/imageView/lib/photoswipe-ui-default.js"></script>
+<!--electron_comment_begin-->
+<script src="file:///C:/website/node/imageView/lib/isotope.pkgd.js"></script>
+<script src="file:///C:/website/node/imageView/lib/packery-mode.pkgd.js"></script>
+<script src="file:///C:/website/node/imageView/lib/horizontal.js"></script>
+<!--electron_comment_end-->
+<script>
+
+var isElectron=false
+var exts={}
+var gExtFilter={}
+var isotope = null
+var defaultImageNum=null
+var lastLayoutMode=null
+var scale=1
+var fontSize='12px'
+var shuffle=false
+var scrollDelay=null
+var scrollDir=null
+var objprefix = ['img','obj','vid']
+var imgtypes =['.bmp','.ico','.gif','.jpg','.png']
+var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+var items=null
+
+//nodejs_comment_begin
+//code for electron only
+const Isotope = require('isotope-layout')
+const packery = require('isotope-packery')
+const horiz 	= require('isotope-horizontal')
+
+//default electron/nodejs code for this app
+const renderer = require('C:/website/node/imageView/lib/renderer.js')
+renderer.sayhey()
+renderer.mainMenuGen(exts, lastLayoutMode)
+renderer.contextMenuSet(exts)
+require('electron').ipcRenderer.on('applog', (event, message) => {
+//support logging from main thread, because console.log doesn't work without debuggerer
+  console.log(message)
+})
+//nodejs_comment_end
+
+function init() {
+	Object.assign(gExtFilter, exts)	//clone
+	if(lastLayoutMode===null) lastLayoutMode="packery"
+	console.log(`fontsize: ${fontSize}`)
+	console.log(`layout: ${lastLayoutMode}`)
+	console.log(`scale: ${scale}`)
+	console.log(`shuffle: ${shuffle}`)
+	console.log(items)
+	if(fontSize!=='12px'){
+		var griditem = findRule('.grid-item')
+		if(griditem !== false) {
+			griditem.style.fontSize = fontSize
+		}
+		else
+			console.log('Font-size not changed; .grid-item style not found.')
+	}
+	loadFunc(lastLayoutMode)
+	if(shuffle==true){
+		isotope.shuffle()
+		//isotope.layout()
+	}
+	//pageScroll()
+}
+function findRule(selector) {
+	//1. get the local styelsheet
+	var stylesheet = null
+	for(var key=0; key < document.styleSheets.length; key++){
+		if(document.styleSheets[key].href !== null) continue
+		stylesheet = document.styleSheets[key];
+	}
+	if(stylesheet===null){
+		console.log(`findRule(${selector}) error, default stylesheet not found.`)
+		return
+	}
+	for(var key in stylesheet.cssRules){
+		var tmprule = stylesheet.cssRules[key]
+		if(tmprule.selectorText===selector){
+			return tmprule
+		}
+	}
+	return false
+}
+
+
+function loadFunc(layoutMode, extFilter) {
+	lastLayoutMode = layoutMode
+
+	if(extFilter===undefined) extFilter = gExtFilter
+	else gExtFilter = extFilter
+
+	console.log(`grid settings: `)
+	console.log(`filter: ${extFilter}`)
+	console.log(`layout mode: ${lastLayoutMode}`)
+	console.log(`scale: ${scale}`)
+
+	var html = ''
+	for(var key in items){	//define grid items
+		obj = items[key]
+		if(extFilter[obj.type]===undefined) continue
+
+		html += `<div class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	>`
+		//general dimenensions
+		var width =Math.floor(obj.w *scale)
+		var height=Math.floor(obj.h *scale)
+
+		//scale to ~h=200 x w=300, depending on obj type and layout mode
+		if(imgtypes.indexOf(obj.type) >= 0) {
+			var divisor = 1
+			if(layoutMode==='masonry' //cols, resize width=300px
+			|| layoutMode==='vertical')
+				divisor = obj.w/300
+			else
+			if(layoutMode==='fitRows')		//rows
+				divisor = obj.h/300
+			else { //packery (wall)
+				if(obj.w >= 4000)	//resize to maintain relative sizes
+					divisor = 7.5
+				else
+				if(obj.w >= 2000)
+					divisor = 5.5
+				else
+				if(obj.w >= 1000)
+					divisor = 3
+				else
+				if(obj.w >= 400)
+					divisor = 1.75
+			}
+			//apply user's scale argument
+			divisor = divisor /scale
+			html += `<img
+				id="img${obj.pid}"	src="${obj.src}"
+				width=${Math.floor(obj.w / divisor)}
+				height=${Math.floor(obj.h / divisor)}
+				title="${obj.basename}, ${obj.w} x ${obj.h} (WxH)"
+				onclick="openPhotoSwipe(${obj.pid});"
+				ondblclick="dblClick(${obj.pid})"
+			></img>`
+			//no filename displayed for images
+		}	else
+		if(obj.isDirectory===true){
+			html += `<img
+				id="img${obj.pid}"	src="${obj.src}"
+				alt="${obj.basename}"
+				style="padding:3em 3em 1em 3em;"
+				ondblclick="dblClick(${obj.pid})"
+			></img>
+			<div style='padding:0; margin:0 0 ${75 *scale}px 0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
+		} else
+		if(obj.type==='.svg'){
+			html += `<img
+				id="img${obj.pid}"	src="${obj.src}"
+				height=${height}	width=${width}
+				alt="${obj.basename}"
+				onclick="openPhotoSwipe(${obj.pid});"
+				style="background-color:whitesmoke;"
+			></img>`
+		} else
+		if(medtypes.indexOf(obj.type) >= 0){
+			html += `<video controls
+				id="vid${obj.pid}" src="${obj.src}"
+				type="video/${obj.type.substr(1)}"
+				style="height:${height}px;	width:${width}px;"
+				ondblclick="dblClick(${obj.pid})"
+			></video>
+			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
+		}
+		else {
+			html += `<img
+				id="img${obj.pid}"	src="${obj.src}"
+				height=${height}	width=${width}
+				alt="${obj.basename}"
+				style='padding:3em 0 0 0;''
+				ondblclick="dblClick(${obj.pid})"
+			></img>
+			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
+		}
+		html += '</div>'	//close div.grid-item
+	}
+	var grid = document.querySelectorAll('#grid')[0]
+	grid.innerHTML = html
+	isotope = new Isotope(grid, {
+		layoutMode: layoutMode,
+		//layoutMode: 'fitRows',					//items arranged in rows
+	  //layoutMode: 'vertical',					//one column
+	  //layoutMode: 'masonry',					//??? Items are arranged in a vertically cascading grid
+	  //layoutMode: 'packery',					//fill empty spaces
+		//buggy, not used: layoutMode: 'horiz',					//one horizontal row
+	  /*horiz: {
+		  verticalAlignment: 0		// align to top
+		},*/
+		masonry: {
+		  columnWidth: (300 *scale),
+		  gutter: 10	//(10 *scale)
+		},
+		itemSelector: '.grid-item',
+  	//percentPosition: true,
+  	gutter: 0,
+  	fitWidth: true,
+  	//stagger: 30,
+  	resize: true,
+		escKey: false,
+	});
+	if(defaultImageNum != null) {
+		var obj = items[defaultImageNum]
+		if(obj.type==='.mp4'	|| obj.type==='.flv' || obj.type==='.avi'	|| obj.type==='.wmv'	|| obj.type==='.mov')
+			return
+		openPhotoSwipe(defaultImageNum)
+		defaultImageNum = null
+	}
+}
+function dblClick(pid){		//launch files in OS or open folders
+	if(isElectron==false) return
+	var obj = items[pid]
+	if(obj.isFile)
+		renderer.execFile(obj)
+	else
+	if(obj.isDirectory) {
+		renderer.fldrBrowse(obj)
+	}
+
+}
+/*
+function changeFolder(fldr){
+	var result = renderer.fldrLoad(fldr)
+	items = result.items
+	loadFunc(lastLayoutMode)
+	document.title = `FileViewer - ${result.fldr}`
+}
+*/
+function openPhotoSwipe(pid) {
+	if(pid===undefined) pid=0
+	var obj = items[pid]
+	if(obj.type==='.mp4'	|| obj.type==='.flv' || obj.type==='.avi'	|| obj.type==='.wmv' || obj.type==='.mov' 	) {
+		warning('Can not show movies in slideshow')
+		return;
+	}
+	var pswpElement = document.querySelectorAll('.pswp')[0];
+	var options = {
+			bgOpacity: 0.85,
+			closeOnScroll: false,
+			escKey: true,
+			hideAnimationDuration:333,
+			history:false,
+			index: pid, // first slide to start with
+			//		maxSpreadZoom:4,
+			showAnimationDuration:333,
+			showHideOpacity:true,
+			galleryPIDs:true,
+			mouseUsed:true,
+			timeToIdle: 4000,
+	}
+	var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+	gallery.init();
+}
+function pageScrollToggle() {
+	if(scrollDelay===null) {
+		scrollDelay = window.setInterval(function () {
+			//console.log(`${scrollDir},  ${window.pageYOffset}, ${window.innerHeight +document.body.clientHeight}`)
+			if(scrollDir===null || window.pageYOffset<=0)	//reset at top and bottom of page
+				scrollDir = 1
+			else
+			if(window.pageYOffset>=document.body.clientHeight -window.innerHeight)
+				scrollDir = -1
+
+			window.scrollBy(0,scrollDir)
+		}, 21); // scrolls every n milliseconds
+	}
+	else {
+		clearTimeout(scrollDelay)
+		scrollDelay=null
+		scrollDir=null
+	}
+}
+</script>
+<style>
+	body{
+		background: black repeat url('file:///C:/website/node/imageView/lib/tileable-fabric-textures-1.jpg');
+		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0; margin:0; }
+	#grid{margin:0 auto; padding:0; border:0; outline:0; vertical-align:top; }
+	.grid-item {
+		border: 0px solid #666;
+		display:inline;
+	  /*max-height:40vh;*/
+		/*min-height:200px;*/
+		vertical-align:top;
+		text-align:center;
+		/*transform: scale(0.2)*/
+	}
+	img { cursor:pointer; margin:0; padding:0; border:0; outline:0; }
+	video {cursor:pointer; margin:0 auto; /*height:250px*/; }
+</style>
+</head>
+<body onload='init()'>
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element, as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+        <div class="pswp__container">
+            <!-- don't modify these 3 pswp__item elements, data is added later on -->
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+</div>
+
+<div id=grid class="grid">&nbsp;</div>
+
+</body>

@@ -1,0 +1,47 @@
+{
+  "name": "FolderViewer",
+  "version": "0.3.0",
+  "description": "Browse folder contents, with image slideshows, playable videos, and handy tools. Built for Windows (sorry).",
+	"keywords": ["directories","folders","browser","image wall","slideshow","file tools"],
+	"repository":{},
+	"main": "main.js",
+	"os" : [ "win32" ],
+	"config": {
+		"progress": true,
+		"save": true,
+		"save-dev": true
+	},
+  "author": "Chris DeFreitas",
+  "license": "ISC",
+	"directories":{
+		"lib": "./lib",
+		"scripts": "./scripts",
+		"tmp": "./tmp"
+	},
+  "dependencies": {
+    "argv-to-object": "^1.0.1",
+    "electron": "^1.4.1",
+    "image-size": "^0.5.0",
+    "isotope-horizontal": "^2.0.0",
+    "isotope-layout": "^3.0.1",
+    "isotope-packery": "^2.0.0",
+    "packery": "^2.0.0"
+	},
+  "devDependencies": {
+  },
+	"scripts": {
+    "start": "electron main.js",
+    "test": ".\\scripts\\testFolderView.bat",
+
+		"build": "npm run build:electron && npm run build:zip && npm run build:copy",
+		"build:electron": ".\\scripts\\electronPackager.bat",
+		"build:zip": ".\\scripts\\zip.bat",
+		"build:copy": ".\\scripts\\copy_downloads.bat",
+		"postbuild": "dir *.zip",
+
+		"clean": "npm run clean:electron && npm run clean:zip && npm run clean:tmp",
+		"clean:electron": "rmdir /q /s .\\FolderView-win32-x64\\",
+		"clean:zip": "del /q .\\FolderView-win32-x64.zip",
+		"clean:tmp": "del /q ./tmp/*.*"
+  }
+}

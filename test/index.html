@@ -1,0 +1,137 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Lang" content="en">
+<meta name="author" content="Chris DeFreitas">
+<meta http-equiv="Reply-to" content="chrisd@europa.com">
+<title>Folder View - folderDisplayed</title>
+<!--script src="http://code.jquery.com/jquery-3.1.0.min.js" ></script-->
+
+<script src="file:///C:/electron/folderview/lib/draggable.min.js"></script>
+<script>
+
+var rule=null
+
+function init() {
+	console.log('Hi!')
+	//1. find ifr class
+	rule = findRule('#divIfr')
+	if(rule ===null)
+		console.log('Nada')
+	else
+		console.log('Found')
+
+/*
+var element = document.getElementById('divIfr');
+var options = {
+  //grid: 10,
+  //onDrag: function(){ ... }
+  setCursor:true,
+  smoothDrag:true,
+  useGPU:true,
+}
+new Draggable (element, options);
+*/
+}
+function findRule(selector) {
+	var stylesheet = document.styleSheets[0];
+	for(var key in stylesheet.cssRules){
+		var tmprule = stylesheet.cssRules[key]
+		if(tmprule.selectorText===selector){
+			//console.log(tmprule)
+			return tmprule
+		}
+	}
+	return false
+}
+var bgout = 'none;'
+var bgover='linear-gradient(45deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);'
+</script>
+<style>
+	body{font-family:sans-serif; font-size:12px; }
+	#divIfr{
+		transition: transform 2s;
+		background:white; border:0;
+		height:600px; width:800px;
+		overflow:hidden;
+		/*
+		transform: scale(.2);
+		*/
+	}
+	.ifrCaption{
+		background:#000; color:whitesmoke; font-size:1.2em; font-weight:bold;
+		padding:0.2em 0;
+		width:100%; vertical-align:middle; text-align:center;
+	}
+	.captionMenu{
+		background: linear-gradient(135deg, #ff3232 50%,#207cca 50%,#7db9e8 1%);
+		cursor:pointer; display:inline-table; float:left;	height:1.75em ; width:1.7em;
+		margin:-.2em 0 0 0;
+	}
+	.captionMenuRight{
+		background:linear-gradient(45deg, #7db9e8 50%, red 50%);
+		float:right;
+	}
+	.ifrCaptionText{
+		display:inline-table;
+	}
+	.ifr{
+		border:1px solid red; padding:0; outline:0; margin:0;
+		height:100%; width:100%; vertical-align:top;
+	}
+</style>
+</head>
+<body onload='init()'>
+
+<script>
+function captionMenuClick(ev, btn){
+	var rule = findRule('#divIfr')
+	rule.style.transform = 'scale(0.5)'
+	rule.style.backgroundColor = 'red'
+	console.log(rule)
+return
+	console.log(btn.className)
+	var closeClicked = null
+	var x = ev.screenX - ev.clientX
+	var y = ev.screenY - ev.clientY
+	var closeClicked = (x > y)
+	console.log(x+','+y)
+	console.log(closeClicked)
+}
+function captionMenuMove(ev, btn){
+	var x = ev.screenX - ev.clientX
+	var y = ev.screenY - ev.clientY
+	console.log(x+','+y)
+}
+function ifrLoaded(ifr){
+
+return
+	console.log(ifr)
+	var ii=0
+	for(key in ifr) {
+		console.log((++ii)+'. ['+key+']: ' )
+	}
+}
+</script>
+<div id=divIfr>
+	<div class=ifrCaption>
+			<div class=captionMenu
+				onmouseenter='this.style.background="linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%)"; console.log(222)'
+				onmouseleave='this.style.background="none";  console.log(333)'
+				onclick='captionMenuClick(event, this)'
+				>&nbsp;</div>
+			<div class=ifrCaptionText>Test</div>
+			<div class='captionMenu captionMenuRight'
+				onclick='captionMenuClick(event, this)'
+				>&nbsp;</div>
+	</div>
+	<iframe class=ifr
+		src='https://images.contentbody.com/2SKE69i31eEqKeAYOMyiWa/embeds/1/w695_h576'
+		onload='ifrLoaded(this)'
+		>
+	</iframe>
+</div>
+
+
+</body>
