@@ -19,29 +19,30 @@ Therefore, this is a work in progress.  Feel free to use and modify as you wish.
 
 ## App Notes
 0. Windows only
-* I use it on Win8.1 and Win7
+  * I use it on Win8.1 and Win7
 
 1. to install
-* requires node.js/npm
-* after downloading to a folder: npm install
+  * requires node.js/npm
+  * after downloading to a folder: npm install
 
 2. npm test
-* executes scripts/test.bat
-* these are specific tests based on my OS and functionality needs
+  * executes scripts/test.bat
+  * these are specific tests based on my OS and functionality needs
 
 2. npm run build
-* executes buid... from package.json
-* builds and zips electron Win64 version in local folder
-* you will need to modify this to use for your own purposes
+  * executes buid... from package.json
+  * builds and zips electron Win64 version in local folder
+  * you will need to modify this to use for your own purposes
 
 3. to manually run:
-* electron version = electron main.js
-* node version = node main.js
+  * electron version = electron main.js
+  * node version = node main.js
 
 4. command line switches
-* handled by "argv-to-object"
-* documented in main.js:
-var argmap = ```Javascript
+  * handled by "argv-to-object"
+  * documented in main.js:
+```Javascript
+var argmap =
 {
 			devtools:{		keypath:'devtools', 	type:'boolean', default:false },
 			fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px'
