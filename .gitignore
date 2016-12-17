@@ -1,5 +1,6 @@
 #FolderView ignore files:
 *.bat
+*.log
 dist/
 node_modules/
 tmp/

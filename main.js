@@ -234,8 +234,12 @@ function fileListGen(file) {
 	return {fldr:file, items:fls2, defaultImageNum:defaultImageNum, exts:exts}
 }
 function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
-	if(layout===undefined) layout='packery'
+	var outfolder = path.join(__dirname,'tmp')
+	if(fs.existsSync(outfolder)===false)
+		fs.mkdirSync(outfolder)
 	var outfile = path.join(__dirname,'tmp/index.html')
+	//
+	if(layout===undefined) layout='packery'
 	if(fontsize[0]!=='"' && fontsize[0]!=="'")	//add quotes if needed
 		fontsize = `"${fontsize}"`
 	var keys = {
