@@ -31,17 +31,17 @@ This is a work in progress.  Feel free to use and modify as you wish.  It should
   * executes scripts/testFolderView.bat
   * these are specific tests based on my folder structure; you will need to customize
 
-2. Build FolderView.exe: npm run build
-	* the .exe file allows the app to be used like a regular Windows application
-  * executes "build..." scripts from from package.json
-  * builds, then zips electron Win64 version in local folder: ./FolderView-win32-x64/FolderView.exe
-  * you can modify this to use for your own purposes, see scripts/electronPackager.bat
-
 3. Execute main.js:
   * electron version (requires: "npm install electron -g") = electron main.js
   * node version (runs in default browser, HTML only, no custom menu functions) = node main.js
 
-4. commandline switches
+4. Build FolderView.exe: npm run build
+	* the app is built with Electron Packager so it can be used as a regular Windows program.
+  * npm executes "build..." scripts from from package.json
+  * scripts build, then zip the Win64 version in local folder: ./dist/FolderView-win32-x64/FolderView.exe
+  * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
+
+5. commandline switches
   * handled by "argv-to-object"
   * documented in main.js:
 ```Javascript
@@ -57,11 +57,11 @@ var argmap =
 	}
 ```
 
-## 5. ToDo
+## ToDo
 - add screen shots of grid layouts
 - add special handling for audio files
 - add recent folders list
-- add scale dialog to simplify scaling grid images
+- add scale dialog to simplify scaling grid images and zooming app
 
 
 ## Thanks To
