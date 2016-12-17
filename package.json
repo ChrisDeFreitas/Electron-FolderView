@@ -33,15 +33,13 @@
     "start": "electron main.js",
     "test": ".\\scripts\\testFolderView.bat",
 
-		"build": "npm run build:electron && npm run build:zip && npm run build:copy",
+		"build": "npm run build:electron && npm run build:zip",
 		"build:electron": ".\\scripts\\electronPackager.bat",
 		"build:zip": ".\\scripts\\zip.bat",
-		"build:copy": ".\\scripts\\copy_downloads.bat",
-		"postbuild": "dir *.zip",
+		"postbuild": "dir .\\dist\\",
 
-		"clean": "npm run clean:electron && npm run clean:zip && npm run clean:tmp",
-		"clean:electron": "rmdir /q /s .\\FolderView-win32-x64\\",
-		"clean:zip": "del /q .\\FolderView-win32-x64.zip",
+		"clean": "npm run clean:electron && npm run clean:tmp",
+		"clean:electron": "rmdir /q /s .\\dist\\",
 		"clean:tmp": "del /q ./tmp/*.*"
   }
 }

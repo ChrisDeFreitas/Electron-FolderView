@@ -35,9 +35,9 @@ This is a work in progress.  Feel free to use and modify as you wish.  It should
 
 2. npm run build
 	* the .exe file allows the app to be used like a regular Windows application
-  * executes buid... from package.json
+  * executes "build..." scripts from from package.json
   * builds, then zips electron Win64 version in local folder: ./FolderView-win32-x64/FolderView.exe
-  * you can modify this to use for your own purposes, see scripts\electronPackager.bat
+  * you can modify this to use for your own purposes, see scripts/electronPackager.bat
 
 3. to manually run main.js:
   * electron version (requires: npm install electron -g) = electron main.js
