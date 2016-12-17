@@ -38,7 +38,7 @@ This is a work in progress.  Feel free to use and modify as you wish.  It should
 4. Build FolderView.exe: npm run build
 	* the app is built with Electron Packager so it can be used as a regular Windows program.
   * npm executes "build..." scripts from from package.json
-  * scripts build, then zip the Win64 version in local folder: ./dist/FolderView-win32-x64/FolderView.exe
+  * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
 
 5. commandline switches
@@ -66,6 +66,7 @@ var argmap =
 
 ## Thanks To
 - http://electron.atom.io/
+- https://github.com/electron-userland/electron-packager
 - https://nodejs.org/
 - https://www.npmjs.com/package/argv-to-object
 - https://www.npmjs.com/package/image-size
