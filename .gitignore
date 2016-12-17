@@ -1,7 +1,11 @@
-# FolderView ignore:
+# FolderView ignore folders:
 ./dist/
 ./node_modules/
 ./tmp/
+
+#FolderView ignore files:
+./*.bat
+
 
 # Windows image file caches
 Thumbs.db
