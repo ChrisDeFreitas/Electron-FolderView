@@ -1,8 +1,8 @@
 #FolderView ignore files:
-./*.bat
-./dist/
-./node_modules/
-./tmp/
+*.bat
+dist/
+node_modules/
+tmp/
 
 # Windows image file caches
 Thumbs.db
