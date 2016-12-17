@@ -23,11 +23,11 @@ Therefore, this is a work in progress.  Feel free to use and modify as you wish.
 
 1. install steps
   * requires node.js and electron
-  * after downloading to a local folder:
-			1. npm install electron -g
-			2. npm install
-			3. electron main.js
-				* this will prompt for a folder to view
+  * after downloading to a local folder:  
+			1. npm install electron -g  
+			2. npm install  
+			3. electron main.js  
+				* this will prompt for a folder to view  
 
 2. npm run test
   * executes scripts/testFolderView.bat
