@@ -1,4 +1,6 @@
 #FolderView dev files
+./dist/
+./node_modules/
 ./gitshell.bat
 
 # Windows image file caches

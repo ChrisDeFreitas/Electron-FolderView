@@ -21,43 +21,46 @@ Therefore, this is a work in progress.  Feel free to use and modify as you wish.
 0. Windows only
   * I use it on Win8.1 and Win7
 
-1. to install
-  * requires node.js and electron to be installed
-  * after downloading to a folder: npm install
+1. install steps
+  * requires node.js and electron
+  * after downloading to a local folder:
+			1. npm install electron -g
+			2. npm install
+			3. electron main.js
+				* this will prompt for a folder to view
 
-2. npm test
-  * executes scripts/test.bat
-  * these are specific tests based on my OS and functionality needs
+2. npm run test
+  * executes scripts/testFolderView.bat
+  * these are specific tests based on my folder structure; you will need to customize
 
 2. npm run build
+	* the .exe file allows the app to be used like a regular Windows application
   * executes buid... from package.json
-  * builds and zips electron Win64 version in local folder
-  * you will need to modify this to use for your own purposes
+  * builds, then zips electron Win64 version in local folder: ./FolderView-win32-x64/FolderView.exe
+  * you can modify this to use for your own purposes, see scripts\electronPackager.bat
 
-3. to manually run:
-  * electron version = electron main.js
-  * node version = node main.js
+3. to manually run main.js:
+  * electron version (requires: npm install electron -g) = electron main.js
+  * node version (runs in default browser, HTML only, no custom menu functions) = node main.js
 
-4. command line switches
+4. commandline switches
   * handled by "argv-to-object"
   * documented in main.js:
 ```Javascript
 var argmap =
 {
-	devtools:{ keypath:'devtools',	type:'boolean', default:false },
-	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the item captions.' },
-	fullscreen:{ keypath:'fullscreen',	type:'boolean', default:false },
-	layout:{ keypath:'layout',	type:'string',	default:'wall',	range:['cols','rows','vertical','wall'], notes:'isotope translations: cols=masonry, width=300px; rows=fitRows,height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size'},
-	path:{ keypath:'path',	type:'string',	default:'',	notes:'no trailing backslash allowed (for argv-to-object).' },
-	scale:{ keypath:'scale',	type:'number',  default:1,	range:{min:0.1, max:'infinity'}, notes:"scale size of grid items." },
-	shuffle:{ keypath:'shuffle',	type:'boolean',	default:false,	notes:'randomize display of items'}
-}
+			devtools:{	keypath:'devtools', 	type:'boolean', default:false },
+			fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the item captions.' },
+			fullscreen:{keypath:'fullscreen', type:'boolean', default:false },
+			layout:{		keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall'], notes:'isotope translations: cols=masonry, width=300px; rows=fitRows, height=300px; vertical=vertical, width=300px; wall=packery, width dependent on image size.'},
+			path:{			keypath:'path', 			type:'string',	default:'',		notes:'no trailing backslash allowed (for argv-to-object).' },
+			scale:{			keypath:'scale',			type:'number',  default:1,		range:{greaterThan:0}, notes:"scale size of grid items." },
+			shuffle:{		keypath:'shuffle',		type:'boolean',	default:false, notes:'randomize display of items.'}
+	}
 ```
 
 ## 5. ToDo
-- fixup this doc
 - add screen shots of grid layouts
-- add mouseover/out border for selected item
 - add special handling for audio files
 - add recent folders list
 - add scale dialog to simplify scaling grid images
@@ -70,7 +73,7 @@ var argmap =
 - https://www.npmjs.com/package/image-size
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
-
+- http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
 
 Good Luck!
 

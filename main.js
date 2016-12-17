@@ -17,7 +17,7 @@ var argmap = {
 		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall']
 	 				, notes:'cols(masonary): position based on available vertical space. '},
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-		scale:{				keypath:'scale',			type:'number',  default:1,		range:{min:0.1, max:'infinity'}, notes:"scale size of grid items." },
+		scale:{				keypath:'scale',			type:'number',  default:1,		range:{greaterThan:0}, notes:"scale size of grid items." },
 		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:'randomize display of items'}
 		//zoom:{				keypath:'zoom', 			type:'number', default:0,				range:{min:0, max:3} , notes:'corresponds to browser zoom functionality'}
 }
@@ -103,6 +103,7 @@ function appInit(){
 }
 
 exports.fldrLoad = function(fldr) {
+	if(fldr===undefined) fldr=args.path
 	return fileListGen(fldr)
 }
 exports.browserLaunch = function(fldr, devtools, scale, fullscreen, layout, shuffle, fontsize) {
@@ -114,23 +115,25 @@ exports.browserLaunch = function(fldr, devtools, scale, fullscreen, layout, shuf
 function parseArgs() {
 	var file = ''
 	if(args.path === ''){
-		file = dialog.showOpenDialog({
-			defaultPath: './',	//__dirname,
-			filter:[ //not used with "openDirectory"
-					{name: 'All Files', extensions: ['*']}
-				],
-			properties: ['openDirectory'],
-			title:'Select folder to browse'
-		})
-		if(file===undefined || file.length===0) process.exit(1)
-		file = file[0]
+		if(isElectron===false){
+			file='./'
+		}
+		else {
+			file = dialog.showOpenDialog({
+				defaultPath: './',	//__dirname,
+				filter:[ //not used with "openDirectory"
+						{name: 'All Files', extensions: ['*']}
+					],
+				properties: ['openDirectory'],
+				title:'Select folder to view'
+			})
+			if(file===undefined || file.length===0) process.exit(1)
+			file = file[0]
+		}
+		args.path = file
 	}
 	else {
 		file = args.path
-		 /*if(process.argv.length===2)
-		 	file = process.argv[1]
-		else
-			file = process.argv[2]*/
 	}
 	log('Reading files..')
 	log('Argument: ['+file+']')
