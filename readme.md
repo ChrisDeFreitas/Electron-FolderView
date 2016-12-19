@@ -1,6 +1,6 @@
 # Electron FolderView
 
-<img src="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/scrnshots/scrn01 - fullscreen.jpg" alt="Screen shot with layout menu" border=0 width=300>
+<img src="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/scrnshots/scrn04 - fullscreen.jpg" alt="Screen shot with layout menu" border=0 width=300>
 
 I originally created this as a nodejs app to view local images.  I was frustrated with the complexity of the free and paid image viewing apps I had.  With the many wonderful image handling libraries available for the web, I thought it would be simple enough to throw something together in node...then I found the awesomeness of Electron!
 
