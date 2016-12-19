@@ -25,7 +25,8 @@ This is a work in progress.  Feel free to use and modify as you wish.  It should
 			1. npm install electron -g  
 			2. npm install  
 			3. electron main.js  
-				* this will prompt for a folder to view  
+			4, if you want to generate an executable:
+				npm install electron-packager -g
 
 2. Test: npm run test
   * executes scripts/testFolderView.bat
@@ -37,6 +38,7 @@ This is a work in progress.  Feel free to use and modify as you wish.  It should
 
 4. Build FolderView.exe: npm run build
 	* the app is built with Electron Packager so it can be used as a regular Windows program.
+	* Electron Packager mut be install globally:  npm install electron-packager -g
   * npm executes "build..." scripts from from package.json
   * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
