@@ -265,8 +265,22 @@ function openPhotoSwipe(pid) {
 			galleryPIDs:true,
 			mouseUsed:true,
 			timeToIdle: 4000,
+			/*maxSpreadZoom:5,
+			getDoubleTapZoom: function(isMouseClick, item) {
+				console.log('scale::: ', scale)
+				if(scale <= 1) return 1
+				return scale
+			}*/
 	}
-	var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+	var galleryItems = []
+	for(var idx in items) {	//scale images
+		galleryItems[idx] = {
+			src: items[idx].src,
+			w: items[idx].w *(scale<=1 ? 1 :scale),
+			h: items[idx].h *(scale<=1 ? 1 :scale),
+		}
+	}
+	var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
 	gallery.init();
 }
 function pageScrollToggle(boo) {
