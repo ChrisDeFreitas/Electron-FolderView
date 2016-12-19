@@ -14,7 +14,7 @@ var argmap = {
 		devtools:{		keypath:'devtools', 	type:'boolean', default:false },
 		fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
-		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vertical','wall']
+		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 	 				, notes:'cols(masonary): position based on available vertical space. '},
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 		scale:{				keypath:'scale',			type:'number',  default:1,		range:{greaterThan:0}, notes:"scale size of grid items." },
@@ -23,11 +23,6 @@ var argmap = {
 }
 var args = argtoobj( argmap );
 console.log(args)
-if(args.layout==='wall') 	args.layout='packery'
-if(args.layout==='rows')  args.layout='fitRows'
-if(args.layout==='vertical')	args.layout='vertical'
-if(args.layout==='cols')	args.layout='masonry'
-//return
 
 //allow logging to main browser window
 Object.defineProperty(global, '__stack', {
@@ -65,12 +60,14 @@ var mainWindow=null
 var isElectron = (app!=undefined)
 if(isElectron===false){	//nodejs functionality
 	log('nodejs app')
-	var fileObj = parseArgs()
-	scaleFix(fileObj)
-	var file = htmlGen(fileObj.fldr, fileObj.items, fileObj.defaultImageNum, fileObj.exts, args.layout, args.shuffle, args.scale, args.fontsize)
-	console.log('Launching:['+file+']')
+	/*var fileObj = parseArgs()
+	scaleFix(fileObj)*/
+	var fldrobj = parseArgs()
+	var htmlfile = htmlGen(fldrobj)
+	//var htmlfile = htmlGen(fileObj.fldr, fileObj.items, fileObj.defaultImageNum, fileObj.exts, args.layout, args.shuffle, args.scale, args.fontsize)
+	console.log('Launching:['+htmlfile+']')
 	const exec = require('child_process').exec;
-	const child = exec(file, (error, stdout, stderr) => {
+	const child = exec(htmlfile, (error, stdout, stderr) => {
 	  //error gen if browser already opened: if (error) throw error
 	  console.log('Launch results:\n['+stdout+']');
 	})
@@ -82,9 +79,9 @@ else {		//electron functionality
 
 function appInit(){
 	app.on('ready', function() {
-		var fileObj = parseArgs()
-		scaleFix(fileObj)
-		mainWindow = browserLaunch(fileObj, args.devtools, args.scale, args.fullscreen, args.layout, args.shuffle, args.fontsize)
+		var fldrobj = parseArgs()
+		mainWindow = browserLaunch(fldrobj)
+		//mainWindow = browserLaunch(fileObj, args.devtools, args.scale, args.fullscreen, args.layout, args.shuffle, args.fontsize)
 	})
 	app.on('window-all-closed', () => { 	// Quit when all windows are closed.
 	  // On OS X it is common for applications and their menu bar
@@ -104,11 +101,13 @@ function appInit(){
 
 exports.fldrLoad = function(fldr) {
 	if(fldr===undefined) fldr=args.path
-	return fileListGen(fldr)
+	return fldrObjGen(fldr)
 }
-exports.browserLaunch = function(fldr, devtools, scale, fullscreen, layout, shuffle, fontsize) {
-	var fileObj = fileListGen(fldr)
-	var win = browserLaunch(fileObj, devtools, scale, fullscreen, layout, shuffle, fontsize)
+exports.browserLaunch = function(fldr) {
+//exports.browserLaunch = function(fldr, devtools, scale, fullscreen, layout, shuffle, fontsize) {
+	var fldrobj = fldrObjGen(fldr)
+	var win = browserLaunch(fldrobj)
+	//var win = browserLaunch(fileObj, devtools, scale, fullscreen, layout, shuffle, fontsize)
 	return win
 }
 
@@ -135,14 +134,20 @@ function parseArgs() {
 	else {
 		file = args.path
 	}
+	if(args.layout===undefined) args.layout='wall'
+	if(args.fontsize[0]==='"' || args.fontsize[0]==="'") {	//remove quotes if needed
+		console.log("Fix args.fontsize: ", args.fontsize)
+		args.fontsize = args.fontsize.substr(1, args.fontsize.length-2)
+	}
 	log('Reading files..')
 	log('Argument: ['+file+']')
-
 	file = file.trim()
 	if(file==='') process.exit(1)
 //	if(file[file.length-1]==='"')		//on windows trailing backslash, \, interpretted as escape
 //		file = file.substr(0, file.length-1)
-	return fileListGen(file)
+	//return fileListGen(file)
+	var fldrobj = fldrObjGen(file)
+	return fldrobj
 }
 function scaleFix(fileObj){
 	if(args.scale <= 0) {
@@ -162,7 +167,7 @@ function scaleFix(fileObj){
 		}
 	}
 }
-function fileListGen(file) {
+function fldrObjGen(file) {
 	var exts={}
 	var defaultfile = path.basename(file)
 	var folder = path.dirname(file)
@@ -231,27 +236,40 @@ function fileListGen(file) {
 		else exts[obj.type]++
 		fls2.push(obj)
 	}
-	return {fldr:file, items:fls2, defaultImageNum:defaultImageNum, exts:exts}
+	//return {fldr:file, items:fls2, defaultImageNum:defaultImageNum, exts:exts}
+	var result = {args:args, defaultImageNum:defaultImageNum, exts:exts, fldr:file, items:fls2}
+	return result
 }
-function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
+//function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
+function htmlGen(fldrobj){
+	var fldr	= fldrobj.fldr,
+			items	= fldrobj.items,
+			defaultImageNum= fldrobj.defaultImageNum,
+			exts	= fldrobj.exts,
+			args	= fldrobj.args
+			//layout	=args.layout,
+			//shuffle	=args.shuffle,
+			//scale		= args.scale,
+			//fontsize=args.fontsize
+
 	var outfolder = path.join(__dirname,'tmp')
 	if(fs.existsSync(outfolder)===false)
 		fs.mkdirSync(outfolder)
 	var outfile = path.join(__dirname,'tmp/index.html')
 	//
-	if(layout===undefined) layout='packery'
-	if(fontsize[0]!=='"' && fontsize[0]!=="'")	//add quotes if needed
-		fontsize = `"${fontsize}"`
+	//if(args.fontsize[0]!=='"' && args.fontsize[0]!=="'")	//add quotes if needed
+	//	args.fontsize = `"${fontsize}"`
 	var keys = {
 		'folderDisplayed': fldr,
 		'C:/website/node/imageView': __dirname.replace(/\\/g,'/'),
 		'var isElectron=false': 		`var isElectron = ${isElectron}`,
-		'var lastLayoutMode=null':	`var lastLayoutMode="${layout}"`,
-		'var shuffle=false':				`var shuffle=${shuffle}`,
-		'var scale=1':							`var scale=${scale}`,
-		"var fontSize='12px'":			`var fontSize=${fontsize}`,
+		'var lastLayoutMode=null':	`var lastLayoutMode="${args.layout}"`,
+		'var shuffle=false':				`var shuffle=${args.shuffle}`,
+		'var devtools=null':			`var devtools=${args.devtools}`,
+		'var scale=1':							`var scale=${args.scale}`,
+		"var fontSize='12px'":			`var fontSize="${args.fontsize}"`,
 		'var exts={}': 							'var exts = '+JSON.stringify(exts),
-		'var items=null': 					'var items = '+JSON.stringify(fls2),
+		'var items=null': 					'var items = '+JSON.stringify(items),
 		'var defaultImageNum=null': `var defaultImageNum=${defaultImageNum}`
 	}
 	if(isElectron===true){
@@ -271,8 +289,17 @@ function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, font
 	})
 	return outfile
 }
-function browserLaunch(fileObj, devTools, scale, fullscreen, layout, shuffle, fontsize) {
+//function browserLaunch(fileObj, devTools, scale, fullscreen, layout, shuffle, fontsize) {
+function browserLaunch(fldrobj) {
 	//const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+	var //fileObj = fldrobj,
+			args 		= fldrobj.args,
+			devTools= args.devtools,
+			scale		= args.scale,
+			fullscreen= args.fullscreen,
+			layout	= args.layout,
+			shuffle	= args.shuffle,
+			fontsize= args.fontsize
 	if(scale===undefined) scale = 1
 	var win = new BrowserWindow({
 		//autoHideMenuBar: true,
@@ -308,7 +335,8 @@ function browserLaunch(fileObj, devTools, scale, fullscreen, layout, shuffle, fo
 		win.loadURL(html)
 	*/
 	win.loadURL(url.format({
-		pathname: htmlGen(fileObj.fldr, fileObj.items, fileObj.defaultImageNum, fileObj.exts, layout, shuffle, scale, fontsize),
+		pathname: htmlGen(fldrobj),
+		//pathname: htmlGen(fileObj.fldr, fileObj.items, fileObj.defaultImageNum, fileObj.exts, layout, shuffle, scale, fontsize),
 		protocol: 'file:',
 		slashes: true
 	}))
