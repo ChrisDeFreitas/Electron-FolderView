@@ -253,24 +253,17 @@ function openPhotoSwipe(pid) {
 	}
 	var pswpElement = document.querySelectorAll('.pswp')[0];
 	var options = {
-			bgOpacity: 0.85,
-			closeOnScroll: false,
-			escKey: true,
-			hideAnimationDuration:333,
-			history:false,
-			index: pid, // first slide to start with
-			//		maxSpreadZoom:4,
-			showAnimationDuration:333,
-			showHideOpacity:true,
-			galleryPIDs:true,
-			mouseUsed:true,
-			timeToIdle: 4000,
-			/*maxSpreadZoom:5,
-			getDoubleTapZoom: function(isMouseClick, item) {
-				console.log('scale::: ', scale)
-				if(scale <= 1) return 1
-				return scale
-			}*/
+		bgOpacity: 0.85,
+		closeOnScroll: false,
+		escKey: true,
+		hideAnimationDuration:333,
+		history:false,
+		index: pid, // first slide to start with
+		showAnimationDuration:333,
+		showHideOpacity:true,
+		galleryPIDs:true,
+		mouseUsed:true,
+		timeToIdle: 4000
 	}
 	var galleryItems = []
 	for(var idx in items) {	//scale images
@@ -285,7 +278,6 @@ function openPhotoSwipe(pid) {
 }
 function pageScrollToggle(boo) {
 	if(boo===undefined) boo = (scrollDelay===null)
-	//if(scrollDelay===null) {
 	if(boo===true) {
 		scrollDelay = window.setInterval(function () {
 			//console.log(`${scrollDir},  ${window.pageYOffset}, ${window.innerHeight +document.body.clientHeight}`)
