@@ -1,5 +1,7 @@
 # Electron FolderView
 
+<img src="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/scrnshots/scrn03%20-%20tool%20menu.jpg" alt="Screen shot with layout menu" style="border:0; display:inlne-table; margin:0 auto; width:25%;">
+
 I originally created this as a nodejs app to view local images.  I was frustrated with the complexity of the free and paid image viewing apps I had.  With the many wonderful image handling libraries available for the web, I thought it would be simple enough to throw something together in node...then I found the awesomeness of Electron!
 
 This app is intended for my personal use--not to make a million dollars dominating a market niche.  It allows me to quickly add functionality to handle various file management tasks.  The immediate one was to be able to view images quickly without clunky widgets or ui chrome getting in the way.  With the Electron functionality I was able to create a general purpose directory browser for Windows.
