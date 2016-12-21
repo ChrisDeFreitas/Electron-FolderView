@@ -197,10 +197,12 @@ function fldrObjGen(file) {
 		}
 		var obj = {
 			basename: fn, date:stat.ctime, size:stat.size,
-			isDirectory:stat.isDirectory(),	isFile:stat.isFile(),
+			isDirectory:stat.isDirectory(),
+			//isFile:stat.isFile(),
 			path: fullfilename,
 			pid: id,
 			src: 'file:///'+fullfilename.replace(/\\/g,'/'),
+			//src: function(){return 'file:///'+this.path.replace(/\\/g,'/'), },
 			title: val,
 			type: ext
 		}
@@ -240,6 +242,7 @@ function fldrObjGen(file) {
 	var result = {args:args, defaultImageNum:defaultImageNum, exts:exts, fldr:file, items:fls2}
 	return result
 }
+
 //function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
 function htmlGen(fldrobj){
 	var fldr	= fldrobj.fldr,

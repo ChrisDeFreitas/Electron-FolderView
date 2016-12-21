@@ -15,11 +15,12 @@
 <!--electron_comment_begin-->
 <script src="file:///C:/website/node/imageView/lib/isotope.pkgd.js"></script>
 <script src="file:///C:/website/node/imageView/lib/packery-mode.pkgd.js"></script>
-<!--script src="file:///C:/website/node/imageView/lib/horizontal.js"></script-->
 <!--electron_comment_end-->
-<script>
+<!--script src="file:///C:/website/node/imageView/lib/horizontal.js"></script-->
 
+<script>
 var isElectron=false
+var gallery=null	//photoswipe slideshow
 var exts={}
 var gExtFilter={}
 var isotope = null
@@ -61,7 +62,42 @@ function init() {
 	console.log(`fontsize: ${fontSize}`)
 	//console.log(`layout: ${lastLayoutMode}`)
 	//console.log(`scale: ${scale}`)
-	console.log(`shuffle: ${shuffle}`)
+	//console.log(`shuffle: ${shuffle}`)
+	document.addEventListener('keydown', (event) => {
+		const key = event.key;
+		switch (event.key) {
+		case "F12":
+      //console.log('F12 pressed')
+			renderer.devToolsToggle()
+      break;
+		}
+
+	  if (event.ctrlKey===false) return
+		switch (event.key) {
+    case "ArrowUp":		//zoom slideshow image up
+      if(gallery==null) return
+			var sc = gallery.getZoomLevel()
+			sc += 0.1
+			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 0)
+      break;
+    case "ArrowDown":		//zoom slideshow image down
+			if(gallery==null) return
+			var sc = gallery.getZoomLevel()
+			sc -= 0.1
+			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 0)
+      break;
+    /*case "ArrowRight":
+      // Do something for "right arrow" key press.
+      break;
+    case "Enter":
+      // Do something for "enter" or "return" key press.
+      break;
+    case "Escape":
+      // Do something for "esc" key press.
+      break;*/
+  	}
+}, false);
+
 	console.log('items:', items)
 	if(fontSize!=='12px'){
 		var griditem = findRule('.grid-item')
@@ -72,10 +108,6 @@ function init() {
 			console.log('Font-size not changed; .grid-item style not found.')
 	}
 	loadFunc(lastLayoutMode)
-	if(shuffle==true){
-		isotope.shuffle()
-		//isotope.layout()
-	}
 	//pageScroll()
 }
 function loadFunc(layoutMode, extFilter) {
@@ -83,7 +115,12 @@ function loadFunc(layoutMode, extFilter) {
 	console.log(`filter=`, extFilter)
 	console.log(`layout mode=`, lastLayoutMode)
 	console.log(`scale=`, scale)
+	console.log(`shuffle=`, shuffle)
 
+	if(shuffle==true){
+		items = arrShuffle(items)
+		shuffle=false
+	}
 	if(layoutMode===undefined)	layoutMode='wall'
 	lastLayoutMode = layoutMode
 	var layout=null
@@ -97,8 +134,9 @@ function loadFunc(layoutMode, extFilter) {
 	else gExtFilter = extFilter
 
 	var html = ''
-	for(var key in items){	//define grid items
-		obj = items[key]
+	for(var idx in items){	//define grid items
+		obj = items[idx]
+		obj.pid = idx	//reset in case of shuffle=true
 		if(extFilter[obj.type]===undefined) continue
 
 		html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	>`
@@ -235,13 +273,10 @@ function itemSelect(pid){
 function dblClick(pid){		//launch files in OS or open folders
 	if(isElectron==false) return
 	var obj = items[pid]
-	if(obj.isFile)
-		renderer.execFile(obj)
-	else
-	if(obj.isDirectory) {
+	if(obj.isDirectory)
 		renderer.fldrBrowse(obj)
-	}
-
+	else
+		renderer.execFile(obj)
 }
 
 function openPhotoSwipe(pid) {
@@ -256,6 +291,7 @@ function openPhotoSwipe(pid) {
 		bgOpacity: 0.85,
 		closeOnScroll: false,
 		escKey: true,
+		galleryPIDs:true,
 		hideAnimationDuration:333,
 		history:false,
 		index: pid, // first slide to start with
@@ -263,19 +299,65 @@ function openPhotoSwipe(pid) {
 		showHideOpacity:true,
 		galleryPIDs:true,
 		mouseUsed:true,
-		timeToIdle: 4000
+		timeToIdle: 4000,
 	}
 	var galleryItems = []
 	for(var idx in items) {	//scale images
-		galleryItems[idx] = {
-			src: items[idx].src,
-			w: items[idx].w *(scale<=1 ? 1 :scale),
-			h: items[idx].h *(scale<=1 ? 1 :scale),
+		var item=items[idx]
+		if(imgtypes.indexOf(item.type) < 0) continue
+		galleryItems[galleryItems.length] = {
+			src: item.src,
+			w: item.w *(scale<=1 ? 1 :scale),
+			h: item.h *(scale<=1 ? 1 :scale),
+			pid: idx	//item.pid
 		}
 	}
-	var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
+	gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
+	gallery.listen('destroy', function() { gallery = null });
 	gallery.init();
 }
+function galleryScale() {
+	if(gallery == null || scale < 1)  return
+	//console.log('galleryScale()', scale)
+	//update the currently view item
+	gallery.zoomTo(scale, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
+	//update remaining items
+	for(var ii in gallery.items) {
+		var gitem = gallery.items[ii]
+		var obj = items[gitem.pid]	//itemsFindByPid(item.pid)
+		if(obj==undefined) continue
+		gitem.w = obj.w * scale
+		gitem.h = obj.h * scale
+	}
+}
+/*function itemsFindByPid(pid) {
+	for(var ii in items){
+		var item = items[ii]
+		if(item.pid===pid) return item
+	}
+	return false
+}*/
+function arrShuffle(array) {
+	//from: https://bost.ocks.org/mike/shuffle/
+  var copy = [], n = array.length, i;
+
+  // While there remain elements to shuffle…
+  while (n) {
+
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * array.length);
+
+    // If not already shuffled, move it to the new array.
+    if (i in array) {
+      copy.push(array[i]);
+      delete array[i];
+      n--;
+    }
+  }
+
+  return copy;
+}
+
 function pageScrollToggle(boo) {
 	if(boo===undefined) boo = (scrollDelay===null)
 	if(boo===true) {
