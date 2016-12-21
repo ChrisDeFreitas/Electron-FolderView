@@ -63,40 +63,15 @@ function init() {
 	//console.log(`layout: ${lastLayoutMode}`)
 	//console.log(`scale: ${scale}`)
 	//console.log(`shuffle: ${shuffle}`)
-	document.addEventListener('keydown', (event) => {
+	/*document.addEventListener('keydown', (event) => {
 		const key = event.key;
 		switch (event.key) {
 		case "F12":
       //console.log('F12 pressed')
 			renderer.devToolsToggle()
       break;
-		}
-
-	  if (event.ctrlKey===false) return
-		switch (event.key) {
-    case "ArrowUp":		//zoom slideshow image up
-      if(gallery==null) return
-			var sc = gallery.getZoomLevel()
-			sc += 0.1
-			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 0)
-      break;
-    case "ArrowDown":		//zoom slideshow image down
-			if(gallery==null) return
-			var sc = gallery.getZoomLevel()
-			sc -= 0.1
-			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 0)
-      break;
-    /*case "ArrowRight":
-      // Do something for "right arrow" key press.
-      break;
-    case "Enter":
-      // Do something for "enter" or "return" key press.
-      break;
-    case "Escape":
-      // Do something for "esc" key press.
-      break;*/
   	}
-}, false);
+	}, false);*/
 
 	console.log('items:', items)
 	if(fontSize!=='12px'){
