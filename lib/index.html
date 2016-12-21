@@ -21,6 +21,7 @@
 <script>
 var isElectron=false
 var gallery=null	//photoswipe slideshow
+var galleryScrollDelay = null
 var exts={}
 var gExtFilter={}
 var isotope = null
@@ -63,16 +64,6 @@ function init() {
 	//console.log(`layout: ${lastLayoutMode}`)
 	//console.log(`scale: ${scale}`)
 	//console.log(`shuffle: ${shuffle}`)
-	/*document.addEventListener('keydown', (event) => {
-		const key = event.key;
-		switch (event.key) {
-		case "F12":
-      //console.log('F12 pressed')
-			renderer.devToolsToggle()
-      break;
-  	}
-	}, false);*/
-
 	console.log('items:', items)
 	if(fontSize!=='12px'){
 		var griditem = findRule('.grid-item')
@@ -82,6 +73,34 @@ function init() {
 		else
 			console.log('Font-size not changed; .grid-item style not found.')
 	}
+	document.addEventListener('keydown', (event) => {
+		const key = event.key;
+		/*switch (event.key) {
+		case "F12":
+      console.log('F12 pressed')
+			renderer.fldrBrowse(obj)
+      break;
+		}*/
+
+	  if (event.ctrlKey===false) return
+		switch (event.key) {
+    case "ArrowUp":		//zoom slideshow image up
+      if(gallery==null) return
+			var sc = gallery.getZoomLevel()
+			sc += 0.1
+			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
+      break;
+    case "ArrowDown":		//zoom slideshow image down
+			if(gallery==null) return
+			var sc = gallery.getZoomLevel()
+			sc -= 0.1
+			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
+      break;
+    case "ArrowRight": galleryPlay(true); break;
+    case "ArrowLeft": galleryPlay(false); break;
+  	}
+	}, false);
+
 	loadFunc(lastLayoutMode)
 	//pageScroll()
 }
@@ -312,6 +331,31 @@ function galleryScale() {
 		gitem.h = obj.h * scale
 	}
 }
+function galleryPlay(boo) {
+	if(galleryScrollDelay!=null) {
+		clearTimeout(galleryScrollDelay)
+		galleryScrollDelay=null
+		return
+	}
+	if(gallery==null) {
+		var pid = (itemselected===null ?0 :itemselected.pid)
+		openPhotoSwipe(pid)
+		//return
+	}
+
+	galleryScrollDelay = window.setInterval(function () {
+		if(gallery==null) {
+			clearTimeout(galleryScrollDelay)
+			galleryScrollDelay = null
+			return
+		}
+		if(boo===true)
+			gallery.next()
+		else
+			gallery.prev()
+
+	}, 1000); // scrolls every n milliseconds
+}
 /*function itemsFindByPid(pid) {
 	for(var ii in items){
 		var item = items[ii]
@@ -442,11 +486,16 @@ function classRemove(ctrl,cssclass){
 
                 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!--button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button-->
 
 								<!-- custom funcs -->
-								<button style="background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.25em; margin:0.8em 0 0 0;" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(false)'>-.1</button>
-								<button style="background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.25em; margin:0.8em 0 0 0;" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(true)'>+.1</button>
+								<style>
+									.btnGallery{background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.5em; font-weight:bold; margin:0.6em 0 0 0;}
+								</style>
+								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(false)'>&minus;</button>
+								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(true)'>&plus;</button>
+								<button class=btnGallery style="" title='Slideshow forward toggle (Ctrl+Right)' onmousedown='galleryPlay(true)'>&sc;</button>
+								<button class=btnGallery style="" title='Slideshow backward toggle (Ctrl+Left)' onmousedown='galleryPlay(false)'>&pr;</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->
