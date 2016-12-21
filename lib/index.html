@@ -291,6 +291,13 @@ function openPhotoSwipe(pid) {
 	gallery.listen('destroy', function() { gallery = null });
 	gallery.init();
 }
+function galleryImageScale(boo) {
+	if(gallery == null || scale < 1)  return
+	var sc = gallery.getZoomLevel()
+	if(boo===true) sc += 0.1
+	else sc -= 0.1
+	gallery.zoomTo(sc, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 0)
+}
 function galleryScale() {
 	if(gallery == null || scale < 1)  return
 	//console.log('galleryScale()', scale)
@@ -436,6 +443,10 @@ function classRemove(ctrl,cssclass){
                 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
                 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+								<!-- custom funcs -->
+								<button style="background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.25em; margin:0.8em 0 0 0;" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(false)'>-.1</button>
+								<button style="background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.25em; margin:0.8em 0 0 0;" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(true)'>+.1</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->
