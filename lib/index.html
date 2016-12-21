@@ -349,10 +349,8 @@ function galleryPlay(boo) {
 			galleryScrollDelay = null
 			return
 		}
-		if(boo===true)
-			gallery.next()
-		else
-			gallery.prev()
+		if(boo===true) gallery.next()	//gallery automatically resets index at end of list
+		else	gallery.prev()
 
 	}, 1000); // scrolls every n milliseconds
 }
