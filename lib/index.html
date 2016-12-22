@@ -6,7 +6,8 @@
 <meta name="author" content="Chris DeFreitas">
 <meta http-equiv="Reply-to" content="chrisd@europa.com">
 <title>Folder View - folderDisplayed</title>
-<!--script src="http://code.jquery.com/jquery-3.1.0.min.js" ></script-->
+<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="file:///C:/website/node/imageView/lib/jquery-1.10.1.min.js" ></script-->
 
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/photoswipe.css">
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/default-skin/default-skin.css">
@@ -18,10 +19,13 @@
 <!--electron_comment_end-->
 <!--script src="file:///C:/website/node/imageView/lib/horizontal.js"></script-->
 
+<script src="file:///C:/website/node/imageView/lib/cls_dlgFactory.js"></script>
+
 <script>
 var isElectron=false
 var gallery=null	//photoswipe slideshow
-var galleryScrollDelay = null
+var galleryScrollTimer = null
+var galleryDelay=1
 var exts={}
 var gExtFilter={}
 var isotope = null
@@ -32,7 +36,7 @@ var fontSize='12px'
 var lastLayoutMode=null
 var scale=1
 var shuffle=false
-var scrollDelay=null
+var scrollTimer=null
 var scrollDir=null
 var objprefix = ['img','obj','vid']
 var imgtypes =['.bmp','.ico','.gif','.jpg','.png']
@@ -75,13 +79,6 @@ function init() {
 	}
 	document.addEventListener('keydown', (event) => {
 		const key = event.key;
-		/*switch (event.key) {
-		case "F12":
-      console.log('F12 pressed')
-			renderer.fldrBrowse(obj)
-      break;
-		}*/
-
 	  if (event.ctrlKey===false) return
 		switch (event.key) {
     case "ArrowUp":		//zoom slideshow image up
@@ -101,6 +98,7 @@ function init() {
   	}
 	}, false);
 
+	//dlgFactory.msg('Hi Chris!')
 	loadFunc(lastLayoutMode)
 	//pageScroll()
 }
@@ -308,6 +306,10 @@ function openPhotoSwipe(pid) {
 	}
 	gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
 	gallery.listen('destroy', function() { gallery = null });
+	gallery.listen('afterChange', function() {
+		var pid = gallery.currItem.pid
+		itemSelect(pid)
+	});
 	gallery.init();
 }
 function galleryImageScale(boo) {
@@ -332,9 +334,9 @@ function galleryScale() {
 	}
 }
 function galleryPlay(boo) {
-	if(galleryScrollDelay!=null) {
-		clearTimeout(galleryScrollDelay)
-		galleryScrollDelay=null
+	if(galleryScrollTimer!=null) {
+		clearTimeout(galleryScrollTimer)
+		galleryScrollTimer=null
 		return
 	}
 	if(gallery==null) {
@@ -342,17 +344,32 @@ function galleryPlay(boo) {
 		openPhotoSwipe(pid)
 		//return
 	}
+	//get slideshow delay
+	var options = {
+		focusId: '#inpDelay',
+		title: 'Set Slideshow Delay',
+		body: `<label><input id=inpDelay type=number value=${galleryDelay} min=1 style='width:3em; text-align:right;' tabindex=0> seconds</label>`,
+		buttons:{
+			default: 'Save',
+			Save: function(dlg, btnCaption){	//use clicked save delay
+				galleryDelay = dlg.querySelector('#inpDelay').value
+				//console.log(galleryDelay)
+				dlgFactory.close(dlg)
+				//start slide show
+				galleryScrollTimer = window.setInterval(function () {
+					if(gallery==null) {
+						clearTimeout(galleryScrollTimer)
+						galleryScrollTimer = null
+						return
+					}
+					if(boo===true) gallery.next()	//gallery automatically resets index at end of list
+					else	gallery.prev()
 
-	galleryScrollDelay = window.setInterval(function () {
-		if(gallery==null) {
-			clearTimeout(galleryScrollDelay)
-			galleryScrollDelay = null
-			return
-		}
-		if(boo===true) gallery.next()	//gallery automatically resets index at end of list
-		else	gallery.prev()
-
-	}, 1000); // scrolls every n milliseconds
+				}, galleryDelay*1000); // scrolls every n milliseconds
+			}
+		 }
+	}
+	var dlg = dlgFactory.create(options)
 }
 /*function itemsFindByPid(pid) {
 	for(var ii in items){
@@ -383,9 +400,9 @@ function arrShuffle(array) {
 }
 
 function pageScrollToggle(boo) {
-	if(boo===undefined) boo = (scrollDelay===null)
+	if(boo===undefined) boo = (scrollTimer===null)
 	if(boo===true) {
-		scrollDelay = window.setInterval(function () {
+		scrollTimer = window.setInterval(function () {
 			//console.log(`${scrollDir},  ${window.pageYOffset}, ${window.innerHeight +document.body.clientHeight}`)
 			if(scrollDir===null || window.pageYOffset<=0)	//reset at top and bottom of page
 				scrollDir = 1
@@ -397,8 +414,8 @@ function pageScrollToggle(boo) {
 		}, 21); // scrolls every n milliseconds
 	}
 	else {
-		clearTimeout(scrollDelay)
-		scrollDelay=null
+		clearTimeout(scrollTimer)
+		scrollTimer=null
 		scrollDir=null
 	}
 }
@@ -492,8 +509,8 @@ function classRemove(ctrl,cssclass){
 								</style>
 								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(false)'>&minus;</button>
 								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(true)'>&plus;</button>
-								<button class=btnGallery style="" title='Slideshow forward toggle (Ctrl+Right)' onmousedown='galleryPlay(true)'>&sc;</button>
-								<button class=btnGallery style="" title='Slideshow backward toggle (Ctrl+Left)' onmousedown='galleryPlay(false)'>&pr;</button>
+								<button class=btnGallery style="" title='Slideshow forward toggle (Ctrl+Right)' onmousedown='galleryPlay(true); event.preventDefault;'>&sc;</button>
+								<button class=btnGallery style="" title='Slideshow backward toggle (Ctrl+Left)' onmousedown='galleryPlay(false); event.preventDefault;'>&pr;</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->
