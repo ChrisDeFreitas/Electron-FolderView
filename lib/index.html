@@ -127,8 +127,8 @@ function loadFunc(layoutMode, extFilter) {
 
 	var html = ''
 	for(var idx in items){	//define grid items
+		items[idx].pid = idx	//reset in case of shuffle=true
 		obj = items[idx]
-		obj.pid = idx	//reset in case of shuffle=true
 		if(extFilter[obj.type]===undefined) continue
 
 		//general dimenensions
@@ -274,12 +274,25 @@ function dblClick(pid){		//launch files in OS or open folders
 
 function openPhotoSwipe(pid) {
 	if(pid===undefined) pid=0
-	var obj = items[pid]
+	/*var obj = items[pid]
 	if(obj.type==='.mp4'	|| obj.type==='.flv' || obj.type==='.avi'	|| obj.type==='.wmv' || obj.type==='.mov' 	) {
 		warning('Can not show movies in slideshow')
 		return;
-	}
+	}*/
 	var pswpElement = document.querySelectorAll('.pswp')[0];
+	var galleryItems = [],
+		defaultPid = 0
+	for(var idx in items) {	//scale images
+		var item=items[idx]
+		if(imgtypes.indexOf(item.type) < 0) continue
+		if(defaultPid===0 && pid==idx) defaultPid = galleryItems.length
+		galleryItems[galleryItems.length] = {
+			src: item.src,
+			w: item.w *(scale<=1 ? 1 :scale),
+			h: item.h *(scale<=1 ? 1 :scale),
+			pid: idx	//item.pid
+		}
+	}
 	var options = {
 		bgOpacity: 0.85,
 		closeOnScroll: false,
@@ -287,23 +300,12 @@ function openPhotoSwipe(pid) {
 		galleryPIDs:true,
 		hideAnimationDuration:333,
 		history:false,
-		index: pid, // first slide to start with
+		index: defaultPid, // first slide to start with
 		//mouseUsed:true,
 		showAnimationDuration:333,
 		showHideOpacity:false,
 		//? spacing:0.8,
 		timeToIdle: 4000,
-	}
-	var galleryItems = []
-	for(var idx in items) {	//scale images
-		var item=items[idx]
-		if(imgtypes.indexOf(item.type) < 0) continue
-		galleryItems[galleryItems.length] = {
-			src: item.src,
-			w: item.w *(scale<=1 ? 1 :scale),
-			h: item.h *(scale<=1 ? 1 :scale),
-			pid: idx	//item.pid
-		}
 	}
 	gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
 	gallery.listen('destroy', function() { gallery = null });
