@@ -136,31 +136,31 @@ function loadFunc(layoutMode, extFilter) {
 		var height=Math.floor(obj.h *scale)
 
 		//scale to ~h=200 x w=300, depending on obj type and layout mode
+		var divisor = 1
+		if(layout==='masonry' //cols, resize width=300px
+		|| layout==='vertical') {
+			divisor = obj.w/300
+		}else
+		if(layout==='fitRows') {		//rows
+			divisor = obj.h/300
+		}else { //packery (wall)
+			if(obj.w >= 4000)	//resize to maintain relative sizes
+				divisor = 7.5
+			else
+			if(obj.w >= 2000)
+				divisor = 5.5
+			else
+			if(obj.w >= 1000)
+				divisor = 3
+			else
+			if(obj.w >= 400)
+				divisor = 1.75
+		}
+		//apply user's scale argument
+		divisor = divisor /scale
+		var dimstr = `height:${Math.round(obj.h/divisor)}px;`
+		html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	style="${dimstr}">`
 		if(imgtypes.indexOf(obj.type) >= 0) {
-			var divisor = 1
-			if(layout==='masonry' //cols, resize width=300px
-			|| layout==='vertical') {
-				divisor = obj.w/300
-			}else
-			if(layout==='fitRows') {		//rows
-				divisor = obj.h/300
-			} else { //packery (wall)
-				if(obj.w >= 4000)	//resize to maintain relative sizes
-					divisor = 7.5
-				else
-				if(obj.w >= 2000)
-					divisor = 5.5
-				else
-				if(obj.w >= 1000)
-					divisor = 3
-				else
-				if(obj.w >= 400)
-					divisor = 1.75
-			}
-			//apply user's scale argument
-			divisor = divisor /scale
-			var dimstr = `height:${Math.round(obj.h/divisor)}px;`
-			html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	style="${dimstr}">`
 			html += `<img
 				id="img${obj.pid}"	src="${obj.src}"
 				width=${Math.round(obj.w / divisor)}
