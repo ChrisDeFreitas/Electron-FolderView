@@ -14,7 +14,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - play media files using Chrome's built-in tools
 - open file with default app
 - image for slideshows
-- special functions:  copy path/src, delete, filter, hide, scale, scroll, shuffle
+- special functions:  copy path/src, delete, filter, hide, scale, scroll, shuffle, slideshow
 
 
 ## App Notes
@@ -60,9 +60,9 @@ var argmap =
 ```
 
 ## ToDo
+- fix handling of non-image files (Dec 21/2016)
 - add special handling for audio files
 - add recent folders list
-- add scale dialog to simplify scaling grid images and zooming app
 
 
 ## Thanks To
