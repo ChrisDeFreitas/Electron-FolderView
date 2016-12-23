@@ -45,7 +45,11 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 5. commandline switches
   * handled by "argv-to-object"
-  * documented in main.js:
+	* if --path option not supplied app looks to argument for path, for example:  
+				- node main.js c:\users\pictures
+				- electron main.js c:\users\pictures	--layout=cols  
+				- FolderView.exe c:\users\pictures	--fullscreen  
+  * commandline arguments documented in main.js:
 ```Javascript
 var argmap =
 {
