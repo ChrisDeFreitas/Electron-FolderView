@@ -55,16 +55,14 @@ function log(msg, lineno){
 //
 log('Init..')
 
-
 var mainWindow=null
 var isElectron = (app!=undefined)
+var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
+
 if(isElectron===false){	//nodejs functionality
-	log('nodejs app')
-	/*var fileObj = parseArgs()
-	scaleFix(fileObj)*/
+	log('nodejs app running')
 	var fldrobj = parseArgs()
 	var htmlfile = htmlGen(fldrobj)
-	//var htmlfile = htmlGen(fileObj.fldr, fileObj.items, fileObj.defaultImageNum, fileObj.exts, args.layout, args.shuffle, args.scale, args.fontsize)
 	console.log('Launching:['+htmlfile+']')
 	const exec = require('child_process').exec;
 	const child = exec(htmlfile, (error, stdout, stderr) => {
@@ -73,7 +71,8 @@ if(isElectron===false){	//nodejs functionality
 	})
 }
 else {		//electron functionality
-	log('electron app')
+	if(isFolderView)	log('FolderView.exe running')
+	else	log('electron app running')
 	appInit()
 }
 
@@ -113,6 +112,23 @@ exports.browserLaunch = function(fldr) {
 
 function parseArgs() {
 	var file = ''
+
+	if(args.path === ''){	//check for path on the commandline; useCase: Windows drag and drop
+		console.log('no --path, checking for default argv path..')
+		console.log('argv: ',process.argv)
+		if(process.argv.length > (isFolderView ?1 :2)){
+			var ss = process.argv[(isFolderView ?1 :2)]
+			if(ss != '' && ss.indexOf('--') < 0) {
+				var	stat = fs.lstatSync(ss)
+				if(stat.isFile()===true || stat.isDirectory()===true)
+					args.path = ss
+			}
+		}
+		if(args.path!='')
+			console.log('Found:', args.path)
+		else
+			console.log('Default argv path not found')
+	}
 	if(args.path === ''){
 		if(isElectron===false){
 			file='./'
