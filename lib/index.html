@@ -38,7 +38,8 @@ var scale=1
 var shuffle=false
 var scrollTimer=null
 var scrollDir=null
-var objprefix = ['img','obj','vid']
+//var objprefix = ['img','obj','vid']
+var objprefix = ['aud','fld','img','svg','unk','vid']
 var imgtypes =['.bmp','.ico','.gif','.jpg','.png']
 //var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
 var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
@@ -71,6 +72,7 @@ function init() {
 	//console.log(`scale: ${scale}`)
 	//console.log(`shuffle: ${shuffle}`)
 	console.log('items:', items)
+	console.log('exts:', exts)	//=== gExtFilter
 	if(fontSize!=='12px'){
 		var griditem = findRule('.grid-item')
 		if(griditem !== false) {
@@ -179,7 +181,7 @@ function loadFunc(layoutMode, extFilter) {
 		}	else
 		if(obj.isDirectory===true){
 			html += `<img
-				id="img${obj.pid}"	src="${obj.src}"
+				id="fld${obj.pid}"	src="${obj.src}"
 				alt="${obj.basename}"
 				style="padding:3em 3em 1em 3em;"
 				ondblclick="dblClick(${obj.pid})"
@@ -188,7 +190,7 @@ function loadFunc(layoutMode, extFilter) {
 		} else
 		if(obj.type==='.svg'){
 			html += `<img
-				id="img${obj.pid}"	src="${obj.src}"
+				id="svg${obj.pid}"	src="${obj.src}"
 				height=${height}	width=${width}
 				alt="${obj.basename}"
 				onclick="openPhotoSwipe(${obj.pid});"
@@ -206,7 +208,7 @@ function loadFunc(layoutMode, extFilter) {
 		} else
 		if(audtypes.indexOf(obj.type) >= 0){
 			html += `<audio controls preload='metadata'
-				id="vid${obj.pid}" src="${obj.src}"
+				id="aud${obj.pid}" src="${obj.src}"
 				style="height:${height}px;	width:${width}px;"
 				ondblclick="dblClick(${obj.pid})"
 			></audio>
@@ -214,7 +216,7 @@ function loadFunc(layoutMode, extFilter) {
 		}
 		else {
 			html += `<img
-				id="img${obj.pid}"	src="${obj.src}"
+				id="unk${obj.pid}"	src="${obj.src}"
 				height=${height}	width=${width}
 				alt="${obj.basename}"
 				style='padding:3em 0 0 0;''
@@ -283,7 +285,7 @@ function dblClick(pid){		//launch files in OS or open folders
 	if(obj.isDirectory)
 		renderer.fldrBrowse(obj)
 	else
-		renderer.execFile(obj)
+		renderer.openFile(obj)
 }
 
 function pageScrollToggle(boo) {
