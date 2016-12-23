@@ -13,8 +13,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
 - open file with default app
-- image for slideshows
-- special functions:  copy path/src, delete, filter, hide, scale, scroll, shuffle, slideshow
+- image slideshows
+- special functions:  clipboard, delete, filter, hide, open, scale, scroll, shuffle, slideshow
 
 
 ## App Notes
