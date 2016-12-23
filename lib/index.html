@@ -40,7 +40,9 @@ var scrollTimer=null
 var scrollDir=null
 var objprefix = ['img','obj','vid']
 var imgtypes =['.bmp','.ico','.gif','.jpg','.png']
-var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+//var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wmv']
+var audtypes = ['.flac','.mp3','.wma']
 var items=null
 
 //nodejs_comment_begin
@@ -159,7 +161,11 @@ function loadFunc(layoutMode, extFilter) {
 		//apply user's scale argument
 		divisor = divisor /scale
 		var dimstr = `height:${Math.round(obj.h/divisor)}px;`
-		html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	style="${dimstr}">`
+		if(imgtypes.indexOf(obj.type) >= 0) //for images scale outer div so no gaps at bottom bounding area
+			html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	style="${dimstr}">`
+		else
+			html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}">`
+		//
 		if(imgtypes.indexOf(obj.type) >= 0) {
 			html += `<img
 				id="img${obj.pid}"	src="${obj.src}"
@@ -189,13 +195,21 @@ function loadFunc(layoutMode, extFilter) {
 				style="background-color:whitesmoke;"
 			></img>`
 		} else
-		if(medtypes.indexOf(obj.type) >= 0){
-			html += `<video controls
+		if(vidtypes.indexOf(obj.type) >= 0){
+			html += `<video controls preload='metadata'
 				id="vid${obj.pid}" src="${obj.src}"
 				type="video/${obj.type.substr(1)}"
 				style="height:${height}px;	width:${width}px;"
 				ondblclick="dblClick(${obj.pid})"
 			></video>
+			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
+		} else
+		if(audtypes.indexOf(obj.type) >= 0){
+			html += `<audio controls preload='metadata'
+				id="vid${obj.pid}" src="${obj.src}"
+				style="height:${height}px;	width:${width}px;"
+				ondblclick="dblClick(${obj.pid})"
+			></audio>
 			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
 		}
 		else {
