@@ -193,8 +193,8 @@ function fldrObjGen(file) {
 		defaultfile = ''
 		folder = file
 	}
-	var imgtypes =['.bmp','.ico','.gif','.jpg','.png']
-	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+	var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
+	var medtypes = ['.avi','.flac','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
 	var fls2 = []
 	var id=-1
