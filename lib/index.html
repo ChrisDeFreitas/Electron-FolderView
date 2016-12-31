@@ -74,6 +74,7 @@ function init() {
 		var griditem = findRule('.grid-item')
 		if(griditem !== false) {
 			griditem.style.fontSize = fontSize
+			console.log(`Set griditem.style.fontSize = ${fontSize}`)
 		}
 		else
 			console.log('Font-size not changed; .grid-item style not found.')
@@ -406,7 +407,7 @@ function galleryPlay(boo) {
 			}
 		 }
 	}
-	var dlg = dlgFactory.create(options)
+	var dlg = Dlgfactory.Create(Options)
 }
 /*function itemsFindByPid(pid) {
 	for(var ii in items){
@@ -441,6 +442,7 @@ function findRule(selector) {
 	for(var key=0; key < document.styleSheets.length; key++){
 		if(document.styleSheets[key].href !== null) continue
 		stylesheet = document.styleSheets[key];
+		break;
 	}
 	if(stylesheet===null){
 		console.log(`findRule(${selector}) error, default stylesheet not found.`)
