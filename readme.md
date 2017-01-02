@@ -66,13 +66,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ```Javascript
 var argmap =
 {
-			devtools:{	keypath:'devtools', 	type:'boolean', default:false },
-			fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the item captions.' },
+			devtools:{ keypath:'devtools', type:'boolean', default:false },
+			fontsize:{ keypath:'fontsize', type:'string',  default:'12px', notes:'set the default font size for the item captions.' },
 			fullscreen:{keypath:'fullscreen', type:'boolean', default:false },
-			layout:{		keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall'], notes:'isotope translations: cols=masonry, width=300px; rows=fitRows, height=300px; vert=vertical, width=300px; wall=packery, width dependent on image size.'},
-			path:{			keypath:'path', 			type:'string',	default:'',		notes:'no trailing backslash allowed (for argv-to-object).' },
-			scale:{			keypath:'scale',			type:'number',  default:1,		range:{greaterThan:0}, notes:"scale size of grid items." },
-			shuffle:{		keypath:'shuffle',		type:'boolean',	default:false, notes:'randomize display of items.'}
+			layout:{ keypath:'layout', type:'string',	default:'wall',	range:['cols','rows','vert','wall'], notes:'isotope translations: cols=masonry, width=300px; rows=fitRows, height=300px; vert=vertical, width=300px; wall=packery, width dependent on image size.'},
+			path:{ keypath:'path', type:'string',	default:'', notes:'no trailing backslash allowed (for argv-to-object).' },
+			scale:{ keypath:'scale', type:'number', default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
+			shuffle:{ keypath:'shuffle', type:'boolean', default:false, notes:'randomize display of items.'}
 	}
 ```
 
