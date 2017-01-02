@@ -62,18 +62,19 @@ var argmap =
 			shuffle:{		keypath:'shuffle',		type:'boolean',	default:false, notes:'randomize display of items.'}
 	}
 ```
- 6. keyboard shortcuts
- alt+up/down: scale grid items
- alt+c: cols layout
- alt+r: rows layout
- alt+v: vert layout
- alt+w: wall layout
- ctrl+up/down: scale gallery image
- ctrl+left/right: toggle gallery slideshow forward/reverse
- esc: close gallery, return to grid
- left/right: manually scroll gallery
- s: toggle grid scrolling
- up/down: manually scroll grid
+
+6. keyboard shortcuts  
+ alt+up/down: scale grid items  
+ alt+c: cols layout  
+ alt+r: rows layout  
+ alt+v: vert layout  
+ alt+w: wall layout  
+ ctrl+up/down: scale gallery image  
+ ctrl+left/right: toggle gallery slideshow forward/reverse  
+ esc: close gallery, return to grid  
+ left/right: manually scroll gallery  
+ s: toggle grid scrolling  
+ up/down: manually scroll grid  
 
 ## ToDo
 - fix handling of non-image files (Dec 21/2016)
