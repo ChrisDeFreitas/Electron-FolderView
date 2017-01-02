@@ -43,7 +43,20 @@ This is a work in progress.  Feel free to use and modify as you wish.
   * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
 
-5. commandline switches
+5. Keyboard Shortcuts  
+	 alt+up/down: scale grid items  
+	 alt+c: cols layout  
+	 alt+r: rows layout  
+	 alt+v: vert layout  
+	 alt+w: wall layout  
+	 ctrl+up/down: scale gallery image  
+	 ctrl+left/right: toggle gallery slideshow forward/reverse  
+	 esc: close gallery, return to grid  
+	 left/right: manually scroll gallery  
+	 s: toggle grid scrolling  
+	 up/down: manually scroll grid  
+
+6. commandline switches
   * handled by "argv-to-object"
 	* if --path option not supplied app looks to argument for path, for example:  
 				- node main.js c:\users\pictures
@@ -63,22 +76,8 @@ var argmap =
 	}
 ```
 
-6. keyboard shortcuts  
- alt+up/down: scale grid items  
- alt+c: cols layout  
- alt+r: rows layout  
- alt+v: vert layout  
- alt+w: wall layout  
- ctrl+up/down: scale gallery image  
- ctrl+left/right: toggle gallery slideshow forward/reverse  
- esc: close gallery, return to grid  
- left/right: manually scroll gallery  
- s: toggle grid scrolling  
- up/down: manually scroll grid  
 
 ## ToDo
-- fix handling of non-image files (Dec 21/2016)
-- add special handling for audio files
 - add recent folders list
 
 
