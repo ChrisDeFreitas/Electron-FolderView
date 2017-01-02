@@ -172,12 +172,6 @@ function init() {
 	document.addEventListener('keydown', (event) => {
 		const key = event.key;
 
-	  if (key==='f') {
-	  	if(event.target.nodeName==='INPUT'
-	  	|| event.target.nodeName==='TEXTAREA') return
-			dlgToggle(dlg)
-  		return EventStopBubbling(event)
-	  }
 	  if (key==='s') {
 	  	if(event.target.nodeName==='INPUT'
 	  	|| event.target.nodeName==='TEXTAREA') return
