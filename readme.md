@@ -14,7 +14,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
 - open file with Windows' default app
-- functions:  clipboard, delete, filter, hide, keyboard shortcuts, open, scale, scroll, shuffle, slideshow
+- features:  clipboard, delete, filter, hide, keyboard shortcuts, move, open, rename, scale, scroll, shuffle, slideshow
 - keyboard commands match chrisd.tk/slideshow
 
 ## App Notes

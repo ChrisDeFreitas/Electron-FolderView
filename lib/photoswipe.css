@@ -96,7 +96,8 @@
   -ms-user-select: none;
       user-select: none;
   -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none; }
+  -webkit-touch-callout: none;
+}
 
 .pswp__zoom-wrap {
   position: absolute;
@@ -136,7 +137,10 @@
   width: auto;
   height: auto;
   top: 0;
-  left: 0; }
+  left: 0;
+  /*chris:20170101*/
+	transition:opacity 0.5s;
+}
 
 /*
 	stretched thumbnail or div placeholder element (see below)
