@@ -14,10 +14,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
 - open file with Windows' default app
-- special functions:  clipboard, delete, filter, hide, keyboard shortcuts, open, scale, scroll, shuffle, slideshow
+- functions:  clipboard, delete, filter, hide, keyboard shortcuts, open, scale, scroll, shuffle, slideshow
 - keyboard commands match chrisd.tk/slideshow
-- zoom changes from +-0.1 to +-50px
-- display of youtbue video type
 
 ## App Notes
 1. Install:
@@ -35,8 +33,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
   * these are specific tests based on my folder structure; you will need to customize
 
 3. Execute main.js:
-  * electron version (requires: "npm install electron -g") = electron main.js
-  * node version (runs in default browser, HTML only, no custom menu functions) = node main.js
+  * electron version (requires: "npm install electron -g") > electron main.js
+  * node version (runs in default browser, HTML only, no custom menu functions) > node main.js
 
 4. Build FolderView.exe: npm run build
 	* the app is built with Electron Packager so it can be used as a regular Windows program.
@@ -47,16 +45,16 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 5. Keyboard Shortcuts  
 	 alt+up/down: scale grid items  
-	 alt+c: cols layout  
-	 alt+r: rows layout  
-	 alt+v: vert layout  
-	 alt+w: wall layout  
-	 ctrl+up/down: scale gallery image  
+	 alt+c: grid cols layout
+	 alt+r: grid rows layout  
+	 alt+v: grid vert layout  
+	 alt+w: grid wall layout  
+	 ctrl+up/down: scale grid/gallery images  
 	 ctrl+left/right: toggle gallery slideshow forward/reverse  
 	 esc: close gallery, return to grid  
 	 left/right: manually scroll gallery  
 	 s: toggle grid scrolling  
-	 up/down: manually scroll grid  
+	 up/dn, pgup/pgdn, home/end: manually scroll grid  
 
 6. commandline switches
   * handled by "argv-to-object"
