@@ -9,13 +9,15 @@ This app allows me to quickly add functionality to handle various file managemen
 This is a work in progress.  Feel free to use and modify as you wish.
 
 
-## Functions
+## Features
+- main purpose is to view images on local disk
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
-- open file with default app
-- image slideshows
-- special functions:  clipboard, delete, filter, hide, open, scale, scroll grid, shuffle, slideshow
-
+- open file with Windows' default app
+- special functions:  clipboard, delete, filter, hide, keyboard shortcuts, open, scale, scroll, shuffle, slideshow
+- keyboard commands match chrisd.tk/slideshow
+- zoom changes from +-0.1 to +-50px
+- display of youtbue video type
 
 ## App Notes
 1. Install:
@@ -66,13 +68,16 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ```Javascript
 var argmap =
 {
-			devtools:{ keypath:'devtools', type:'boolean', default:false },
-			fontsize:{ keypath:'fontsize', type:'string',  default:'12px', notes:'set the default font size for the item captions.' },
-			fullscreen:{keypath:'fullscreen', type:'boolean', default:false },
-			layout:{ keypath:'layout', type:'string',	default:'wall',	range:['cols','rows','vert','wall'], notes:'isotope translations: cols=masonry, width=300px; rows=fitRows, height=300px; vert=vertical, width=300px; wall=packery, width dependent on image size.'},
-			path:{ keypath:'path', type:'string',	default:'', notes:'no trailing backslash allowed (for argv-to-object).' },
-			scale:{ keypath:'scale', type:'number', default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
-			shuffle:{ keypath:'shuffle', type:'boolean', default:false, notes:'randomize display of items.'}
+	devtools:{		keypath:'devtools', 	type:'boolean', default:false },
+	find:{				keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
+	fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
+	fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
+	layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
+				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
+	path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
+	scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
+	scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
+	shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
 	}
 ```
 

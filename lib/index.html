@@ -17,9 +17,12 @@
 <!--electron_comment_end-->
 
 <script src="file:///C:/website/node/imageView/lib/dlgFactory.js"></script>
+<script src="file:///C:/website/node/imageView/lib/ui.js"></script>
 
 <script>
+/* moved to ui//complex vars
 var isElectron=false
+var bblDur = 5000
 var gallery=null	//photoswipe slideshow
 var galleryScrollTimer = null
 var galleryDelay=2
@@ -31,18 +34,18 @@ var itemselected=null
 var devtools=null
 var fontSize='12px'
 var lastLayoutMode=null
-var scale=1
-var shuffle=false
 var scrollTimer=null
 var scrollDir=null
-//var objprefix = ['img','obj','vid']
+//var scale=1
+//var scroll=null
+//var shuffle=false
+
 var objprefix = ['aud','fld','img','svg','unk','vid']
 var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
-//var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
 var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
 var audtypes = ['.flac','.mp3','.wma']
 var items=null
-var bblDur = 5000
+*/
 
 //nodejs_comment_begin
 //code for electron only
@@ -52,6 +55,7 @@ const packery = require('isotope-packery')
 
 //default electron/nodejs code for this app
 const renderer = require('C:/website/node/imageView/lib/renderer.js')
+//var electronWin = renderer.electronWin
 renderer.sayhey()
 renderer.mainMenuGen(exts, lastLayoutMode)
 renderer.contextMenuSet(exts)
@@ -61,545 +65,53 @@ require('electron').ipcRenderer.on('applog', (event, message) => {
 })
 //nodejs_comment_end
 
-function flickrTxtSearch() {
-	var txt = document.getElementById('txtFlickr').value
-	var url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=87ee1e41cc0e8f2cae0116eaed12ea6f&content_type=1&has_geo=1&extras=+date_taken%2C+owner_name%2C+geo%2C+views%2C+url_o%2C+url_z%2C+url_c%2C+url_b%2C+url_h%2C+url_k&format=json&nojsoncallback=1&text=${txt}&safe_search=3&in_gallery=false&per_page=50&sort=interestingness-desc`
-	submitGet(url, `flickrTxtSearch ${txt}`, flkrCallback)
-}
-function flkrCallback(data){
-	var imgs = data.photos.photo
-	console.log(`flickr Search found ${imgs.length}:`)
-	items = []
-	for(var ii in imgs){
-		var img = imgs[ii]
-		var item = {
-			"basename": img.title+' by '+img.ownername
-			,"size":null,"isDirectory":false,"path":null
-			,"date": img.datetaken
-			,"pid":ii
-			,"title": img.title+' by '+img.ownername
-			,"type":".jpg"
-		}
-		if(img.url_k) {		//longest side = 2048
-			item.src=img.url_k
-			item.w=img.width_k
-			item.h=img.height_k
-		} else
-		if(img.url_h) {			//1600
-			item.src=img.url_h
-			item.w=img.width_h
-			item.h=img.height_h
-		} else
-		if(img.url_o) {		//original image size
-			item.src=img.url_o
-			item.w=img.width_o
-			item.h=img.height_o
-		} else
-		if(img.url_b) {			//1024
-			item.src=img.url_b
-			item.w=img.width_b
-			item.h=img.height_b
-		} else
-		if(img.url_c) {			//800
-			item.src=img.url_c
-			item.w=img.width_c
-			item.h=img.height_c
-		} else
-		if(img.url_z) {			//640
-			item.src=img.url_z
-			item.w=img.width_z
-			item.h=img.height_z
-		}
-		console.log(ii, item)
-		items.push(item)
-	}
-	scale=0.5
-	loadFunc(lastLayoutMode, {'.jpg':imgs.length})
-}
-function submitGet(str, msg, callback){
-	//s.lockScreen(msg);
-	var _start = new Date().getTime();
-	//var url = c.appServer+'?'+str
-	var url = str
-
-	console.log()
-	console.log('submitGet:', url)
-	jQuery
-		.get( url, null, null, 'json' )
-		.fail( function(  jqXHR, textStatus, errorThrown ){
-			console.log('AJAX Error:')
-			if(jqXHR.responseText)
-				console.log(jqXHR.responseText)
-			else
-				console.log(jqXHR)
-			console.log(errorThrown )
-		})
-		.done( function( dataNew, textStatus, jqXHR){
-			//s.unlockScreen('Ajax call completed...');
-			var itmp = new Date().getTime()
-			itmp =(itmp -_start) / 1000
-			console.log('AJAX Success ('+itmp+' sec):  ',dataNew)
-			dlgToggle(dlg, dlg.querySelector('#btn0'))
-			callback(dataNew)
-		})
-}
-
 function init() {
 	Object.assign(gExtFilter, exts)	//clone
 	if(lastLayoutMode===null) lastLayoutMode="wall"
-	console.log(`devtools: ${devtools}`)
-	console.log(`fontsize: ${fontSize}`)
-	//console.log(`layout: ${lastLayoutMode}`)
-	//console.log(`scale: ${scale}`)
-	//console.log(`shuffle: ${shuffle}`)
-	console.log('items:', items)
+
+	//vars populated by main.js:
+	//ui.args=main.js/args
+	//exts={}
+	//items=null
+
+	isElectron=ui.args.isElectron
+	lastLayoutMode=ui.args.layout
+	scale=ui.args.scale
+
+	console.log(`\nApplication arguments:`)
+	console.log(`defaultImageNum: ${ui.args.defaultImageNum}`)
+	console.log(`devtools: ${ui.args.devtools}`)
 	console.log('exts:', exts)	//=== gExtFilter
-	if(fontSize!=='12px'){
+	console.log(`fontSize: ${ui.args.fontsize}`)
+	console.log(`fullscreen: ${ui.args.fullscreen}`)
+	console.log('items:', items)
+	console.log(`layout: ${ui.args.layout}`)
+	console.log(`path: ${ui.args.path}`)
+	console.log(`scale: ${ui.args.scale}`)
+	console.log(`scroll: ${ui.args.scroll}`)
+	console.log(`shuffle: ${ui.args.shuffle}`)
+	if(ui.args.fontsize!=='12px'){
 		var griditem = findRule('.grid-item')
 		if(griditem !== false) {
-			griditem.style.fontSize = fontSize
-			console.log(`Set griditem.style.fontSize = ${fontSize}`)
-		}
-		else
+			griditem.style.fontSize = ui.args.fontsize
+			console.log(`Set griditem.style.fontSize = ${ui.args.fontsize}`)
+		}	else
 			console.log('Font-size not changed; .grid-item style not found.')
 	}
+	console.log('\n')	//end of app args
 
-	document.getElementById('pswp__item2').addEventListener("wheel", function(event){		//scale gallery image
-		if(gallery===null) return
-		//if(galleryScrollTimer!==null) return
-		galleryImageScale((event.deltaY < 0))
-	})
-	document.addEventListener('keydown', (event) => {
-		const key = event.key;
-
-	  if (key==='s') {
-	  	if(event.target.nodeName==='INPUT'
-	  	|| event.target.nodeName==='TEXTAREA') return
-			pageScrollToggle()
-  		return EventStopBubbling(event)
-	  }
-
-	  if (event.ctrlKey===false) return
-		switch (event.key) {
-    case "ArrowUp":		//zoom slideshow image up
-      if(gallery==null) return
-			var sc = gallery.getZoomLevel()
-			sc += 0.1
-			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
-      break;
-    case "ArrowDown":		//zoom slideshow image down
-			if(gallery==null) return
-			var sc = gallery.getZoomLevel()
-			sc -= 0.1
-			gallery.zoomTo(sc, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
-      break;
-    case "ArrowRight": galleryPlay(true); break;
-    case "ArrowLeft": galleryPlay(false); break;
-  	}
-	}, false);
-	document.getElementById('btnGalleryDur').innerHTML = galleryDelay+'s'
-	dlgFactory.setBblClickAction('none')
-
-	//dlgFactory.msg('Hi Chris!')
-	loadFunc(lastLayoutMode)
-	//pageScroll()
-}
-function loadFunc(layoutMode, extFilter) {
-	console.log(`grid settings: `)
-	console.log(`filter=`, extFilter)
-	console.log(`layout mode=`, lastLayoutMode)
-	console.log(`scale=`, scale)
-	console.log(`shuffle=`, shuffle)
-
-	if(shuffle==true){
-		items = arrShuffle(items)
-		shuffle=false
+	ui.init()
+	ui.gridLoad(lastLayoutMode)
+	if(ui.args.isElectron===true){
+		//if(ui.args.fullscreen===true)
+			//win.focus()
 	}
-	if(layoutMode===undefined)	layoutMode='wall'
-	lastLayoutMode = layoutMode
-	var layout=null
-	if(layoutMode==='cols')	layout='masonry'
-	if(layoutMode==='rows')  layout='fitRows'
-	if(layoutMode==='vertical')	layout='vertical'
-	if(layoutMode==='vert')	layout='vertical'
-	if(layoutMode==='wall') 	layout='packery'
-
-	if(extFilter===undefined) extFilter = gExtFilter
-	else gExtFilter = extFilter
-
-	var html = '', cnt=0
-	for(var idx in items){	//define grid items
-		items[idx].pid = idx	//reset in case of shuffle=true
-		obj = items[idx]
-		if(extFilter[obj.type]===undefined) continue
-		cnt++
-
-		//general dimenensions
-		var width =Math.floor(obj.w *scale)
-		var height=Math.floor(obj.h *scale)
-
-		//scale to ~h=200 x w=300, depending on obj type and layout mode
-		var divisor = 1
-		if(layout==='masonry' //cols, resize width=300px
-		|| layout==='vertical') {
-			divisor = obj.w/300
-		}else
-		if(layout==='fitRows') {		//rows
-			divisor = obj.h/300
-		}else { //packery (wall)
-			if(obj.w >= 4000)	//resize to maintain relative sizes
-				divisor = 7.5
-			else
-			if(obj.w >= 2000)
-				divisor = 5.5
-			else
-			if(obj.w >= 1000)
-				divisor = 3
-			else
-			if(obj.w >= 400)
-				divisor = 1.75
-		}
-		//apply user's scale argument
-		divisor = divisor /scale
-		var dimstr = `height:${Math.round(obj.h/divisor)}px;`
-		if(imgtypes.indexOf(obj.type) >= 0) //for images scale outer div so no gaps at bottom bounding area
-			html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}"	style="${dimstr}">`
-		else
-			html += `<div onclick="itemclick(${obj.pid});" class='grid-item' id="obj${obj.pid}" title="${obj.basename}">`
-		//
-		if(imgtypes.indexOf(obj.type) >= 0) {
-			html += `<img
-				id="img${obj.pid}"	src="${obj.src}"
-				width=${Math.round(obj.w / divisor)}
-				height=${Math.round(obj.h / divisor)}
-				title="${obj.basename}, ${obj.w} x ${obj.h}"
-				onclick="openPhotoSwipe(${obj.pid});"
-				ondblclick="dblClick(${obj.pid})"
-			></img>`
-			//no filename displayed for images
-		}	else
-		if(obj.isDirectory===true){
-			html += `<img
-				id="fld${obj.pid}"	src="${obj.src}"
-				alt="${obj.basename}"
-				style="padding:3em 3em 1em 3em;"
-				ondblclick="dblClick(${obj.pid})"
-			></img>
-			<div style='padding:0; margin:0 0 ${75 *scale}px 0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
-		} else
-		if(obj.type==='.svg'){
-			html += `<img
-				id="svg${obj.pid}"	src="${obj.src}"
-				height=${height}	width=${width}
-				alt="${obj.basename}"
-				onclick="openPhotoSwipe(${obj.pid});"
-				style="background-color:whitesmoke;"
-			></img>`
-		} else
-		if(vidtypes.indexOf(obj.type) >= 0){
-			html += `<video controls preload='metadata'
-				id="vid${obj.pid}" src="${obj.src}"
-				type="video/${obj.type.substr(1)}"
-				style="height:${height}px;	width:${width}px;"
-				ondblclick="dblClick(${obj.pid})"
-			></video>
-			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
-		} else
-		if(audtypes.indexOf(obj.type) >= 0){
-			html += `<audio controls preload='metadata'
-				id="aud${obj.pid}" src="${obj.src}"
-				style="height:${height}px;	width:${width}px;"
-				ondblclick="dblClick(${obj.pid})"
-			></audio>
-			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
-		}
-		else {
-			html += `<img
-				id="unk${obj.pid}"	src="${obj.src}"
-				height=${height}	width=${width}
-				alt="${obj.basename}"
-				style='padding:3em 0 0 0;''
-				ondblclick="dblClick(${obj.pid})"
-			></img>
-			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
-		}
-		html += '</div>'	//close div.grid-item
-	}
-	var grid = document.querySelectorAll('#grid')[0]
-	grid.innerHTML = html
-	isotope = new Isotope(grid, {
-		layoutMode: layout,
-		//layoutMode: 'fitRows',					//items arranged in rows
-	  //layoutMode: 'vertical',					//one column
-	  //layoutMode: 'masonry',					//??? Items are arranged in a vertically cascading grid
-	  //layoutMode: 'packery',					//fill empty spaces
-		//buggy, not used: layoutMode: 'horiz',					//one horizontal row
-	  /*horiz: {
-		  verticalAlignment: 0		// align to top
-		},*/
-		masonry: {
-		  columnWidth: (300 *scale),
-		  gutter: 2	//(10 *scale)
-		},
-		itemSelector: '.grid-item',
-  	//percentPosition: true,
-  	gutter: 0,
-  	fitWidth: true,
-  	//stagger: 30,
-  	resize: true,
-	});
-	dlgFactory.bbl(`"${cnt}" images loaded`, bblDur)
-	if(defaultImageNum != null) {	//note: --shuffle=true will this mess up
-		var obj = items[defaultImageNum]
-		if(imgtypes.indexOf(obj.type) >= 0) {
-			openPhotoSwipe(defaultImageNum)
-			defaultImageNum = null
-		}
-	}
-}
-function itemclick(pid){
-	if(itemSelect(pid)===false) return
-	//openPhotoSwipe(pid)
-}
-function itemSelect(pid){
-	if(itemselected === null
-	|| itemselected.pid !== pid) {	//new item
-		if(itemselected !== null) {
-			var ctrl =  document.getElementById(`obj${itemselected.pid}`)
-			classRemove(ctrl,'gridItemSelected')
-		}
-		itemselected = items[pid]
-		ctrl =  document.getElementById(`obj${pid}`)
-		classAdd(ctrl,'gridItemSelected')
-		return itemselected
-	}
-	//clear existing selection
-	var ctrl =  document.getElementById(`obj${itemselected.pid}`)
-	classRemove(ctrl,'gridItemSelected')
-	itemselected = null
-	return false
-}
-function dblClick(pid){		//launch files in OS or open folders
-	if(isElectron==false) return
-	var obj = items[pid]
-	if(obj.isDirectory)
-		renderer.fldrBrowse(obj)
-	else
-		renderer.openFile(obj)
-}
-
-function pageScrollToggle(boo) {
-	if(boo===undefined) boo = (scrollTimer===null)
-	if(boo===true) {
-		scrollTimer = window.setInterval(function () {
-			if(scrollDir===null || window.pageYOffset<=0)	//reset at top and bottom of page
-				scrollDir = 1
-			else
-			if(window.pageYOffset>=document.body.clientHeight -window.innerHeight)
-				scrollDir = -1
-
-			window.scrollBy(0,scrollDir)
-		}, 21); // scrolls every n milliseconds
-	}
-	else {
-		clearTimeout(scrollTimer)
-		scrollTimer=null
-		scrollDir=null
-	}
-}
-
-function openPhotoSwipe(pid) {
-	if(pid===undefined) pid=0
-	/*var obj = items[pid]
-	if(obj.type==='.mp4'	|| obj.type==='.flv' || obj.type==='.avi'	|| obj.type==='.wmv' || obj.type==='.mov' 	) {
-		warning('Can not show movies in slideshow')
-		return;
-	}*/
-	var pswpElement = document.querySelectorAll('.pswp')[0];
-	var galleryItems = [],
-		defaultPid = 0
-	for(var idx in items) {	//scale images
-		var item=items[idx]
-		if(imgtypes.indexOf(item.type) < 0) continue
-		if(defaultPid===0 && pid==idx) defaultPid = galleryItems.length
-		galleryItems[galleryItems.length] = {
-			src: item.src,
-			w: item.w *(scale<=1 ? 1 :scale),
-			h: item.h *(scale<=1 ? 1 :scale),
-			pid: idx	//item.pid
-		}
-	}
-	var options = {
-		bgOpacity: 0.85,
-		closeOnScroll: false,
-		escKey: true,
-		galleryPIDs:true,
-		hideAnimationDuration:333,
-		history:false,
-		index: defaultPid, // first slide to start with
-		//mouseUsed:true,
-		showAnimationDuration:333,
-		showHideOpacity:false,
-		//? spacing:0.8,
-		timeToIdle: 4000,
-	}
-	gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, galleryItems, options);
-	gallery.listen('destroy', function() { gallery = null });
-	gallery.listen('afterChange', function() {
-		var pid = gallery.currItem.pid
-		itemSelect(pid)
-	});
-	gallery.init();
-}
-function galleryImageScale(boo) {
-	if(gallery == null)  return
-	var sc = gallery.getZoomLevel()
-	if(boo===true) sc += 0.1
-	else sc -= 0.1
-	if(sc < 0.1) sc = 0.1
-	if(sc > 5) sc = 5
-	gallery.zoomTo(sc, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 0)
-}
-function galleryScale() {
-	if(gallery == null || scale < 1)  return
-	//console.log('galleryScale()', scale)
-	//update the currently view item
-	gallery.zoomTo(scale, {x:gallery.viewportSize.x/2*scale,y:gallery.viewportSize.y/2*scale}, 333)
-	//update remaining items
-	for(var ii in gallery.items) {
-		var gitem = gallery.items[ii]
-		var obj = items[gitem.pid]	//itemsFindByPid(item.pid)
-		if(obj==undefined) continue
-		gitem.w = obj.w * scale
-		gitem.h = obj.h * scale
-	}
-}
-function galleryDur(){	//get slideshow delay
-	var tmpdlg = null
-	function local_update(){
-		galleryDelay = tmpdlg.querySelector('#inpDelay').value
-		document.getElementById('btnGalleryDur').innerHTML = galleryDelay+'s'
-		dlgFactory.close(tmpdlg)
-	}
-	tmpdlg = dlgFactory.create({
-		focusId: '#inpDelay',
-		title: 'Set Slideshow Delay',
-		body: `<label style="text-align:center;margin:0;"><input id=inpDelay type=number value=${galleryDelay} min=1 style='width:3em; text-align:right;' tabindex=0> seconds</label>`,
-		buttons:{
-			default: 'Save',
-			"\u227A": function(dlg,btn){	//save and reverse slideshow
-				local_update()
-				if(galleryScrollTimer!==null) clearTimeout(galleryScrollTimer)
-				galleryScrollTimer=null
-				galleryPlay(false, true)
-			},
-			Save: function(dlg, btn){	//save and close
-				local_update()
-				dlgFactory.close(dlg)
-			},
-			"\u227B": function(dlg,btn){	//save and start slideshow
-				local_update()
-				if(galleryScrollTimer!==null) clearTimeout(galleryScrollTimer)
-				galleryScrollTimer=null
-				galleryPlay(true, true)
-			}
-		}
-	})
-}
-function galleryPlay(boo, skipCurrent) {	//toggle slideshow
-
-	if(galleryScrollTimer!=null) {								//toggle off
-		clearTimeout(galleryScrollTimer)
-		galleryScrollTimer=null
-		dlgFactory.bbl('Slideshow stopped', bblDur)
-		return
-	}
-
-	if(boo===undefined) boo=true
-	if(skipCurrent===undefined) skipCurrent=true
-
-	var local_func = function(){
-		if(gallery==null){
-			clearTimeout(galleryScrollTimer)
-			galleryScrollTimer = null
-			dlgFactory.bbl('Slideshow stopped', bblDur)
-			return
-		}
-		if(boo===true) gallery.next()	//gallery automatically resets index at end of list
-		else gallery.prev()
-	}
-
-	if(boo===true){
-		dlgFactory.bbl('Slideshow started', bblDur)
-		if(skipCurrent===true)
-	 		gallery.next()
-	}else{
-		dlgFactory.bbl('Slideshow playing in reverse', bblDur)
-		if(skipCurrent===true)
-			gallery.prev()
-	}
-	galleryScrollTimer = window.setInterval(local_func, galleryDelay*1000); // scrolls every n milliseconds
-}
-
-
-function arrShuffle(array) {
-	//from: https://bost.ocks.org/mike/shuffle/
-  var copy = [], n = array.length, i;
-
-  // While there remain elements to shuffle…
-  while (n) {
-
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * array.length);
-
-    // If not already shuffled, move it to the new array.
-    if (i in array) {
-      copy.push(array[i]);
-      delete array[i];
-      n--;
-    }
-  }
-
-  return copy;
-}
-function findRule(selector) {
-	//1. get the local styelsheet
-	var stylesheet = null
-	for(var key=0; key < document.styleSheets.length; key++){
-		if(document.styleSheets[key].href !== null) continue
-		stylesheet = document.styleSheets[key];
-		break;
-	}
-	if(stylesheet===null){
-		console.log(`findRule(${selector}) error, default stylesheet not found.`)
-		return
-	}
-	for(var key in stylesheet.cssRules){
-		var tmprule = stylesheet.cssRules[key]
-		if(tmprule.selectorText===selector){
-			return tmprule
-		}
-	}
-	return false
-}
-function classHas(ctrl, cssclass){
-	return !!ctrl.className.match(new RegExp('(\\s|^)'+cssclass+'(\\s|$)'));
-}
-function classAdd(ctrl,cssclass){
-	if (!classHas(ctrl,cssclass))
-		ctrl.className += " "+cssclass;
-}
-function classRemove(ctrl,cssclass){
-	if (classHas(ctrl,cssclass)) {
-    var reg = new RegExp('(\\s|^)'+cssclass+'(\\s|$)');
-    ctrl.className=ctrl.className.replace(reg,' ');
-  }
 }
 </script>
 <style>
 	body{
-		background: black repeat url('file:///C:/website/node/imageView/lib/tileable-fabric-textures-1.jpg');
-		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0; margin:0;
+		background: black repeat url('file:///C:/website/node/imageView/resources/tileable-fabric-textures-1.jpg');
+		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0;
 		text-align:center;
 	}
 	#grid{ border:0; margin:0 auto; outline:0; padding:0; vertical-align:top; }
@@ -654,8 +166,8 @@ function classRemove(ctrl,cssclass){
 									.btnGallery{background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.5em; font-weight:bold; margin:0.6em 0 0 0;}
 									.btnGallery:hover{color:#fff}
 								</style>
-								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(false)'>&minus;</button>
-								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(true)'>&plus;</button>
+								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(null, false)'>&minus;</button>
+								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(null, true)'>&plus;</button>
 								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onmousedown='galleryPlay(true); event.preventDefault;'>&sc;</button>
 								<button id=btnGalleryDur class=btnGallery style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.' onmousedown='galleryDur(); event.preventDefault;'>15s</button>
 								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onmousedown='galleryPlay(false); event.preventDefault;'>&pr;</button>

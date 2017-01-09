@@ -12,14 +12,15 @@ const sizeOf = require(__dirname+'/node_modules/image-size')
 var argtoobj = require( 'argv-to-object' );
 var argmap = {
 		devtools:{		keypath:'devtools', 	type:'boolean', default:false },
+		find:{				keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
 		fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
-	 				, notes:'cols(masonary): position based on available vertical space. '},
+	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-		scale:{				keypath:'scale',			type:'number',  default:1,		range:{greaterThan:0}, notes:"scale size of grid items." },
-		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:'randomize display of items'}
-		//zoom:{				keypath:'zoom', 			type:'number', default:0,				range:{min:0, max:3} , notes:'corresponds to browser zoom functionality'}
+		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
+		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
+		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
 }
 var args = argtoobj( argmap );
 console.log(args)
@@ -52,6 +53,21 @@ function log(msg, lineno){
 		mainWindow.webContents.send('applog',`${__filename}, Line #${lineno}:`)
 	mainWindow.webContents.send('applog',msg)
 }
+
+/*
+exports.win = function(){
+	return mainWindow
+}*/
+exports.fldrLoad = function(fldr) {
+	if(fldr===undefined) fldr=args.path
+	return fldrObjGen(fldr)
+}
+exports.browserLaunch = function(fldr) {
+	var fldrobj = fldrObjGen(fldr)
+	var win = browserLaunch(fldrobj)
+	return win
+}
+
 //
 log('Init..')
 
@@ -96,18 +112,6 @@ function appInit(){
 	    createWindow()
 	  }
 	})
-}
-
-exports.fldrLoad = function(fldr) {
-	if(fldr===undefined) fldr=args.path
-	return fldrObjGen(fldr)
-}
-exports.browserLaunch = function(fldr) {
-//exports.browserLaunch = function(fldr, devtools, scale, fullscreen, layout, shuffle, fontsize) {
-	var fldrobj = fldrObjGen(fldr)
-	var win = browserLaunch(fldrobj)
-	//var win = browserLaunch(fileObj, devtools, scale, fullscreen, layout, shuffle, fontsize)
-	return win
 }
 
 function parseArgs() {
@@ -189,16 +193,16 @@ function fldrObjGen(file) {
 	var folder = path.dirname(file)
 	var stat = fs.lstatSync(file)
 	if(stat.isDirectory()==true){
-		log('Argument is directory')
+		log('--path is a folder')
 		defaultfile = ''
 		folder = file
 	}
 	var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
-	var medtypes = ['.avi','.flac','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
 	var fls2 = []
 	var id=-1
-	var defaultImageNum =null
+	var defaultImageNum=null
 	for(var key in fls){
 		var val = fls[key]
 		var ext = path.extname(val).toLowerCase()
@@ -206,10 +210,10 @@ function fldrObjGen(file) {
 		var fullfilename = path.resolve(folder, val)
 
 		stat = fs.lstatSync( fullfilename )
-		id++
-		if(defaultImageNum===null
-		&& defaultfile==fn) {
-				defaultImageNum = id	//image in argv displayed when web page opens
+		++id
+		if(defaultImageNum===null	&& defaultfile==fn) {
+			defaultImageNum = id	//image in argv displayed when web page opens
+			console.log('defaultImageNum:',defaultImageNum)
 		}
 		var obj = {
 			basename: fn, date:stat.ctime, size:stat.size,
@@ -223,49 +227,51 @@ function fldrObjGen(file) {
 			type: ext
 		}
 		if(obj.isDirectory===true){				//folders
-			obj.src = 'file:///'+__dirname+"/lib/folder_closed_64.png"
+			obj.src = 'file:///'+__dirname+"/resources/folder_closed_64.png"
 			obj.w = 64
 			obj.h = 64
 			obj.type = 'folder'
-		}
-		else
+		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
 			var dim = sizeOf(fullfilename)
 			obj.w = dim.width
 			obj.h = dim.height
-		}
-		else
+		}	else
 		if(medtypes.indexOf(ext) >= 0){			//media types
 			obj.w = 300
 			obj.h = 200
-		}
-		else
+		}	else
+		if(obj.type=='youtube'){
+			html += `<iframe id="img${obj.pid}"	src="${obj.src}" frameborder="0" allowfullscreen></iframe>
+			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
+		} else
 		if(ext === '.svg'){							//svg files
 			obj.w = 300
 			obj.h = 200
-		}
-		else{			//handle other types
-			obj.src = 'file:///'+__dirname+"/lib/new_document_64.png"
+		}	else{			//handle other types
+			obj.src = 'file:///'+__dirname+"/resources/new_document_64.png"
 			obj.w = 64
 			obj.h = 64
 		}
-		//store file types for menu
+		//store file types for filter menu
 		if(exts[obj.type]===undefined) exts[obj.type]=1
 		else exts[obj.type]++
 		fls2.push(obj)
 	}
-	//return {fldr:file, items:fls2, defaultImageNum:defaultImageNum, exts:exts}
-	var result = {args:args, defaultImageNum:defaultImageNum, exts:exts, fldr:file, items:fls2}
+	args.defaultImageNum = defaultImageNum
+	var result = {args:args, exts:exts, fldr:file, items:fls2}
 	return result
 }
 
 //function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
 function htmlGen(fldrobj){
-	var fldr	= fldrobj.fldr,
-			items	= fldrobj.items,
-			defaultImageNum= fldrobj.defaultImageNum,
-			exts	= fldrobj.exts,
+	var //fldr	= fldrobj.fldr,
+			//items	= fldrobj.items,
+			//defaultImageNum= fldrobj.defaultImageNum,
+			//exts	= fldrobj.exts,
 			args	= fldrobj.args
+			args.isElectron	= isElectron
+			args.path	= fldrobj.fldr
 			//layout	=args.layout,
 			//shuffle	=args.shuffle,
 			//scale		= args.scale,
@@ -276,20 +282,14 @@ function htmlGen(fldrobj){
 		fs.mkdirSync(outfolder)
 	var outfile = path.join(__dirname,'tmp/index.html')
 	//
-	//if(args.fontsize[0]!=='"' && args.fontsize[0]!=="'")	//add quotes if needed
-	//	args.fontsize = `"${fontsize}"`
+	if(args.fontsize[0]!=='"' && args.fontsize[0]!=="'")	//add quotes if needed
+		args.fontsize = `"${args.fontsize}"`
 	var keys = {
-		'folderDisplayed': fldr,
+		'folderDisplayed': fldrobj.fldr,
 		'C:/website/node/imageView': __dirname.replace(/\\/g,'/'),
-		'var isElectron=false': 		`var isElectron = ${isElectron}`,
-		'var lastLayoutMode=null':	`var lastLayoutMode="${args.layout}"`,
-		'var shuffle=false':				`var shuffle=${args.shuffle}`,
-		'var devtools=null':			`var devtools=${args.devtools}`,
-		'var scale=1':							`var scale=${args.scale}`,
-		"var fontSize='12px'":			`var fontSize="${args.fontsize}"`,
-		'var exts={}': 							'var exts = '+JSON.stringify(exts),
-		'var items=null': 					'var items = '+JSON.stringify(items),
-		'var defaultImageNum=null': `var defaultImageNum=${defaultImageNum}`
+		'//ui.args=main.js/args':`ui.args=${JSON.stringify(fldrobj.args)}`,
+		'//exts={}':'exts = '+JSON.stringify(fldrobj.exts),
+		'//items=null':'items = '+JSON.stringify(fldrobj.items),
 	}
 	if(isElectron===true){
 		keys['<!--electron_comment_begin-->']= '<!--'
@@ -303,30 +303,22 @@ function htmlGen(fldrobj){
 	tmpl.xlate({
 		filename: path.join(__dirname,'lib/index.html'),
 		outfile: outfile,
-		//defaultImageNum: defaultImageNum,
 		keys: keys
 	})
 	return outfile
 }
-//function browserLaunch(fileObj, devTools, scale, fullscreen, layout, shuffle, fontsize) {
+//function browserLaunch(fileObj, defaultImageNum, devTools, scale, fullscreen, layout, shuffle, fontsize) {
 function browserLaunch(fldrobj) {
-	//const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
 	var //fileObj = fldrobj,
-			args 		= fldrobj.args,
-			devTools= args.devtools,
-			scale		= args.scale,
-			fullscreen= args.fullscreen,
-			layout	= args.layout,
-			shuffle	= args.shuffle,
-			fontsize= args.fontsize
-	if(scale===undefined) scale = 1
+			args 		= fldrobj.args
+	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({
 		//autoHideMenuBar: true,
 		backgroundColor: '#00000',
 		center: true,
 		//fullscreen: true,
 		frame: true,
-		icon: __dirname+'/lib/Folder-Season-Pack-icon.png',
+		icon: __dirname+'/resources/Folder-Season-Pack-icon.png',
 		title:'folderView',
 		//replaced by scale: webPreferences : {zoomFactor:zoomfactor},
 		width:1280,
@@ -359,9 +351,9 @@ function browserLaunch(fldrobj) {
 		protocol: 'file:',
 		slashes: true
 	}))
-	if(fullscreen===true)
+	if(args.fullscreen===true)
 		win.setFullScreen(true)
-	if(devTools===true)
+	if(args.devtools===true)
 		win.webContents.openDevTools()
 	return win
 }
