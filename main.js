@@ -196,6 +196,8 @@ function fldrObjGen(file) {
 		log('--path is a folder')
 		defaultfile = ''
 		folder = file
+	}	else {
+		log('--path is a file')
 	}
 	var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
 	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
