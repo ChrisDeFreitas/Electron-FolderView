@@ -107,6 +107,28 @@ function init() {
 			//win.focus()
 	}
 }
+
+//renderer.js helper functions
+/*
+	moved to ui.var...
+function _FilenameLoad(event){	//called by rename dlg
+	var nm = ui.var.renamedLast
+	if(nm!=='')
+		document.getElementById('inpRNNew').value=ui.calc.strInc(nm)
+	else
+		dlgFactory.bbl('No previous filename used.');
+}
+function _FilenameInc(event){	//called by rename dlg
+	fnnew = document.getElementById('inpRNNew').value
+	fnnew = ui.calc.strInc(fnnew)
+	document.getElementById('inpRNNew').value=fnnew
+}
+function _FilenameDec(event){	//called by rename dlg
+	fnnew = document.getElementById('inpRNNew').value
+	fnnew = ui.calc.strDec(fnnew)
+	document.getElementById('inpRNNew').value=fnnew
+}
+*/
 </script>
 <style>
 	body{
