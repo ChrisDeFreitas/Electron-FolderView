@@ -218,7 +218,7 @@ function fldrObjGen(file) {
 			console.log('defaultImageNum:',defaultImageNum)
 		}
 		var obj = {
-			basename: fn, date:stat.ctime, size:stat.size,
+			basename: fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
 			//isFile:stat.isFile(),
 			path: fullfilename,
@@ -230,8 +230,8 @@ function fldrObjGen(file) {
 		}
 		if(obj.isDirectory===true){				//folders
 			obj.src = 'file:///'+__dirname+"/resources/folder_closed_64.png"
-			obj.w = 64
-			obj.h = 64
+			obj.w = 320
+			obj.h = 200
 			obj.type = 'folder'
 		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
@@ -240,7 +240,7 @@ function fldrObjGen(file) {
 			obj.h = dim.height
 		}	else
 		if(medtypes.indexOf(ext) >= 0){			//media types
-			obj.w = 300
+			obj.w = 320
 			obj.h = 200
 		}	else
 		if(obj.type=='youtube'){
@@ -248,12 +248,12 @@ function fldrObjGen(file) {
 			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
 		} else
 		if(ext === '.svg'){							//svg files
-			obj.w = 300
+			obj.w = 320
 			obj.h = 200
 		}	else{			//handle other types
 			obj.src = 'file:///'+__dirname+"/resources/new_document_64.png"
-			obj.w = 64
-			obj.h = 64
+			obj.w = 320
+			obj.h = 200
 		}
 		//store file types for filter menu
 		if(exts[obj.type]===undefined) exts[obj.type]=1
@@ -284,8 +284,8 @@ function htmlGen(fldrobj){
 		fs.mkdirSync(outfolder)
 	var outfile = path.join(__dirname,'tmp/index.html')
 	//
-	if(args.fontsize[0]!=='"' && args.fontsize[0]!=="'")	//add quotes if needed
-		args.fontsize = `"${args.fontsize}"`
+	//if(args.fontsize[0]!=='"' && args.fontsize[0]!=="'")	//add quotes if needed
+		//args.fontsize = `"${args.fontsize}"`
 	var keys = {
 		'folderDisplayed': fldrobj.fldr,
 		'C:/website/node/imageView': __dirname.replace(/\\/g,'/'),

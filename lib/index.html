@@ -53,6 +53,11 @@ const Isotope = require('isotope-layout')
 const packery = require('isotope-packery')
 //const horiz 	= require('isotope-horizontal')
 
+//////do not delete: vars populated by main.js:
+//ui.args=main.js/args
+//exts={}
+//items=null
+
 //default electron/nodejs code for this app
 const renderer = require('C:/website/node/imageView/lib/renderer.js')
 //var electronWin = renderer.electronWin
@@ -65,14 +70,13 @@ require('electron').ipcRenderer.on('applog', (event, message) => {
 })
 //nodejs_comment_end
 
+
 function init() {
+	//////do not delete: vars populated by main.js:
+	//ui.args=main.js/args
+
 	Object.assign(gExtFilter, exts)	//clone
 	if(lastLayoutMode===null) lastLayoutMode="wall"
-
-	//vars populated by main.js:
-	//ui.args=main.js/args
-	//exts={}
-	//items=null
 
 	isElectron=ui.args.isElectron
 	lastLayoutMode=ui.args.layout
@@ -90,45 +94,14 @@ function init() {
 	console.log(`scale: ${ui.args.scale}`)
 	console.log(`scroll: ${ui.args.scroll}`)
 	console.log(`shuffle: ${ui.args.shuffle}`)
-	if(ui.args.fontsize!=='12px'){
-		var griditem = findRule('.grid-item')
-		if(griditem !== false) {
-			griditem.style.fontSize = ui.args.fontsize
-			console.log(`Set griditem.style.fontSize = ${ui.args.fontsize}`)
-		}	else
-			console.log('Font-size not changed; .grid-item style not found.')
-	}
-	console.log('\n')	//end of app args
-
 	ui.init()
+	console.log('\n')	//end of app args
 	ui.gridLoad(lastLayoutMode)
 	if(ui.args.isElectron===true){
 		//if(ui.args.fullscreen===true)
 			//win.focus()
 	}
 }
-
-//renderer.js helper functions
-/*
-	moved to ui.var...
-function _FilenameLoad(event){	//called by rename dlg
-	var nm = ui.var.renamedLast
-	if(nm!=='')
-		document.getElementById('inpRNNew').value=ui.calc.strInc(nm)
-	else
-		dlgFactory.bbl('No previous filename used.');
-}
-function _FilenameInc(event){	//called by rename dlg
-	fnnew = document.getElementById('inpRNNew').value
-	fnnew = ui.calc.strInc(fnnew)
-	document.getElementById('inpRNNew').value=fnnew
-}
-function _FilenameDec(event){	//called by rename dlg
-	fnnew = document.getElementById('inpRNNew').value
-	fnnew = ui.calc.strDec(fnnew)
-	document.getElementById('inpRNNew').value=fnnew
-}
-*/
 </script>
 <style>
 	body{
