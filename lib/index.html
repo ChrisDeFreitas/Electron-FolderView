@@ -20,43 +20,16 @@
 <script src="file:///C:/website/node/imageView/lib/ui.js"></script>
 
 <script>
-/* moved to ui//complex vars
-var isElectron=false
-var bblDur = 5000
-var gallery=null	//photoswipe slideshow
-var galleryScrollTimer = null
-var galleryDelay=2
-var exts={}
-var gExtFilter={}
-var isotope = null
-var defaultImageNum=null
-var itemselected=null
-var devtools=null
-var fontSize='12px'
-var lastLayoutMode=null
-var scrollTimer=null
-var scrollDir=null
-//var scale=1
-//var scroll=null
-//var shuffle=false
-
-var objprefix = ['aud','fld','img','svg','unk','vid']
-var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
-var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
-var audtypes = ['.flac','.mp3','.wma']
-var items=null
-*/
+//////do not delete: vars populated by main.js:
+//ui.args=main.js/args
+//exts={}
+//items=null
 
 //nodejs_comment_begin
 //code for electron only
 const Isotope = require('isotope-layout')
 const packery = require('isotope-packery')
 //const horiz 	= require('isotope-horizontal')
-
-//////do not delete: vars populated by main.js:
-//ui.args=main.js/args
-//exts={}
-//items=null
 
 //default electron/nodejs code for this app
 const renderer = require('C:/website/node/imageView/lib/renderer.js')
@@ -105,15 +78,18 @@ function init() {
 		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0;
 		text-align:center;
 	}
-	#grid{ border:0; margin:0 auto; outline:0; padding:0; vertical-align:top; }
+	#grid{
+		 border:0; margin:0 auto; outline:0; padding:0; vertical-align:top;
+	 }
 	.grid-item {
-		outline:1px solid transparent;	border:1px solid transparent;
+		outline:0;	border:1px solid transparent;
+/*	outline:1px solid transparent;	border:1px solid transparent;*/
 		text-align:center;	vertical-align:middle;
 	}
-	.grid-item:hover {border:1px solid whitesmoke}
-	.gridItemSelected{border:1px solid #1ACC1A}
-	img { cursor:pointer; margin:0; padding:0; border:0; outline:0; }
-	video {cursor:pointer; margin:0 auto; /*height:250px*/; }
+/*	.grid-item:hover {border:1px solid whitesmoke}*/
+	.gridItemSelected{ border:1px solid #f00; }
+	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
+	video{cursor:pointer; margin:0 auto; /*height:250px*/; }
 </style>
 </head>
 <body onload='init()'>
