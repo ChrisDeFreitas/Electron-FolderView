@@ -70,6 +70,52 @@ function init() {
 	ui.init()
 	console.log('\n')	//end of app args
 	ui.gridLoad(lastLayoutMode)
+
+	var mnuDelay=dlgFactory.hvr({
+		on:{ctrl:'btnGalleryDelay',from:'bottomcenter'}
+	, from:'topcenter'
+	, canDestroy:false			//set: style.display=none in DLGDestroy()
+	, delay:0
+	,	html:`
+		<button onclick='setGalleryDelay(3000)' class=dlgButton>3s</button>
+		<button onclick='setGalleryDelay(5000)' class=dlgButton>5s</button>
+		<button onclick='setGalleryDelay(10000)' class=dlgButton>10s</button>
+		<button onclick='setGalleryDelay(15000)' class=dlgButton>15s</button>
+		<button onclick='setGalleryDelay(30000)' class=dlgButton>30s</button>
+		<button onclick='setGalleryDelay(60000)' class=dlgButton>60s</button>`
+	, attrib:{
+		  className:'selGalleryDelay dlgFrm'
+		, style:{border:0, padding:0, zIndex:1500}
+		}
+	})
+
+	document.addEventListener('keydown', (event) => {
+		if(event.altKey===true) {
+			if(event.shiftKey===true) {
+				const key = event.key;
+				if(key==='F'){
+					var cur = ui.args.folders
+					if(cur==='' || cur==='default') renderer.folderMenuClick('first')
+					else if(cur==='first') renderer.folderMenuClick('hidden')
+					else if(cur==='hidden') renderer.folderMenuClick('last')
+					else if(cur==='last') renderer.folderMenuClick('default')
+					return ui.eventStop(event)
+				}else
+				if(key==='O'){
+					var cur = ui.var.lastOrder
+					if(cur==='' || cur==='date') renderer.ordMenuClick('name')
+					else if(cur==='name') renderer.ordMenuClick('size')
+					else if(cur==='size') renderer.ordMenuClick('type')
+					else if(cur==='type') renderer.ordMenuClick('date')
+					return ui.eventStop(event)
+				}
+			}
+		}
+	})
+}
+function setGalleryDelay(val){
+	galleryDelay=val
+	document.getElementById('btnGalleryDelay').innerHTML=(val/1000)+'s'
 }
 </script>
 <style>
@@ -90,11 +136,13 @@ function init() {
 	.gridItemSelected{ border:1px solid #f00; }
 	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
 	video{cursor:pointer; margin:0 auto; /*height:250px*/; }
+	.selGalleryDelay{padding:0; }
+	.selGalleryDelay button{ display:block; text-align:center; width:7em; }
 </style>
 </head>
 <body onload='init()'>
 
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+<div id=pswpMain class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
     <!-- Background of PhotoSwipe.
          It's a separate element, as animating opacity is faster than rgba(). -->
@@ -104,7 +152,7 @@ function init() {
     <div class="pswp__scroll-wrap">
 
         <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
-        <div class="pswp__container">
+				<div id=pswp__container class="pswp__container">
             <!-- don't modify these 3 pswp__item elements, data is added later on -->
             <div id=pswp__item1 class="pswp__item"></div>
             <div id=pswp__item2 class="pswp__item"></div>
@@ -135,9 +183,9 @@ function init() {
 								</style>
 								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(null, false)'>&minus;</button>
 								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(null, true)'>&plus;</button>
-								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onmousedown='galleryPlay(true); event.preventDefault;'>&sc;</button>
-								<button id=btnGalleryDur class=btnGallery style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.' onmousedown='galleryDur(); event.preventDefault;'>15s</button>
-								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onmousedown='galleryPlay(false); event.preventDefault;'>&pr;</button>
+								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onmousedown='galleryPlay(true); return event.preventDefault;'>&sc;</button>
+								<button id=btnGalleryDelay class=btnGallery onmousedown='if(dlgGalleryDelay===null) galleryDelayGet(); else dlgFactory.close(dlgGalleryDelay);' style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.'>15s</button>
+								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onmousedown='galleryPlay(false); return event.preventDefault;'>&pr;</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->

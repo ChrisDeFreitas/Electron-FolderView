@@ -11,12 +11,15 @@ const sizeOf = require(__dirname+'/node_modules/image-size')
 //handle commandline arguments
 var argtoobj = require( 'argv-to-object' );
 var argmap = {
-		devtools:{		keypath:'devtools', 	type:'boolean', default:false },
-		find:{				keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
-		fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
+		descending:{keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
+		devtools:{	keypath:'devtools', 	type:'boolean', default:false },
+		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
+		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
+		folders:{		keypath:'folders',	type:'string', default:'default', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
+		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
