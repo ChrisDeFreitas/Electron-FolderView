@@ -17,7 +17,7 @@ var argmap = {
 		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 		folders:{		keypath:'folders',	type:'string', default:'default', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
-		layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
+		layout:{			keypath:'layout', 		type:'string',	default:'cols',	range:['cols','rows','vert','wall']
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
@@ -26,7 +26,7 @@ var argmap = {
 		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
 }
 var args = argtoobj( argmap );
-console.log(args)
+//console.log(args)
 
 //allow logging to main browser window
 Object.defineProperty(global, '__stack', {
@@ -157,17 +157,24 @@ function parseArgs() {
 	else {
 		file = args.path
 	}
-	if(args.layout===undefined) args.layout='wall'
+	if(args.descending===undefined) args.descending=false
+	if(args.devtools===undefined) args.devtools=false
+	if(args.folders===undefined) args.folders='default'
 	if(args.fontsize[0]==='"' || args.fontsize[0]==="'") {	//remove quotes if needed
 		console.log("Fix args.fontsize: ", args.fontsize)
 		args.fontsize = args.fontsize.substr(1, args.fontsize.length-2)
 	}
+	if(args.layout===undefined) args.layout='cols'
+	if(args.order===undefined) args.order='name'
+	if(args.shuffle===undefined) args.shuffle=false
 	log('Reading files..')
-	log('Argument: ['+file+']')
+	//log('Argument: ['+file+']')
+	log('Arguments:')
+	log(args)
 	file = file.trim()
 	if(file==='') process.exit(1)
-//	if(file[file.length-1]==='"')		//on windows trailing backslash, \, interpretted as escape
-//		file = file.substr(0, file.length-1)
+ //	if(file[file.length-1]==='"')		//on windows trailing backslash, \, interpretted as escape
+ //		file = file.substr(0, file.length-1)
 	//return fileListGen(file)
 	var fldrobj = fldrObjGen(file)
 	return fldrobj

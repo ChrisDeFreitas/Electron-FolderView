@@ -14,7 +14,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
 - open file with Windows' default app
-- features:  clipboard, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, scale, scroll, shuffle, slideshow
+- features:  clipboard, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, scale, scroll, shuffle, slideshow
 - keyboard commands match chrisd.tk/slideshow
 
 ## App Notes
@@ -54,6 +54,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 alt+shift+d:	toggle descending sort order on or off  
 	 alt+shift+f: toggle folder display - default, first, hidden, last  
 	 alt+shift+o: toggle sort order - date, name, size, type  
+	 alt+shift+s: shuffle grid items
 	 ctrl+up/down: scale grid/gallery images  
 	 ctrl+left/right: toggle gallery slideshow forward/reverse  
 	 esc: close gallery, return to grid  
