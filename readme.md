@@ -21,11 +21,11 @@ This is a work in progress.  Feel free to use and modify as you wish.
 1. Install:
 	* Windows only -- I use it on Win81 and Win7
   * requires node.js and electron
-  * after downloading to a local folder:  
-			1. npm install electron -g  
-			2. npm install  
-			3. electron main.js  
-			4. if you want to generate an executable:  
+  * after downloading to a local folder:
+			1. npm install electron -g
+			2. npm install
+			3. electron main.js
+			4. if you want to generate an executable:
 				npm install electron-packager -g
 
 2. Test: npm run test
@@ -43,35 +43,41 @@ This is a work in progress.  Feel free to use and modify as you wish.
   * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
 
-5. Keyboard Shortcuts  
-	 alt+up/down: scale grid items  
+5. Keyboard Shortcuts
+	 alt+up/down: scale grid items
 	 alt+c: grid cols layout
-	 alt+r: grid rows layout  
-	 alt+v: grid vert layout  
-	 alt+w: grid wall layout  
-	 ctrl+up/down: scale grid/gallery images  
-	 ctrl+left/right: toggle gallery slideshow forward/reverse  
-	 esc: close gallery, return to grid  
-	 left/right: manually scroll gallery  
-	 s: toggle grid scrolling  
-	 up/dn, pgup/pgdn, home/end: manually scroll grid  
+	 alt+r: grid rows layout
+	 alt+v: grid vert layout
+	 alt+w: grid wall layout
+	 alt+shift+d:	toggle descending sort order on or off
+	 alt+shift+f: toggle folder display - default, first, hidden, last
+	 alt+shift+o: toggle sort order - date, name, size, type
+	 ctrl+up/down: scale grid/gallery images
+	 ctrl+left/right: toggle gallery slideshow forward/reverse
+	 esc: close gallery, return to grid
+	 left/right: manually scroll gallery
+	 s: toggle grid scrolling
+	 up/dn, pgup/pgdn, home/end: manually scroll grid
 
 6. commandline switches
   * handled by "argv-to-object"
-	* if --path option not supplied app looks to argument for path, for example:  
-				- node main.js c:\users\pictures  
-				- electron main.js c:\users\pictures	--layout=cols   
-				- FolderView.exe c:\users\pictures	--fullscreen  
+	* if --path option not supplied app looks to argument for path, for example:
+				- node main.js c:\users\pictures
+				- electron main.js c:\users\pictures	--layout=cols
+				- FolderView.exe c:\users\pictures	--fullscreen
   * commandline arguments documented in main.js:
 ```Javascript
 var argmap =
 {
+	descending:{	keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
 	devtools:{		keypath:'devtools', 	type:'boolean', default:false },
 	find:{				keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
+	folders:{		  keypath:'folders',	  type:'string',  default:'default', range:['default','first','hidden','last'] },
 	fontsize:{		keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 	fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 	layout:{			keypath:'layout', 		type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
+	order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'], notes:'Sort order of items' },
 	path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 	scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 	scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
@@ -96,5 +102,5 @@ var argmap =
 
 Good Luck!
 
-Chris  
+Chris
 chrisd@europa.com
