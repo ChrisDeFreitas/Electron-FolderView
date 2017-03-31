@@ -5,7 +5,7 @@
 <meta http-equiv="Lang" content="en">
 <meta name="author" content="Chris DeFreitas">
 <meta http-equiv="Reply-to" content="chrisd@europa.com">
-<title>Folder View - folderDisplayed</title>
+<title>FolderView - folderDisplayed</title>
 
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/photoswipe.css">
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/default-skin/default-skin.css">
@@ -73,8 +73,8 @@ function init() {
 	ui.init()
 	console.log('\n')	//end of app args
 	ui.gridLoad(lastLayoutMode)
-
-	var mnuDelay=dlgFactory.hvr({
+	//dlgFactory.bbl('Hi')
+	/*var mnuDelay=dlgFactory.hvr({
 		on:{ctrl:'btnGalleryDelay',from:'bottomcenter'}
 	, from:'topcenter'
 	, canDestroy:false			//set: style.display=none in DLGDestroy()
@@ -90,7 +90,7 @@ function init() {
 		  className:'selGalleryDelay dlgFrm'
 		, style:{border:0, padding:0, zIndex:1500}
 		}
-	})
+	})*/
 
 	document.addEventListener('keydown', (event) => {
 		if(event.altKey===true) {
