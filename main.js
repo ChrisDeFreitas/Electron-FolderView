@@ -5,7 +5,7 @@ const path = require('path');
 const url = require('url')
 
 const electron = require('electron')
-const {app, BrowserWindow, dialog,  globalShortcut} = electron
+const {app, BrowserWindow, dialog/*,  globalShortcut*/} = electron
 const sizeOf = require(__dirname+'/node_modules/image-size')
 
 //handle commandline arguments
@@ -65,12 +65,13 @@ exports.fldrLoad = function(fldr) {
 	if(fldr===undefined) fldr=args.path
 	return fldrObjGen(fldr)
 }
+/*
 exports.browserLaunch = function(fldr) {
 	var fldrobj = fldrObjGen(fldr)
 	var win = browserLaunch(fldrobj)
 	return win
 }
-
+*/
 //
 log('Init..')
 
@@ -343,7 +344,7 @@ function browserLaunch(fldrobj) {
 
 	win.on('closed', function () {
 		win = null
-		globalShortcut.unregisterAll()
+		//globalShortcut.unregisterAll()
 	})
 	win.on('enter-full-screen', function () {
 		win.setMenuBarVisibility(false)
