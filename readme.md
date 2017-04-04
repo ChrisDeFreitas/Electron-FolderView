@@ -15,7 +15,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - play media files using Chrome's built-in tools
 - open file with Windows' default app
 - features:  clipboard, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, scale, scroll, shuffle, slideshow
-- keyboard commands match chrisd.tk/slideshow
+- keyboard commands match chrisd.gq/slideshow
 
 ## App Notes
 1. Install:
@@ -72,9 +72,9 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ```Javascript
 var argmap =
 {
-	descending:{	keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
+	descending:{	keypath:'descending',	type:'boolean', default:false, notes:'sort items in descending order' },
 	devtools:{keypath:'devtools',	type:'boolean', default:false },
-	find:{ keypath:'find', type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
+	find:{ keypath:'find', type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)" },
 	folders:{	keypath:'folders',  type:'string',  default:'default', range:['default','first','hidden','last'] },
 	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 	fullscreen:{ keypath:'fullscreen', type:'boolean', default:false },
@@ -90,7 +90,20 @@ var argmap =
 
 
 ## ToDo
-- add recent folders list
+- add recent folders list  
+- alter filter menus so that show/hide all checks/unchecks extensions  
+- change double clicking folder icon to run ChangeFolder function
+- load library paths from external json file
+
+
+## Changes
+Apr 4/17:
+- added this section  
+- added pathBar.js to select files and folders.  This is a custom control I created because I didn't like the default dialog box.  I have tried to find all the bugs but...  
+- The library paths in the pathBar are hard coded. Some Library paths are unique to my development computer so they should be removed or customized for your own needs.  
+- fixed issues with rename dialog box  
+- fixed "Change Folder" and Reload functions  
+- changed double-clicking folder icon to open new folderView instance.  This will probably change in the future.  
 
 
 ## Thanks To
@@ -102,6 +115,7 @@ var argmap =
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
+
 
 Good Luck!
 

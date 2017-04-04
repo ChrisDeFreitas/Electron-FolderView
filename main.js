@@ -5,7 +5,7 @@ const path = require('path');
 const url = require('url')
 
 const electron = require('electron')
-const {app, BrowserWindow, dialog/*,  globalShortcut*/} = electron
+const {app, BrowserWindow/*, dialog,  globalShortcut*/} = electron
 const sizeOf = require(__dirname+'/node_modules/image-size')
 
 //handle commandline arguments
@@ -13,7 +13,7 @@ var argtoobj = require( 'argv-to-object' );
 var argmap = {
 		descending:{keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
 		devtools:{	keypath:'devtools', 	type:'boolean', default:false },
-		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.tk/slideshow?find=Altay)" },
+		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)" },
 		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 		folders:{		keypath:'folders',	type:'string', default:'default', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
@@ -142,7 +142,9 @@ function parseArgs() {
 			file='./'
 		}
 		else {
-			file = dialog.showOpenDialog({
+			/*
+				//disablel use of openDialog, instead use pathBar.js in index.html/init()
+				file = dialog.showOpenDialog({
 				defaultPath: './',	//__dirname,
 				filter:[ //not used with "openDirectory"
 						{name: 'All Files', extensions: ['*']}
@@ -152,6 +154,7 @@ function parseArgs() {
 			})
 			if(file===undefined || file.length===0) process.exit(1)
 			file = file[0]
+			*/
 		}
 		args.path = file
 	}
@@ -173,10 +176,8 @@ function parseArgs() {
 	log('Arguments:')
 	log(args)
 	file = file.trim()
-	if(file==='') process.exit(1)
- //	if(file[file.length-1]==='"')		//on windows trailing backslash, \, interpretted as escape
- //		file = file.substr(0, file.length-1)
-	//return fileListGen(file)
+	//if(file==='') //process.exit(1)
+		//return {args:args, exts:{}, fldr:file, items:[]}
 	var fldrobj = fldrObjGen(file)
 	return fldrobj
 }
@@ -199,6 +200,8 @@ function scaleFix(fileObj){
 	}
 }
 function fldrObjGen(file) {
+	if(file=='') //process.exit(1)
+		return {args:args, exts:{}, fldr:file, items:[]}
 	var exts={}
 	var defaultfile = path.basename(file)
 	var folder = path.dirname(file)
@@ -210,11 +213,12 @@ function fldrObjGen(file) {
 	}	else {
 		log('--path is a file')
 	}
-	var imgtypes =['.bmp','.ico','.gif','.jpg','.jpeg','.png']
+	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
 	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
 	var fls2 = []
 	var id=-1
+	var defaultImageName=null
 	var defaultImageNum=null
 	for(var key in fls){
 		var val = fls[key]
@@ -225,11 +229,12 @@ function fldrObjGen(file) {
 		stat = fs.lstatSync( fullfilename )
 		++id
 		if(defaultImageNum===null	&& defaultfile==fn) {
+			defaultImageName = fn
 			defaultImageNum = id	//image in argv displayed when web page opens
-			console.log('defaultImageNum:',defaultImageNum)
+			console.log('defaultImageNum:',defaultImageNum, defaultImageName)
 		}
 		var obj = {
-			basename: fn, date:stat.mtime, size:stat.size,
+			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
 			//isFile:stat.isFile(),
 			path: fullfilename,
@@ -246,9 +251,15 @@ function fldrObjGen(file) {
 			obj.type = 'folder'
 		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
-			var dim = sizeOf(fullfilename)
-			obj.w = dim.width
-			obj.h = dim.height
+			try{
+				var dim = sizeOf(fullfilename)
+				obj.w = dim.width
+				obj.h = dim.height
+			}
+			catch(x) {
+				obj.w = 160
+				obj.h = 100
+			}
 		}	else
 		if(medtypes.indexOf(ext) >= 0){			//media types
 			obj.w = 320
@@ -271,6 +282,7 @@ function fldrObjGen(file) {
 		else exts[obj.type]++
 		fls2.push(obj)
 	}
+	args.defaultImageName = defaultImageName
 	args.defaultImageNum = defaultImageNum
 	var result = {args:args, exts:exts, fldr:file, items:fls2}
 	return result
