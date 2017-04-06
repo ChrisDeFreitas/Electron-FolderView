@@ -56,6 +56,7 @@ function init() {
 		,	recent:renderer.recent
 		, title:'Select Folder to View'
 		,	onSelect: function(path){
+				dlgFactory.bbl('Loading items in folder: '+path)
 				ui.var.lastOrder=ui.args.order
 				renderer.folderLoad(path)
 			}

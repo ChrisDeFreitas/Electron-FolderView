@@ -61,6 +61,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 left/right: manually scroll gallery  
 	 s: toggle grid scrolling  
 	 up/dn, pgup/pgdn, home/end: manually scroll grid  
+	 F2: toggle system info dialog  
+	 F3: toggle change folder dialog  
+	 F11: toggle fullscreen  
+	 F12: toggle devtools  
 
 6. commandline switches
   * handled by "argv-to-object"
@@ -93,17 +97,20 @@ var argmap =
 - add recent folders list  
 - alter filter menus so that show/hide all checks/unchecks extensions  
 - change double clicking folder icon to run ChangeFolder function
-- load library paths from external json file
 
 
 ## Changes
 Apr 4/17:
 - added this section  
 - added pathBar.js to select files and folders.  This is a custom control I created because I didn't like the default dialog box.  I have tried to find all the bugs but...  
-- The library paths in the pathBar are hard coded. Some Library paths are unique to my development computer so they should be removed or customized for your own needs.  
+- the pathBar's library paths are loaded from an .ini file: customLibraries.ini
 - fixed issues with rename dialog box  
 - fixed "Change Folder" and Reload functions  
-- changed double-clicking folder icon to open new folderView instance.  This will probably change in the future.  
+- changed shortcut for "Change Folder" to F3  
+- added menu item: App/"System Info" , F2 to toggle  
+- changed double-clicking folder icon to open new folderView.exe instance.  This will probably change in the future.  
+- updated dev to electron 1.6.2  
+
 
 
 ## Thanks To
@@ -112,6 +119,7 @@ Apr 4/17:
 - https://nodejs.org/
 - https://www.npmjs.com/package/argv-to-object
 - https://www.npmjs.com/package/image-size
+- https://github.com/npm/ini  
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html

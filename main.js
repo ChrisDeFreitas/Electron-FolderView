@@ -73,6 +73,7 @@ exports.browserLaunch = function(fldr) {
 }
 */
 //
+
 log('Init..')
 
 var mainWindow=null
@@ -118,6 +119,12 @@ function appInit(){
 	})
 }
 
+function safeLstat(apath) {
+	var result = null
+	try { result = fs.lstatSync(apath) }
+	catch(e){ console.log('safeLstat() error: ', e) }
+	return result
+}
 function parseArgs() {
 	var file = ''
 
@@ -127,9 +134,11 @@ function parseArgs() {
 		if(process.argv.length > (isFolderView ?1 :2)){
 			var ss = process.argv[(isFolderView ?1 :2)]
 			if(ss != '' && ss.indexOf('--') < 0) {
-				var	stat = fs.lstatSync(ss)
-				if(stat.isFile()===true || stat.isDirectory()===true)
-					args.path = ss
+				var	stat = safeLstat(ss)	//fs.lstatSync(ss)
+				if(stat!==null){
+					if(stat.isFile()===true || stat.isDirectory()===true)
+						args.path = ss
+				}
 			}
 		}
 		if(args.path!='')
@@ -177,7 +186,6 @@ function parseArgs() {
 	log(args)
 	file = file.trim()
 	//if(file==='') //process.exit(1)
-		//return {args:args, exts:{}, fldr:file, items:[]}
 	var fldrobj = fldrObjGen(file)
 	return fldrobj
 }
@@ -205,13 +213,15 @@ function fldrObjGen(file) {
 	var exts={}
 	var defaultfile = path.basename(file)
 	var folder = path.dirname(file)
-	var stat = fs.lstatSync(file)
-	if(stat.isDirectory()==true){
-		log('--path is a folder')
-		defaultfile = ''
-		folder = file
-	}	else {
-		log('--path is a file')
+	var stat = safeLstat(file)	//fs.lstatSync(file)
+	if(stat!==null){
+		if(stat.isDirectory()==true){
+			log('--path is a folder')
+			defaultfile = ''
+			folder = file
+		}	else {
+			log('--path is a file')
+		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
 	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
@@ -220,13 +230,18 @@ function fldrObjGen(file) {
 	var id=-1
 	var defaultImageName=null
 	var defaultImageNum=null
+	var ferrors = []
 	for(var key in fls){
 		var val = fls[key]
 		var ext = path.extname(val).toLowerCase()
 		var fn = path.basename(val)
 		var fullfilename = path.resolve(folder, val)
 
-		stat = fs.lstatSync( fullfilename )
+		stat = safeLstat(fullfilename)	//fs.lstatSync( fullfilename )
+		if(stat===null) {
+			ferrors.push(fullfilename)
+			continue
+		}
 		++id
 		if(defaultImageNum===null	&& defaultfile==fn) {
 			defaultImageName = fn
@@ -284,7 +299,7 @@ function fldrObjGen(file) {
 	}
 	args.defaultImageName = defaultImageName
 	args.defaultImageNum = defaultImageNum
-	var result = {args:args, exts:exts, fldr:file, items:fls2}
+	var result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors}
 	return result
 }
 
