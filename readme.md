@@ -94,9 +94,10 @@ var argmap =
 
 
 ## ToDo
-- add recent folders list  
 - alter filter menus so that show/hide all checks/unchecks extensions  
-- change double clicking folder icon to run ChangeFolder function
+- change double clicking a folder icon to run ChangeFolder() not open new App
+- include webFrame.getResourceUsage() in sysinfo dlg  
+- display image name/dimensions/kb during slideshow as caption  
 
 
 ## Changes
