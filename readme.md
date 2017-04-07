@@ -34,13 +34,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 3. Execute main.js:
   - electron version (requires: "npm install electron -g")  
-	   > electron main.js
+    > electron main.js
   - node version (runs in default browser, HTML only, no custom menu functions)  
-		 > node main.js
+    > node main.js
 
 4. Build FolderView.exe: npm run build
-	* the app is built with Electron Packager so it can be used as a regular Windows program.
-	* Electron Packager must be install globally:  npm install electron-packager -g
+  * the app is built with Electron Packager so it can be used as a regular Windows program.
+  * Electron Packager must be install globally:  npm install electron-packager -g
   * npm executes "build..." scripts from from package.json
   * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
@@ -92,9 +92,18 @@ var argmap =
 	}
 ```
 
+## Sample customLibraries.ini
+```
+[paths]
+c:/users/chris/code/
+c:/electron/
+c:/users/chris/temp/
+c:/website/
+```
+
 
 ## ToDo
-- alter filter menus so that show/hide all checks/unchecks extensions  
+- alter filter menus so that show/hide all will check/uncheck individual extensions  
 - change double clicking a folder icon to run ChangeFolder() not open new App
 - include webFrame.getResourceUsage() in sysinfo dlg  
 - display image name/dimensions/kb during slideshow as caption  
