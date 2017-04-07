@@ -19,9 +19,9 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 ## App Notes
 1. Install:
-	* Windows only -- I use it on Win81 and Win7  
-  * requires node.js and electron  
-  * after downloading to a local folder:  
+	- Windows only -- I use it on Win81 and Win7  
+  - requires node.js and electron  
+  - after downloading to a local folder:  
 			1. npm install electron -g  
 			2. npm install  
 			3. electron main.js  
@@ -33,9 +33,9 @@ This is a work in progress.  Feel free to use and modify as you wish.
   * these are specific tests based on my folder structure; you will need to customize
 
 3. Execute main.js:
-  * electron version (requires: "npm install electron -g")  
+  - electron version (requires: "npm install electron -g")  
 	   > electron main.js
-  * node version (runs in default browser, HTML only, no custom menu functions)  
+  - node version (runs in default browser, HTML only, no custom menu functions)  
 		 > node main.js
 
 4. Build FolderView.exe: npm run build
