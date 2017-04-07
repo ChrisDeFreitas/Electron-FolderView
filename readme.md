@@ -1,6 +1,6 @@
 # Electron FolderView
 
-<img src="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/scrnshots/scrn01 - wall layout - fullscreen.jpg" alt="Screen shot with layout menu" border=0 width=300>
+<img src="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/scrnshots/scrn06 - pathBar.jpg" alt="Screen shot with layout menu" border=0 width=300>
 
 I originally created this as a nodejs app to view local images.  I was frustrated with the free and paid image apps I had--I needed something to simply display images in a folder.  With the many wonderful image handling libraries available for the web, I thought it would be simple enough to throw something together in node...then I found the awesomeness of Electron!
 
@@ -13,8 +13,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - main purpose is to view images on local disk
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
-- open file with Windows' default app
-- features:  clipboard, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, scale, scroll, shuffle, slideshow
+- open file with Windows' default application  
+- features:  clipboard, custom default folders, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, recent folders, scale, scroll, shuffle, slideshow
 - keyboard commands match chrisd.gq/slideshow
 
 ## App Notes
@@ -45,7 +45,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
   * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
 
-5. Keyboard Shortcuts
+5. Keyboard Shortcuts  
 	 alt+up/down: scale grid items  
 	 alt+c: grid cols layout  
 	 alt+r: grid rows layout  
@@ -68,7 +68,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 6. commandline switches
   * handled by "argv-to-object"
-	* if --path option not supplied app looks to argument for path, for example:  
+  * if --path option not supplied app looks to argument for path, for example:  
 				- node main.js c:\users\pictures  
 				- electron main.js c:\users\pictures	--layout=cols  
 				- FolderView.exe c:\users\pictures	--fullscreen  
