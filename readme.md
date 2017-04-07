@@ -120,7 +120,7 @@ Apr 4/17:
 - added menu item: App/"System Info" , F2 to toggle  
 - changed double-clicking folder icon to open new folderView.exe instance.  This will probably change in the future.  
 - updated dev to electron 1.6.2  
-
+- added and updated screen shots
 
 
 ## Thanks To
