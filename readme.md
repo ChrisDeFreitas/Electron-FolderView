@@ -19,8 +19,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 ## App Notes
 1. Install:
-	* Windows only -- I use it on Win81 and Win7
-  * requires node.js and electron
+	* Windows only -- I use it on Win81 and Win7  
+  * requires node.js and electron  
   * after downloading to a local folder:  
 			1. npm install electron -g  
 			2. npm install  
