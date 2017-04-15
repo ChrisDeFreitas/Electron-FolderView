@@ -105,13 +105,26 @@ c:/website/
 
 
 ## ToDo
-- alter filter menus so that show/hide all will check/uncheck individual extensions  
-- change double clicking a folder icon to run ChangeFolder() not open new App
-- include webFrame.getResourceUsage() in sysinfo dlg  
 - display image name/dimensions/kb during slideshow as caption  
 
 
 ## Changes
+Apr 15/17
+- added options to Export List's save dialog
+- added path supplied on commandline to recent folders
+- removed Filter from context menu
+- fixed bug in Filter menu handling
+- added menu App/Folder Up, Backspace
+
+
+Apr 14/17
+- manually changed version to 0.6.0
+- fixed bug in clipboard functions
+- added menu App/"Export List" F4, to save file properties to file or clipboard  
+- changed shortcut for "Change Folder" from F3 to F6  
+- added menu App/"Windows Explorer" F3
+- modified folder double-click action to load new folder items (not open new app)
+
 Apr 4/17:
 - added this section  
 - added pathBar.js to select files and folders.  This is a custom control I created because I didn't like the default dialog box.  I have tried to find all the bugs but...  
@@ -123,14 +136,6 @@ Apr 4/17:
 - changed double-clicking folder icon to open new folderView.exe instance.  This will probably change in the future.  
 - updated dev to electron 1.6.2  
 - added and updated screen shots
-
-Apr 14/17
-- manually changed version to 0.6.0
-- fixed bug in clipboard functions
-- added menu App/"Export List" F4, to save file properties to file or clipboard  
-- changed shortcut for "Change Folder" from F3 to F6  
-- added menu App/"Windows Explorer" F3
-- modified folder double-click action to load new folder items (not open new app)
 
 
 ## Thanks To
