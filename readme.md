@@ -130,7 +130,7 @@ Apr 14/17
 - added menu App/"Export List" F4, to save file properties to file or clipboard  
 - changed shortcut for "Change Folder" from F3 to F6  
 - added menu App/"Windows Explorer" F3
-- modified folder double click action to not open new app but load new folder items
+- modified folder double-click action to load new folder items (not open new app)
 
 
 ## Thanks To
