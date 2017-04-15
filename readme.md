@@ -115,7 +115,7 @@ Apr 15/17
 - removed Filter from context menu
 - fixed bugs in Filter menu handling
 - added menu App/Folder Up, Backspace
-
+- set folders to be displayed first by default
 
 Apr 14/17
 - manually changed version to 0.6.0

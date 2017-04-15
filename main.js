@@ -15,7 +15,7 @@ var argmap = {
 		devtools:{	keypath:'devtools', 	type:'boolean', default:false },
 		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)" },
 		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
-		folders:{		keypath:'folders',	type:'string', default:'default', range:['default','first','hidden','last'] },
+		folders:{		keypath:'folders',	type:'string', default:'first', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 		layout:{			keypath:'layout', 		type:'string',	default:'cols',	range:['cols','rows','vert','wall']
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
@@ -172,7 +172,7 @@ function parseArgs() {
 	}
 	if(args.descending===undefined) args.descending=false
 	if(args.devtools===undefined) args.devtools=false
-	if(args.folders===undefined) args.folders='default'
+	if(args.folders===undefined) args.folders='first'
 	if(args.fontsize[0]==='"' || args.fontsize[0]==="'") {	//remove quotes if needed
 		console.log("Fix args.fontsize: ", args.fontsize)
 		args.fontsize = args.fontsize.substr(1, args.fontsize.length-2)
