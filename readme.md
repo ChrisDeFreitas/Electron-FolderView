@@ -14,7 +14,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - display folder items with different grid layouts: cols, rows, vert, wall
 - play media files using Chrome's built-in tools
 - open file with Windows' default application  
-- features:  clipboard, custom default folders, delete, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, recent folders, scale, scroll, shuffle, slideshow
+- features:  clipboard, custom default folders, delete, export file list, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
 - keyboard commands match chrisd.gq/slideshow
 
 ## App Notes
@@ -116,11 +116,19 @@ Apr 4/17:
 - the pathBar's library paths are loaded from an .ini file: customLibraries.ini
 - fixed issues with rename dialog box  
 - fixed "Change Folder" and Reload functions  
-- changed shortcut for "Change Folder" to F3  
+- changed shortcut for "Change Folder" to F3  (changed to F6 April 14/17)
 - added menu item: App/"System Info" , F2 to toggle  
 - changed double-clicking folder icon to open new folderView.exe instance.  This will probably change in the future.  
 - updated dev to electron 1.6.2  
 - added and updated screen shots
+
+Apr 14/17
+- manually changed version to 0.6.0
+- fixed bug in clipboard functions
+- added menu App/"Export List" F4, to save file properties to file or clipboard  
+- changed shortcut for "Change Folder" from F3 to F6  
+- added menu App/"Windows Explorer" F3
+- modified folder double click action to not open new app but load new folder items
 
 
 ## Thanks To
