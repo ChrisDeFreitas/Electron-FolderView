@@ -15,7 +15,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - play media files using Chrome's built-in tools
 - open file with Windows' default application  
 - features:  clipboard, custom default folders, delete, export file list, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
-- keyboard commands match chrisd.gq/slideshow
+- keyboard commands for image handling match chrisd.gq/slideshow
 
 ## App Notes
 1. Install:
@@ -35,14 +35,14 @@ This is a work in progress.  Feel free to use and modify as you wish.
 3. Execute main.js:
   - electron version (requires: "npm install electron -g")  
     > electron main.js
-  - node version (runs in default browser, HTML only, no custom menu functions)  
+  - node version (runs in default browser, HTML only, no menu functions)  
     > node main.js
 
 4. Build FolderView.exe: npm run build
   * the app is built with Electron Packager so it can be used as a regular Windows program.
   * Electron Packager must be install globally:  npm install electron-packager -g
-  * npm executes "build..." scripts from from package.json
-  * the scripts build, then zip, the Win64 version in in the ./dist/ folder.
+  * npm executes "build..." scripts from package.json: npm run build  
+  * the scripts build, then zip, the Win64 version in the ./dist/ folder.  
   * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
 
 5. Keyboard Shortcuts  
@@ -61,8 +61,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 left/right: manually scroll gallery  
 	 s: toggle grid scrolling  
 	 up/dn, pgup/pgdn, home/end: manually scroll grid  
-	 F2: toggle system info dialog  
-	 F3: toggle change folder dialog  
+	 F2: toggle System Info dialog  
+	 F3: open Windows Explorer to current folder or default file  
+	 F4: toggle Export List dialog  
+	 F6: toggle Change Folder dialog  
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
 
