@@ -113,7 +113,7 @@ Apr 15/17
 - added options to Export List's save dialog
 - added path supplied on commandline to recent folders
 - removed Filter from context menu
-- fixed bug in Filter menu handling
+- fixed bugs in Filter menu handling
 - added menu App/Folder Up, Backspace
 
 
