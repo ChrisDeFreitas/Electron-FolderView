@@ -110,12 +110,17 @@ c:/website/
 
 ## Changes
 Apr 15/17
-- added options to Export List's save dialog
+v0.6.1
+- configured Export List's save dialog
 - added path supplied on commandline to recent folders
 - removed Filter from context menu
 - fixed bugs in Filter menu handling
-- added menu App/Folder Up, Backspace
+- added menu App/Folder Up, Backspace key
+v0.6.2
+- added menu Up and Change to quickly access the these functions
 - set folders to be displayed first by default
+- fixed bug in pathBar when path has no trailing slash
+- added package.json version number to menu App/"System Info",F2
 
 Apr 14/17
 - manually changed version to 0.6.0
