@@ -54,19 +54,20 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 alt+shift+d:	toggle descending sort order on or off  
 	 alt+shift+f: toggle folder display - default, first, hidden, last  
 	 alt+shift+o: toggle sort order - date, name, size, type  
-	 alt+shift+s: shuffle grid items
+	 alt+shift+s: shuffle grid items  
 	 ctrl+up/down: scale grid/gallery images  
 	 ctrl+left/right: toggle gallery slideshow forward/reverse  
-	 esc: close gallery, return to grid  
-	 left/right: manually scroll gallery  
 	 s: toggle grid scrolling  
-	 up/dn, pgup/pgdn, home/end: manually scroll grid  
+	 Backspace: load parent folder  
+	 ESC: close gallery, return to grid  
 	 F2: toggle System Info dialog  
 	 F3: open Windows Explorer to current folder or default file  
 	 F4: toggle Export List dialog  
 	 F6: toggle Change Folder dialog  
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
+	 Home/End, Up/Down, PageUp/PageDown: manually scroll grid  
+	 Left/Right: manually scroll gallery  
 
 6. commandline switches
   * handled by "argv-to-object"
@@ -109,18 +110,19 @@ c:/website/
 
 
 ## Changes
-Apr 15/17  
-v0.6.1  
+Apr 15/17
 - configured Export List's save dialog
 - added path supplied on commandline to recent folders
 - removed Filter from context menu
 - fixed bugs in Filter menu handling
 - added menu App/Folder Up, Backspace key  
-v0.6.2  
-- added menu Up and Change to quickly access the these functions
+- created menus Up and Change to quickly access the these functions
 - set folders to be displayed first by default
 - fixed bug in pathBar when path has no trailing slash
 - added package.json version number to menu App/"System Info",F2  
+- added path export to Export List  
+- recent list now stores last 15 folders (was 10)
+- changed app version to date (ui.updateDate) because of difficulties getting version from package.json in Electron
 
 Apr 14/17
 - manually changed version to 0.6.0

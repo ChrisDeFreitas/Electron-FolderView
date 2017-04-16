@@ -116,6 +116,10 @@ function init() {
 		}
 	})
 
+	window.onpopstate = function(event) {
+	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+	}
+	
 	renderer.recentAdd(ui.args.path)
 }
 function setGalleryDelay(val){
