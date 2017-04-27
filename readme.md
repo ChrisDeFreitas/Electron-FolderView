@@ -110,6 +110,10 @@ c:/website/
 
 
 ## Changes
+Apr 27
+- added F5 accelerator to menu App/Reload
+- added a separator and Reload to top menu
+
 Apr 15/17
 - configured Export List's save dialog
 - added path supplied on commandline to recent folders
