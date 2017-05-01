@@ -248,6 +248,7 @@ function fldrObjGen(file) {
 			defaultImageNum = id	//image in argv displayed when web page opens
 			console.log('defaultImageNum:',defaultImageNum, defaultImageName)
 		}
+		var dirname__ = __dirname.replace(/\\/g,'/')
 		var obj = {
 			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
@@ -260,7 +261,7 @@ function fldrObjGen(file) {
 			type: ext
 		}
 		if(obj.isDirectory===true){				//folders
-			obj.src = 'file:///'+__dirname+"/resources/folder_closed_64.png"
+			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
 			obj.w = 320
 			obj.h = 200
 			obj.type = 'folder'
@@ -288,7 +289,7 @@ function fldrObjGen(file) {
 			obj.w = 320
 			obj.h = 200
 		}	else{			//handle other types
-			obj.src = 'file:///'+__dirname+"/resources/new_document_64.png"
+			obj.src = 'file:///'+dirname__+"/resources/new_document_64.png"
 			obj.w = 320
 			obj.h = 200
 		}
