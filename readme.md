@@ -113,6 +113,7 @@ c:/website/
 Jul 20/17
 - changed context menu/Delete to not use shell function due to limitations on drives with no RecycleBin
 - added context menu/Open With.  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json.
+- updated node.js and Electron versions to latest
 
 Apr 27
 - added F5 accelerator to menu App/Reload
