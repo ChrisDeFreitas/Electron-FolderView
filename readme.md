@@ -111,9 +111,14 @@ c:/website/
 
 ## Changes
 Jul 20/17
+- context menu/Tools/Delete now deletes the item from the internal list
+- items tooltips now include file size in MB where possible
 - changed context menu/Delete to not use shell function due to limitations on drives with no RecycleBin
-- added context menu/Open With.  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json.
+- added context menu/Open With.  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json. 
+- added SFTP dialog with remote browse/download/delete functions  (work in progress!)
 - updated node.js and Electron versions to latest
+- Bug #1: SFTP partially completed.  Needs more testing and save settings functionality.
+- Bug #2: SFTP delete folder synchronization error when deleting folder with lots of subfolders.
 
 Apr 27
 - added F5 accelerator to menu App/Reload
@@ -163,6 +168,7 @@ Apr 4/17:
 - https://github.com/npm/ini  
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
+- https://github.com/mscdex/ssh2
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
 
 
