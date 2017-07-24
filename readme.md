@@ -16,6 +16,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - open file with Windows' default application  
 - features:  clipboard, custom default folders, delete, export file list, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
 - keyboard commands for image handling match chrisd.gq/slideshow
+- Open With...: run applications on system with selected file as argument; apps settings saved and displayed on submenu
+- SFTP browse/download/delete (work in progress as Jul/2017)
 
 ## App Notes
 1. Install:
@@ -104,21 +106,19 @@ c:/users/chris/temp/
 c:/website/
 ```
 
-
 ## ToDo
+- SFTP partially completed.  Needs more testing and save settings functionality.
 - display image name/dimensions/kb during slideshow as caption  
-
+- dialog SFTP save/restore host settings
 
 ## Changes
 Jul 20/17
-- context menu/Tools/Delete now deletes the item from the internal list
-- items tooltips now include file size in MB where possible
+- context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
+- items tooltips now include file size in MB
 - changed context menu/Delete to not use shell function due to limitations on drives with no RecycleBin
-- added context menu/Open With.  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json. 
-- added SFTP dialog with remote browse/download/delete functions  (work in progress!)
+- added context menu/"Open With...".  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json and displayed on submenu.
+- added SFTP dialog with remote browse/download/delete functions
 - updated node.js and Electron versions to latest
-- Bug #1: SFTP partially completed.  Needs more testing and save settings functionality.
-- Bug #2: SFTP delete folder synchronization error when deleting folder with lots of subfolders.
 
 Apr 27
 - added F5 accelerator to menu App/Reload
@@ -136,7 +136,7 @@ Apr 15/17
 - added package.json version number to menu App/"System Info",F2  
 - added path export to Export List  
 - recent list now stores last 15 folders (was 10)
-- changed app version to date (ui.updateDate) because of difficulties getting version from package.json in Electron
+- changed app version to date format (ui.updateDate)
 
 Apr 14/17
 - manually changed version to 0.6.0
