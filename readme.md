@@ -93,6 +93,7 @@ var argmap =
 	path:{ keypath:'path', type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 	scale:{	keypath:'scale', type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 	scroll:{ keypath:'scroll', type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
+	sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:4,	notes:"Set max number of files to download at once." },
 	shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
 	}
 ```
@@ -168,8 +169,8 @@ Apr 4/17:
 - https://github.com/npm/ini  
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
-- https://github.com/mscdex/ssh2
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
+- https://github.com/mscdex/ssh2
 
 
 Good Luck!

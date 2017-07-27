@@ -23,6 +23,7 @@ var argmap = {
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
 		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
+		sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:4,	notes:"Set max number of files to download at once." },
 		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
 }
 var args = argtoobj( argmap );
@@ -179,6 +180,7 @@ function parseArgs() {
 	}
 	if(args.layout===undefined) args.layout='cols'
 	if(args.order===undefined) args.order='name'
+	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=4
 	if(args.shuffle===undefined) args.shuffle=false
 	log('Reading files..')
 	//log('Argument: ['+file+']')
