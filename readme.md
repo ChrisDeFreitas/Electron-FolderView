@@ -41,7 +41,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
     - node version (runs in default browser, HTML only, no menu functions)   
         \> node main.js  
 
-4. Build FolderView.exe: npm run build
+4. Build FolderView.exe:
+    \> npm run build
     * the app is built with Electron Packager so it can be used as a regular Windows program.
     * Electron Packager must be install globally:  npm install electron-packager -g
     * npm executes "build..." scripts from package.json: npm run build  
@@ -123,7 +124,7 @@ Jul 20/17
 - added SFTP dialog with remote browse/download/delete functions
 - updated node.js and Electron versions to latest
 
-Apr 27
+Apr 27/17
 - added F5 accelerator to menu App/Reload
 - added a separator and Reload to top menu
 
