@@ -24,10 +24,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
     - Windows only; I use it on Win81 and Win7
     - requires node.js and electron  
     - after downloading to a local folder:  
-        \1. > npm install electron -g  
-        \2. > npm install  
-        \3. > electron main.js  
-        \4. if you want to generate an executable:  
+        1. > npm install electron -g  
+        2. > npm install  
+        3. > electron main.js  
+        4. if you want to generate an executable:  
             \> npm install electron-packager -g  
 
 2. Test:  
