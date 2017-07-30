@@ -30,7 +30,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
         4. if you want to generate an executable:  
             npm install electron-packager -g  
 
-2. Test:
+2. Test:  
  		> npm run test
     * executes scripts/testFolderView.bat
     * these are specific tests based on my folder structure; you will need to customize
@@ -73,12 +73,12 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 Left/Right: manually scroll gallery  
 
 6. commandline switches
-  * handled by "argv-to-object"
-  * if --path option not supplied app looks to argument for path, for example:  
+    * handled by "argv-to-object"
+    * if --path option not supplied app looks to commandline arguments for path, for example:  
 				- node main.js c:\users\pictures  
 				- electron main.js c:\users\pictures	--layout=cols  
 				- FolderView.exe c:\users\pictures	--fullscreen  
-  * commandline arguments documented in main.js:  
+    * commandline arguments documented in main.js:  
 ```Javascript
 var argmap =
 {
