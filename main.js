@@ -180,7 +180,7 @@ function parseArgs() {
 	}
 	if(args.layout===undefined) args.layout='cols'
 	if(args.order===undefined) args.order='name'
-	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=4
+	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
 	log('Reading files..')
 	//log('Argument: ['+file+']')

@@ -24,22 +24,22 @@ This is a work in progress.  Feel free to use and modify as you wish.
     - Windows only; I use it on Win81 and Win7
     - requires node.js and electron  
     - after downloading to a local folder:  
-        1. npm install electron -g  
-        2. npm install  
-        3. electron main.js  
-        4. if you want to generate an executable:  
-            npm install electron-packager -g  
+        \1. > npm install electron -g  
+        \2. > npm install  
+        \3. > electron main.js  
+        \4. if you want to generate an executable:  
+            \> npm install electron-packager -g  
 
 2. Test:  
- 		> npm run test
+ 		\> npm run test
     * executes scripts/testFolderView.bat
     * these are specific tests based on my folder structure; you will need to customize
 
-3. Execute main.js:
+3. Execute main.js:  
     - electron version (requires: "npm install electron -g")  
-        > electron main.js
-    - node version (runs in default browser, HTML only, no menu functions)  
-        > node main.js
+        \> electron main.js  
+    - node version (runs in default browser, HTML only, no menu functions)   
+        \> node main.js  
 
 4. Build FolderView.exe: npm run build
     * the app is built with Electron Packager so it can be used as a regular Windows program.
@@ -75,9 +75,9 @@ This is a work in progress.  Feel free to use and modify as you wish.
 6. commandline switches
     * handled by "argv-to-object"
     * if --path option not supplied app looks to commandline arguments for path, for example:  
-				- node main.js c:\users\pictures  
-				- electron main.js c:\users\pictures	--layout=cols  
-				- FolderView.exe c:\users\pictures	--fullscreen  
+				\> node main.js c:\users\pictures  
+				\> electron main.js c:\users\pictures	--layout=cols  
+				\> FolderView.exe c:\users\pictures	--fullscreen  
     * commandline arguments documented in main.js:  
 ```Javascript
 var argmap =
@@ -111,7 +111,7 @@ c:/website/
 - display image name/dimensions/kb during slideshow as caption  
 - SFTP still in testing phase as of Aug 2017
 - create dialog SFTP save/restore host settings
-- sftpDownloadMax only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
+- sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 
 
 ## Changes
