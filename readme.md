@@ -117,7 +117,7 @@ c:/website/
 
 ## Changes
 Sept 04/17
-- minor changes to video handling
+- minor changes to video and folder handling
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
