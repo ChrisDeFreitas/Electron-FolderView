@@ -116,6 +116,9 @@ c:/website/
 
 
 ## Changes
+Sept 04/17
+- minor changes to video handling
+
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
 - items tooltips now include file size in MB
