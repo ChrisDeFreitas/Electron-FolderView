@@ -226,7 +226,7 @@ function fldrObjGen(file) {
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
-	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv', '.webm']
+	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
 	fls.unshift("..") //add in parent directory
 	var fls2 = []
