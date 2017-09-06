@@ -1,25 +1,40 @@
-F2  = System Info
-F3  = Windows Explorer
-F4  = Export List
-F5  = Reload
-F6  = Change Folder
-F11 = Fullscreen
-F12 = Dev Tools
+App functions
+-------------
 
-Backspace = Folder Up
+Fn Key | Function
+-------|---------
+F2     |System Info
+F3     |Windows Explorer
+F4     |Export List
+F5     |Reload
+F6     |Change Folder
+F11    |Fullscreen
+F12    |Dev Tools
 
-S = Auto-Scroll
-C = Arrange items by columns (or Alt+C)
-R = Arrange itmes by rows (or Alt+R)
-W = Arrange items as a wall (or Alt+W)
+Navigation
+---------------------
+Key      | Function
+---------|-----------
+Backspace| Folder Up
+S        | Auto-Scroll
 
-Alt+S       = Shuffle
-Alt+H       = Toggle Hidden
-Alt+Shift+F = Toggle folder display to be "Default", "First", "Hidden", or "Last"
+Item Arrangement
+----------------
+Key      | Function
+---------|-----------
+C        | Arrange items by columns (or Alt+C)
+R        | Arrange itmes by rows (or Alt+R)
+W        | Arrange items as a wall (or Alt+W)
 
-Alt+1 (through 9) = Toggle display of detected filetypes
-
-Alt+Up    Arrow   = Increase display size by .1
-Alt+Down  Arrow   = Decrease display size by .1
-Alt+Left  Arrow   = Set display scale to .3
-Alt+Right Arrow   = Set display scale to 1
+Item Display
+------------------------------
+Key               | Function
+------------------|-----------
+Alt+S             | Shuffle
+Alt+H             | Toggle Hidden
+Alt+Shift+F       | Toggle folder display to be "Default", "First", "Hidden", or "Last"
+Alt+1 (through 9) | Toggle display of detected filetypes
+Alt+Up    Arrow   | Increase display size by .1
+Alt+Down  Arrow   | Decrease display size by .1
+Alt+Left  Arrow   | Set display scale to .3
+Alt+Right Arrow   | Set display scale to 1
