@@ -226,8 +226,9 @@ function fldrObjGen(file) {
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
-	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
+	fls.unshift("..") //add in parent directory
 	var fls2 = []
 	var id=-1
 	var defaultImageName=null
@@ -265,7 +266,7 @@ function fldrObjGen(file) {
 		if(obj.isDirectory===true){				//folders
 			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
 			obj.w = 320
-			obj.h = 200
+			obj.h = 96
 			obj.type = 'folder'
 		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
