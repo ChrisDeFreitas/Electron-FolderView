@@ -19,7 +19,7 @@ Backspace| Folder Up
 S        | Auto-Scroll
 
 Item Arrangement
-----------------
+---------------------
 Key      | Function
 ---------|-----------
 C        | Arrange items by columns (or Alt+C)
