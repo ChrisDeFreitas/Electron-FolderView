@@ -17,7 +17,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - features:  clipboard, custom default folders, delete, export file list, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
 - keyboard commands for image handling match chrisd.gq/slideshow
 - Open With...: run applications on system with selected file as argument; apps settings saved and displayed on submenu
-- SFTP browse/download/delete (work in progress as Jul/2017)
+- SFTP browse/download/delete remote system
+- minimize SFTP dlg: left click dlg title
 
 ## App Notes
 1. Install:
@@ -116,6 +117,15 @@ c:/website/
 
 
 ## Changes
+Oct 6/17
+- updates to pathBar ui
+- included changes from https://github.com/tyzbit/Electron-FolderView
+  1. added .webm video file type
+  2. included keyboardshortcuts.txt (requires updating)
+- general tweaks and fixes:  
+  1. comment out height/width px of item names
+  2. comment out galleryScale() in renderer.js
+
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
 - items tooltips now include file size in MB

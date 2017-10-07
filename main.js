@@ -142,33 +142,17 @@ function parseArgs() {
 				}
 			}
 		}
-		if(args.path!='')
+		if(args.path!=''){
 			console.log('Found:', args.path)
-		else
+		} else
 			console.log('Default argv path not found')
 	}
 	if(args.path === ''){
-		if(isElectron===false){
-			file='./'
-		}
-		else {
-			/*
-				//disablel use of openDialog, instead use pathBar.js in index.html/init()
-				file = dialog.showOpenDialog({
-				defaultPath: './',	//__dirname,
-				filter:[ //not used with "openDirectory"
-						{name: 'All Files', extensions: ['*']}
-					],
-				properties: ['openDirectory'],
-				title:'Select folder to view'
-			})
-			if(file===undefined || file.length===0) process.exit(1)
-			file = file[0]
-			*/
-		}
+		if(isElectron===false) file='./'
 		args.path = file
 	}
 	else {
+		args.path = path.normalize(args.path)
 		file = args.path
 	}
 	if(args.descending===undefined) args.descending=false
@@ -182,10 +166,9 @@ function parseArgs() {
 	if(args.order===undefined) args.order='name'
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
-	log('Reading files..')
-	//log('Argument: ['+file+']')
 	log('Arguments:')
 	log(args)
+	log('Reading files..')
 	file = file.trim()
 	//if(file==='') //process.exit(1)
 	var fldrobj = fldrObjGen(file)
@@ -218,6 +201,7 @@ function fldrObjGen(file) {
 	var stat = safeLstat(file)	//fs.lstatSync(file)
 	if(stat!==null){
 		if(stat.isDirectory()==true){
+			file = pathTrailingSlash(file)
 			log('--path is a folder')
 			defaultfile = ''
 			folder = file
@@ -226,7 +210,7 @@ function fldrObjGen(file) {
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
-	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.wma','.wmv']
+	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
 	var fls = fs.readdirSync(folder)
 	var fls2 = []
 	var id=-1
@@ -399,4 +383,11 @@ function browserLaunch(fldrobj) {
 	if(args.devtools===true)
 		win.webContents.openDevTools()
 	return win
+}
+function pathTrailingSlash(str){	//verifies path ends in a trailing slash
+	//copied from lib/ui.js
+	str = str.trim().replace(/\\/g,'/')
+	//if(str[str.length-1]!='\\') str += '\\'
+	if(str[str.length-1]!='/') str += '/'
+	return str
 }

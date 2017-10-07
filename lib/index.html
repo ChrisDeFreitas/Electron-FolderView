@@ -51,7 +51,9 @@ function init() {
 	//////do not delete these comments: vars populated by main.js:
 	//ui.args=main.js/args
 
-	if(items.length===0){
+	if(items.length > 0)
+		renderer.recentAdd(ui.args.path)
+	else {
 		var bar = new pathBar()
 		bar.show({
 			library:renderer.libraries()
@@ -121,7 +123,6 @@ function init() {
 	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
 	}
 
-	renderer.recentAdd(ui.args.path)
 }
 function setGalleryDelay(val){
 	galleryDelay=val
