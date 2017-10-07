@@ -110,21 +110,22 @@ c:/website/
 ```
 
 ## ToDo
+- I'll be adding a open/move items dialog for bulk operations
 - display image name/dimensions/kb during slideshow as caption  
-- SFTP still in testing phase as of Aug 2017
 - create dialog SFTP save/restore host settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 
 
 ## Changes
 Oct 6/17
-- updates to pathBar ui
+- SFTP testing done; no errors since last git update.
+- updates to pathBar UI
 - included changes from https://github.com/tyzbit/Electron-FolderView
   1. added .webm video file type
   2. included keyboardshortcuts.txt (requires updating)
 - general tweaks and fixes:  
-  1. comment out height/width px of item names
-  2. comment out galleryScale() in renderer.js
+  1. comment out height/width px of item names; test is no longer vertically truncated
+  2. comment out galleryScale() in renderer.js; was generating error
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
@@ -180,6 +181,7 @@ Apr 4/17:
 - https://www.npmjs.com/package/argv-to-object
 - https://www.npmjs.com/package/image-size
 - https://github.com/npm/ini  
+- https://github.com/tyzbit/Electron-FolderView  
 - http://isotope.metafizzy.co
 - http://photoswipe.com/
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
