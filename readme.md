@@ -124,8 +124,8 @@ Oct 6/17
   1. added .webm video file type
   2. included keyboardshortcuts.txt (requires updating)
 - general tweaks and fixes:  
-  1. comment out height/width px of item names; test is no longer vertically truncated
-  2. comment out galleryScale() in renderer.js; was generating error
+  1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
+	2. comment out galleryScale() in renderer.js; was generating error
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
