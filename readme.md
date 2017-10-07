@@ -112,14 +112,19 @@ c:/website/
 ## ToDo
 - I'll be adding a open/move items dialog for bulk operations
 - display image name/dimensions/kb during slideshow as caption  
-- create dialog SFTP save/restore host settings
+- save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 
 
 ## Changes
 Oct 6/17
 - SFTP testing done; no errors since last git update.
-- updates to pathBar UI
+- added folder selected in Move operations to recent folder list
+- updates to pathBar
+	1. UI updates
+	2. all slashes converted from "\\" to "/"
+	3. bug fixes, including an error with special chars such as "&" in item names
+- top menu items in alpha order
 - included changes from https://github.com/tyzbit/Electron-FolderView
   1. added .webm video file type
   2. included keyboardshortcuts.txt (requires updating)
@@ -129,7 +134,7 @@ Oct 6/17
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
-- items tooltips now include file size in MB
+- items tooltips now include file size in GB/MB/KB/bytes as appropriate
 - changed context menu/Delete to not use shell function due to limitations on drives with no RecycleBin
 - added context menu/"Open With...".  Allows files to be opened with any app in file system.  Apps selected are stored in tmp/execApps.json and displayed on submenu.
 - added SFTP dialog with remote browse/download/delete functions
