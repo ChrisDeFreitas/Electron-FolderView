@@ -122,7 +122,7 @@ Oct 6/17
 - added folder selected in Move operations to recent folder list
 - updates to pathBar
 	1. UI updates
-	2. all slashes converted from "\\" to "/"
+	2. all slashes converted from "\\" to "/" (most path functions expect '/' for Linux compatibility)
 	3. bug fixes, including an error with special chars such as "&" in item names
 - top menu items in alpha order
 - included changes from https://github.com/tyzbit/Electron-FolderView
