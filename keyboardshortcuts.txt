@@ -1,7 +1,6 @@
 App functions
 -------------
-
-Fn Key | Function
+Key    | Function
 -------|---------
 F2     |System Info
 F3     |Windows Explorer
@@ -11,20 +10,27 @@ F6     |Change Folder
 F11    |Fullscreen
 F12    |Dev Tools
 
-Navigation
+Grid Navigation
 ---------------------
 Key      | Function
 ---------|-----------
-Backspace| Folder Up
-S        | Auto-Scroll
+Backspace| Folder up
+Home     | Scroll to start of grid
+End      | Scroll to end of grid
+Up       | Scroll grid up
+Down     | Scroll grid down
+PageUp   | Scroll grid up one screen
+PageDown | Scroll grid down one screen
+S        | Toggle item auto-scroll
 
 Item Arrangement
 ---------------------
 Key      | Function
 ---------|-----------
-C        | Arrange items by columns (or Alt+C)
-R        | Arrange itmes by rows (or Alt+R)
-W        | Arrange items as a wall (or Alt+W)
+C        | col mode: arrange items in three columns (or Alt+C)
+R        | row mode: arrange items in four rows (or Alt+R)
+V        | vert mode: arrange items in a single column with item details (or Alt+V)
+W        | wall mode: arrange items like posters on a wall (or Alt+W)
 
 Item Display
 ------------------------------
@@ -38,3 +44,9 @@ Alt+Up    Arrow   | Increase display size by .1
 Alt+Down  Arrow   | Decrease display size by .1
 Alt+Left  Arrow   | Set display scale to .3
 Alt+Right Arrow   | Set display scale to 1
+
+Slideshow Navigation
+---------------------
+Key      | Function
+---------|-----------
+ToDo!  See readme.md
