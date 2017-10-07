@@ -12,13 +12,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ## Features
 - main purpose is to view images on local disk
 - display folder items with different grid layouts: cols, rows, vert, wall
+- click image file to view slideshow; scale slideshow images with mouse wheel or keyboard
 - play media files using Chrome's built-in tools
-- open file with Windows' default application  
-- features:  clipboard, custom default folders, delete, export file list, filter, hide, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
-- keyboard commands for image handling match chrisd.gq/slideshow
+- open file with Windows' default application
 - Open With...: run applications on system with selected file as argument; apps settings saved and displayed on submenu
-- SFTP browse/download/delete remote system
-- minimize SFTP dlg: left click dlg title
+- SFTP browse/download/delete remote system; minimize by clicking dlg title bar
+- feature list:  clipboard, custom default folders, delete, export file list, filter, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
+- keyboard commands for image handling match chrisd.gq/slideshow
 
 ## App Notes
 1. Install:
@@ -114,6 +114,7 @@ c:/website/
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
+- update keyboardshortcuts.txt
 
 
 ## Changes
@@ -127,7 +128,7 @@ Oct 6/17
 - top menu items in alpha order
 - included changes from https://github.com/tyzbit/Electron-FolderView
   1. added .webm video file type
-  2. included keyboardshortcuts.txt (requires updating)
+  2. included keyboardshortcuts.txt (requires more updates)
 - general tweaks and fixes:  
   1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
 	2. comment out galleryScale() in renderer.js; was generating error
