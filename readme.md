@@ -118,7 +118,7 @@ c:/website/
 
 ## Changes
 Oct 6/17
-- SFTP testing done; no errors since last git update.
+- SFTP testing done; no errors since last git update in July.
 - added folder selected in Move operations to recent folder list
 - updates to pathBar
 	1. UI updates
