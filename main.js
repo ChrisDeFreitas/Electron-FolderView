@@ -157,11 +157,6 @@ function parseArgs() {
 	if(args.order===undefined) args.order='name'
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
-	if(args.width===0 || args.height===0){
-		const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-		if(args.width===0) args.width = width
-		if(args.height===0) args.height = height
-	}
 	log('Arguments:')
 	log(args)
 	log('Reading files..')
@@ -332,8 +327,8 @@ function htmlGen(fldrobj){
 }
 //function browserLaunch(fileObj, defaultImageNum, devTools, scale, fullscreen, layout, shuffle, fontsize) {
 function browserLaunch(fldrobj) {
-	var //fileObj = fldrobj,
-			args 		= fldrobj.args
+	var args 		= fldrobj.args
+	const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
 	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({
 		//autoHideMenuBar: true,
@@ -343,8 +338,9 @@ function browserLaunch(fldrobj) {
 		frame: true,
 		icon: __dirname+'/resources/Folder-Season-Pack-icon.png',
 		title:'folderView',
-		width: args.width,	//1280,
-		height: args.height //960
+		fullscreen:(args.height==0 && args.width==0),
+		width: (args.width==0 ?width :args.width),	//1280,
+		height:(args.height==0 ?height :args.height) //960
 	})
 
 	/*globalShortcut.register('ctrl+F12', () => {
