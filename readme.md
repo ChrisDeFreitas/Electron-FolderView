@@ -42,7 +42,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
     - node version (runs in default browser, HTML only, no menu functions)   
         \> node main.js  
 
-4. Build FolderView.exe:
+4. Build FolderView.exe:  
     \> npm run build
     * the app is built with Electron Packager so it can be used as a regular Windows program.
     * Electron Packager must be install globally:  npm install electron-packager -g

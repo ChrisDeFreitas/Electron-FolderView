@@ -93,7 +93,6 @@ function appInit(){
 	app.on('ready', function() {
 		var fldrobj = parseArgs()
 		mainWindow = browserLaunch(fldrobj)
-		//mainWindow = browserLaunch(fileObj, args.devtools, args.scale, args.fullscreen, args.layout, args.shuffle, args.fontsize)
 	})
 	app.on('window-all-closed', () => { 	// Quit when all windows are closed.
 	  // On OS X it is common for applications and their menu bar
@@ -157,6 +156,11 @@ function parseArgs() {
 	if(args.order===undefined) args.order='name'
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
+	if(args.width===0 || args.height===0){
+		const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+		if(args.width===0) args.width = width
+		if(args.height===0) args.height = height
+	}
 	log('Arguments:')
 	log(args)
 	log('Reading files..')
@@ -327,20 +331,19 @@ function htmlGen(fldrobj){
 }
 //function browserLaunch(fileObj, defaultImageNum, devTools, scale, fullscreen, layout, shuffle, fontsize) {
 function browserLaunch(fldrobj) {
-	var args 		= fldrobj.args
-	const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+	var //fileObj = fldrobj,
+			args 		= fldrobj.args
 	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({
 		//autoHideMenuBar: true,
 		backgroundColor: '#00000',
 		center: true,
-		//fullscreen: true,
+		fullscreen: args.fullscreen,
 		frame: true,
 		icon: __dirname+'/resources/Folder-Season-Pack-icon.png',
 		title:'folderView',
-		fullscreen:(args.height==0 && args.width==0),
-		width: (args.width==0 ?width :args.width),	//1280,
-		height:(args.height==0 ?height :args.height) //960
+		width: args.width,	//1280,
+		height: args.height //960
 	})
 
 	/*globalShortcut.register('ctrl+F12', () => {
@@ -369,10 +372,8 @@ function browserLaunch(fldrobj) {
 		protocol: 'file:',
 		slashes: true
 	}))
-	if(args.fullscreen===true)
-		win.setFullScreen(true)
-	if(args.devtools===true)
-		win.webContents.openDevTools()
+	//if(args.fullscreen===true) win.setFullScreen(true)
+	if(args.devtools===true) win.webContents.openDevTools()
 	return win
 }
 function pathTrailingSlash(str){	//verifies path ends in a trailing slash
