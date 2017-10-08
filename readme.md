@@ -89,6 +89,7 @@ var argmap =
 	folders:{	keypath:'folders',  type:'string',  default:'default', range:['default','first','hidden','last'] },
 	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 	fullscreen:{ keypath:'fullscreen', type:'boolean', default:false },
+	height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
 	layout:{	keypath:'layout', type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 	order:{ keypath:'order', type:'string',	default:'name', range:['date','name','size','type'], notes:'Sort order of items' },
@@ -96,7 +97,8 @@ var argmap =
 	scale:{	keypath:'scale', type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 	scroll:{ keypath:'scroll', type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
 	sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
-	shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
+	shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+	width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
 	}
 ```
 
@@ -110,6 +112,7 @@ c:/website/
 ```
 
 ## ToDo
+- fix issues with rename function
 - I'll be adding a open/move items dialog for bulk operations
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
@@ -121,6 +124,8 @@ c:/website/
 Oct 6/17
 - SFTP testing done; no errors since last git update in July.
 - added folder selected in Move operations to recent folder list
+- added height arguments, if height=== 0 then max height
+- added width argument, if width === 0 then max width
 - updates to pathBar
 	1. UI updates
 	2. all slashes converted from "\\" to "/" (most path functions expect '/' for Linux compatibility)

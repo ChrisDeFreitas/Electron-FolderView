@@ -17,6 +17,7 @@ var argmap = {
 		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 		folders:{		keypath:'folders',	type:'string', default:'first', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
+		height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
 		layout:{			keypath:'layout', 		type:'string',	default:'cols',	range:['cols','rows','vert','wall']
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
@@ -24,7 +25,8 @@ var argmap = {
 		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
 		sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
-		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" }
+		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+		width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 var args = argtoobj( argmap );
 //console.log(args)
@@ -58,21 +60,10 @@ function log(msg, lineno){
 	mainWindow.webContents.send('applog',msg)
 }
 
-/*
-exports.win = function(){
-	return mainWindow
-}*/
 exports.fldrLoad = function(fldr) {
 	if(fldr===undefined) fldr=args.path
 	return fldrObjGen(fldr)
 }
-/*
-exports.browserLaunch = function(fldr) {
-	var fldrobj = fldrObjGen(fldr)
-	var win = browserLaunch(fldrobj)
-	return win
-}
-*/
 //
 
 log('Init..')
@@ -166,6 +157,11 @@ function parseArgs() {
 	if(args.order===undefined) args.order='name'
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
+	if(args.width===0 || args.height===0){
+		const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+		if(args.width===0) args.width = width
+		if(args.height===0) args.height = height
+	}
 	log('Arguments:')
 	log(args)
 	log('Reading files..')
@@ -347,9 +343,8 @@ function browserLaunch(fldrobj) {
 		frame: true,
 		icon: __dirname+'/resources/Folder-Season-Pack-icon.png',
 		title:'folderView',
-		//replaced by scale: webPreferences : {zoomFactor:zoomfactor},
-		width:1280,
-		height:960
+		width: args.width,	//1280,
+		height: args.height //960
 	})
 
 	/*globalShortcut.register('ctrl+F12', () => {
