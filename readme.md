@@ -69,6 +69,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 F3: open Windows Explorer to current folder or default file  
 	 F4: toggle Export List dialog  
 	 F6: toggle Change Folder dialog  
+	 F7: Bulk Copy/Delete/Move dialog  
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
 	 Home/End, Up/Down, PageUp/PageDown: manually scroll grid  
@@ -114,7 +115,6 @@ c:/website/
 ## ToDo
 - complete testing Bulk Ops dialog
 - fix issues with rename function
-- I'll be adding a open/move items dialog for bulk operations
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
