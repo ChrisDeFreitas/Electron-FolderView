@@ -12,12 +12,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ## Features
 - main purpose is to view images on local disk
 - display folder items with different grid layouts: cols, rows, vert, wall
-- click image file to view slideshow; scale slideshow images with mouse wheel or keyboard
+- click image file to view slideshow; scale slideshow images with mouse wheelor keyboard
 - play media files using Chrome's built-in tools
 - open file with Windows' default application
-- Open With...: run applications on system with selected file as argument; apps settings saved and displayed on submenu
+- Open With...: run any application on disk with selected file as argument
 - SFTP browse/download/delete remote system; minimize by clicking dlg title bar
-- feature list:  clipboard, custom default folders, delete, export file list, filter, keyboard shortcuts, move, open, rename +extra functions, order, open Windows Explorer, recent folders, scale, scroll, shuffle, slideshow
+- bulk copy/delete/move operations
+- export lists of file in various file formats
 - keyboard commands for image handling match chrisd.gq/slideshow
 
 ## App Notes
