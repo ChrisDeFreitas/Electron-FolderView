@@ -216,7 +216,8 @@ function fldrObjGen(file) {
 		var val = fls[key]
 		var ext = path.extname(val).toLowerCase()
 		var fn = path.basename(val)
-		var fullfilename = path.resolve(folder, val)
+		var fullfilename = path.resolve(folder, val),
+		 	fullfilenameFixed = fullfilename.replace(/\\/g,'/')
 
 		stat = safeLstat(fullfilename)	//fs.lstatSync( fullfilename )
 		if(stat===null) {
@@ -234,14 +235,15 @@ function fldrObjGen(file) {
 			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
 			//isFile:stat.isFile(),
-			path: fullfilename,
+			path: fullfilenameFixed,
 			pid: id,
-			src: 'file:///'+fullfilename.replace(/\\/g,'/'),
+			src: 'file:///'+fullfilenameFixed,
 			//src: function(){return 'file:///'+this.path.replace(/\\/g,'/'), },
 			title: val,
 			type: ext
 		}
 		if(obj.isDirectory===true){				//folders
+			obj.path = pathTrailingSlash(obj.path)
 			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
 			obj.w = 320
 			obj.h = 200
@@ -340,10 +342,10 @@ function browserLaunch(fldrobj) {
 		center: true,
 		fullscreen: args.fullscreen,
 		frame: true,
+		height: args.height, //960
 		icon: __dirname+'/resources/Folder-Season-Pack-icon.png',
 		title:'folderView',
-		width: args.width,	//1280,
-		height: args.height //960
+		width: args.width	//1280,
 	})
 
 	/*globalShortcut.register('ctrl+F12', () => {

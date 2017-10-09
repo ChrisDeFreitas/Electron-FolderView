@@ -112,6 +112,7 @@ c:/website/
 ```
 
 ## ToDo
+- complete testing Bulk Ops dialog
 - fix issues with rename function
 - I'll be adding a open/move items dialog for bulk operations
 - display image name/dimensions/kb during slideshow as caption  
@@ -123,8 +124,9 @@ c:/website/
 ## Changes
 Oct 6/17
 - SFTP testing done; no errors since last git update in July.
+- added Bulk Copy/Delete/Move dialog, F7 shortcut key
 - added folder selected in Move operations to recent folder list
-- added height arguments, if height=== 0 then max height
+- added height argument, if height=== 0 then max height
 - added width argument, if width === 0 then max width
 - updates to pathBar
 	1. UI updates

@@ -46,6 +46,7 @@ require('electron').ipcRenderer.on('applog', (event, message) => {
 //nodejs_comment_end
 
 var dlgExport = null	//press F4 to toggle
+var dlgBulk=null
 
 function init() {
 	//////do not delete these comments: vars populated by main.js:
@@ -125,6 +126,7 @@ function init() {
 	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
 	}
 
+	//renderer.bulk()
 }
 function setGalleryDelay(val){
 	galleryDelay=val
@@ -234,13 +236,16 @@ function setGalleryDelay(val){
 <div id=grid class="grid">&nbsp;</div>
 
 <style>
-.dlgSftpParent{
+.dlgBulk{}
+.dlgSftpParent, .dlgBulk{
 	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');
 	background-size:cover;
 	border:2px inset rgba(138, 134, 134, 0.6); border-radius:5px;
 	width:30em; padding:1em 2em;
 }
-.dlgSftpParent .dlgFooter{ background:transparent; }
+.dlgSftpParent .dlgFooter,
+.dlgBulk .dlgFooter
+{ background:transparent; }
 .dlgSftp{ display:none; color:#ffaf00; font-weight:bold; font-family:sans-serif; font-size:12px; padding:0; text-align:left; }
 .dlgSftp button{
 	border-radius:2px; cursor:pointer;
