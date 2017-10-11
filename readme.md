@@ -71,6 +71,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 F4: toggle Export List dialog  
 	 F6: toggle Change Folder dialog  
 	 F7: Bulk Copy/Delete/Move dialog  
+	 F8: Create new folder
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
 	 Home/End, Up/Down, PageUp/PageDown: manually scroll grid  
@@ -126,6 +127,7 @@ c:/website/
 Oct 6/17
 - SFTP testing done; no errors since last git update in July.
 - added Bulk Copy/Delete/Move dialog, F7 shortcut key
+- added New Folder function, F8 shortcut key
 - added folder selected in Move operations to recent folder list
 - added height argument, if height=== 0 then max height
 - added width argument, if width === 0 then max width
@@ -140,6 +142,7 @@ Oct 6/17
 - general tweaks and fixes:  
   1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
 	2. comment out galleryScale() in renderer.js; was generating error
+	3. exclude tmp and scrnshots folders from zip files (npm run build:zip)
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
