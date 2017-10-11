@@ -67,10 +67,11 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 Backspace: load parent folder  
 	 ESC: close gallery, return to grid  
 	 F2: toggle System Info dialog  
-	 F3: open Windows Explorer to current folder or default file  
+	 F3: open Windows Explorer to current folder or selected item
 	 F4: toggle Export List dialog  
+	 F5: reload folder items
 	 F6: toggle Change Folder dialog  
-	 F7: Bulk Copy/Delete/Move dialog  
+	 F7: toggle Bulk Copy/Delete/Move dialog  
 	 F8: Create new folder  
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
