@@ -8,6 +8,7 @@ F4     |Export List
 F5     |Reload
 F6     |Change Folder
 F7     |Bulk Copy/Delete/Move
+F8     |Create new folder
 F11    |Fullscreen
 F12    |Dev Tools
 

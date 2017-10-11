@@ -71,7 +71,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 	 F4: toggle Export List dialog  
 	 F6: toggle Change Folder dialog  
 	 F7: Bulk Copy/Delete/Move dialog  
-	 F8: Create new folder
+	 F8: Create new folder  
 	 F11: toggle fullscreen  
 	 F12: toggle devtools  
 	 Home/End, Up/Down, PageUp/PageDown: manually scroll grid  
