@@ -144,6 +144,7 @@ Oct 6/17
   1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
 	2. comment out galleryScale() in renderer.js; was generating error
 	3. exclude tmp and scrnshots folders from zip files (npm run build:zip)
+	4. move function removed item from items array
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
