@@ -131,7 +131,10 @@ Oct 6/17
 - added folder selected in Move operations to recent folder list
 - added height argument, if height=== 0 then max height
 - added width argument, if width === 0 then max width
+- updates to rename dlg
 - updates to pathBar
+- added text functions context menu for input, textarea
+- add elusive icons to replace usage of HTML entities
 	1. UI updates
 	2. all slashes converted from "\\" to "/" (most path functions expect '/' for Linux compatibility)
 	3. bug fixes, including an error with special chars such as "&" in item names
@@ -143,7 +146,7 @@ Oct 6/17
   1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
 	2. comment out galleryScale() in renderer.js; was generating error
 	3. exclude tmp and scrnshots folders from zip files (npm run build:zip)
-	4. move function removed item from items array
+	4. move item function: remove item from items array
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
@@ -193,17 +196,18 @@ Apr 4/17:
 
 
 ## Thanks To
-- http://electron.atom.io/
-- https://github.com/electron-userland/electron-packager
-- https://nodejs.org/
-- https://www.npmjs.com/package/argv-to-object
-- https://www.npmjs.com/package/image-size
-- https://github.com/npm/ini  
+- http://electron.atom.io/  
+- http://elusiveicons.com/  
+- https://github.com/electron-userland/electron-packager  
+- https://nodejs.org/  
+- https://www.npmjs.com/package/argv-to-object  
+- https://www.npmjs.com/package/image-size  
+- https://github.com/npm/ini   
 - https://github.com/tyzbit/Electron-FolderView  
-- http://isotope.metafizzy.co
-- http://photoswipe.com/
-- http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
-- https://github.com/mscdex/ssh2
+- http://isotope.metafizzy.co  
+- http://photoswipe.com/  
+- http://www.iconarchive.com/show/series-folder-icons-by-softskin.html  
+- https://github.com/mscdex/ssh2  
 
 
 Good Luck!
