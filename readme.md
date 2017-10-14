@@ -134,7 +134,6 @@ Oct 6/17
 - updates to rename dlg
 - updates to pathBar
 - added text functions context menu for input, textarea
-- add Elusive Icons to replace usage of HTML entities
 - top menu items in alpha order
 - move item function: remove item from items array
 - included changes from https://github.com/tyzbit/Electron-FolderView
@@ -144,6 +143,8 @@ Oct 6/17
   1. comment out height/width px of item names; text is no longer vertically truncated with large fonts  
 	2. comment out galleryScale() in renderer.js; was generating error
 	3. exclude tmp and scrnshots folders from zip files (npm run build:zip)
+	4. store paths internally using '/' (not Windows '\\') to maintain compatibility with Linux file handling
+	5. add Elusive Icons to replace usage of HTML entities
 
 Jul 20/17
 - context menu/Tools/Delete now deletes the item from the internal list so sort functions no longer display them from browser cache
