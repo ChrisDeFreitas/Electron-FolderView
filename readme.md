@@ -117,7 +117,6 @@ c:/website/
 
 ## ToDo
 - complete testing Bulk Ops dialog
-- fix issues with rename function
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
