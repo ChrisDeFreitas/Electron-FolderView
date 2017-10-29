@@ -124,6 +124,13 @@ c:/website/
 
 
 ## Changes
+Oct 30/17
+- no errors in bulkOpsDlg since last update
+- add to top Order menu:
+	"File Date, Descending"
+	"File Name, Ascending"
+	"File Size, Descending"
+
 Oct 6/17
 - SFTP testing done; no errors since last git update in July.
 - added Bulk Copy/Delete/Move dialog, F7 shortcut key
