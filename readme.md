@@ -20,6 +20,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - bulk copy/delete/move operations
 - export lists of file in various file formats
 - keyboard commands for image handling match chrisd.gq/slideshow
+- create zero length files; when a folder is selected this function will delete all files in sub-folders but sub-folders will remain
+
 
 ## App Notes
 1. Install:
@@ -126,6 +128,7 @@ c:/website/
 ## Changes
 Oct 30/17
 - no errors in bulkOpsDlg since last update
+- add to bulkOps: create zero length files (and empty folders of all files)
 - add to top Order menu:
 	"File Date, Descending"
 	"File Name, Ascending"
