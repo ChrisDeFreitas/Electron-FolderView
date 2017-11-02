@@ -118,7 +118,7 @@ c:/website/
 ```
 
 ## ToDo
-- test new auto connect and auto download functions
+- complete testing new SFTP auto connect/download functions
 - complete testing Bulk Ops dialog
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
