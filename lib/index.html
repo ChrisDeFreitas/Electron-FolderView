@@ -97,7 +97,7 @@ function init() {
 	console.log(`shuffle: ${ui.args.shuffle}`)
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
-	console.log('\n')	//end of app args
+	//console.log('\n')	//end of app args
 	ui.gridLoad(lastLayoutMode)
 	//dlgFactory.bbl('Hi')
 
@@ -248,18 +248,16 @@ function setGalleryDelay(val){
 	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');
 	background-size:cover;
 	border:2px inset rgba(138, 134, 134, 0.6); border-radius:5px;
-	width:30em; padding:1em 2em;
+	width:35em; padding:1em 2em 0 2em;
+	z-index:1000;
 }
+.dlgSftpParent .dlgBody{ }
 .dlgSftpParent .dlgFooter,
 .dlgBulk .dlgFooter,
 .dlgRename .dlgFooter
 { background:transparent; }
 .dlgSftp{ display:none; color:#ffaf00; font-weight:bold; font-family:sans-serif; font-size:12px; padding:0; text-align:left; }
-.dlgSftp button{
-	border-radius:2px; cursor:pointer;
-	font-size:0.8em;
-	padding:0.25em 0.5em; width:7em;
-}
+.dlgSftp button{ border-radius:2px; cursor:pointer; font-size:0.8em; padding:0.25em 0.5em; width:6.5em; }
 .dlgSftp button:hover{ color:#0a0; }
 .dlgSftp table{
 	width:100%; height:auto;
@@ -286,20 +284,52 @@ function setGalleryDelay(val){
 <div id=dlgSftp class=dlgSftp>
 	<table>
 		<tr><td>Host</td><td><input id=inpHost type=text value='192.168.1.247'></td></tr>
-		<tr><td>Port</td><td><input id=inpPort type=text value='22'></td></tr>
+		<tr><td>Port</td><td><input id=inpPort type=text value='22012'></td></tr>
 		<tr><td>User</td><td><input id=inpUser type=text value='chris'></td></tr>
-		<tr><td>Password</td><td><input id=inpPw type=password value=''></td></tr>
+		<tr><td>Password</td><td><input id=inpPw type=password value='lxdeuser'></td></tr>
 		<tr><td>Default Path</td><td><input id=inpPath type=text value='/home/chris/completed'></td></tr>
-		<tr><td>&nbsp;</td><td style='padding:1em; text-align:center'> <button id=btnCon>Connect</button> <button id=btnDis>Disconnect</button> </td></tr>
-		<tr id=trFolder><!--td>Remote Path</td--><td colspan=2 id=tdFolder title='Click to open folder'></td></tr>
-		<tr id=trFiles><!--td>Files</td--><td colspan=2><div id=divFiles style='width:100%'></div></td></tr>
-		<tr id=trButtons><!--td>&nbsp;</td--><td colspan=2 style='padding:1em; text-align:center'>
-			<!--img src="../resources/up_folder16.png" title='Folder Up'-->
-			<button id=btnUp onclick='dlgSFTP.folderUpClick(event)' title='Show parent folder'>Up</button>
-			<button id=btnUp onclick='dlgSFTP.selectAllClick(event)' title='Select/Deselect all items'>All</button>
+		<tr><td>&nbsp;</td><td style='padding:0.5em 4em 0 0; text-align:center'>
+			<button id=btnAuto onclick='dlgSFTP.autoClick(event)'>Auto</button>
+			<button id=btnCon>Connect</button>
+			<button id=btnDis>Disconnect</button>
+		</td></tr>
+		<tr id=trFolder><td colspan=2 id=tdFolder title='Click to open folder'></td></tr>
+		<tr id=trFiles><td colspan=2><div id=divFiles style='width:100%'></div></td></tr>
+		<tr id=trButtons><td colspan=2 style='padding:0.5em 0 0 0; text-align:center'>
+			<button id=btnDelAuto onclick='dlgSFTP.deleteAutoClick(event)' title='Auto delete functions'>Auto</button>
+			<button id=btnAll onclick='dlgSFTP.selectAllClick(event)' title='Select/Deselect all items'>All</button>
+			<button id=btnDel onclick='dlgSFTP.deleteClick(event)'title='Delete selected files'>Delete</button>
 			<button id=btnDown onclick='dlgSFTP.downloadClick(event)'title='Download selected files'>Download</button>
-			<button id=btnDel onclick='dlgSFTP.deleteClick(event)'title='Delete selected files'>Delete</button> </td></tr>
+			<button id=btnUp onclick='dlgSFTP.folderUpClick(event)' title='Show parent folder'>Up</button>
+		</td></tr>
 	</table>
+</div>
+
+<style>
+.sftpDlgAuto, .sftpDlgAutoDel {
+	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');
+	background-size:cover; border:1px outset #334;
+	display:none; padding:0.5em; text-align:left; z-index:1100;
+}
+.sftpDlgAuto label, .sftpDlgAutoDel label{ display:block; }
+</style>
+<div class=sftpDlgAuto>
+	<label id=lblCon> 		<input type=checkbox checked> Connect to remote server</label>
+	<label id=lblExit> 	<input type=checkbox checked> Close if no files in remote folder</label>
+	<label id=lblDownload> 		<input type=checkbox checked> Download all files in remote folder</label>
+	<label id=lblMin> 		<input type=checkbox checked> Minimize dialog while downloading</label>
+	<label id=lblReload> <input type=checkbox checked> Reload local folder items after download</label>
+	<!--label id=lblDel>		<input type=checkbox disabled> Delete remote files after download</label>
+	<label id=lblClose>	<input type=checkbox > Close dialog after all operations</label-->
+</div>
+<div class=sftpDlgAutoDel>
+	<label id=lblDelDelete>		<input type=checkbox checked> Delete currently selected remote files</label>
+	<label id=lblDelRemReload> <input type=checkbox checked> Reload remote file list</label>
+	<label id=lblDelExit><input type=checkbox checked> Close if no files in remote folder</label>
+	<label id=lblDelDownload> 	<input type=checkbox checked> Download all files in remote folder</label>
+	<label id=lblDelMin> 			<input type=checkbox checked> Minimize dialog while downloading</label>
+	<label id=lblDelLocReload> 		<input type=checkbox checked> Reload local folder items after download</label>
+	<!--label id=lblDelClose><input type=checkbox checked> Close dialog after all operations</label-->
 </div>
 
 </body>

@@ -118,6 +118,7 @@ c:/website/
 ```
 
 ## ToDo
+- test new auto connect and auto download functions
 - complete testing Bulk Ops dialog
 - display image name/dimensions/kb during slideshow as caption  
 - save/restore SFTP settings
@@ -129,6 +130,7 @@ c:/website/
 Oct 30/17
 - no errors in bulkOpsDlg since last update
 - add to bulkOps: create zero length files (and empty folders of all files)
+- add to dlgSftp: auto connect and auto download functions
 - add to top Order menu:
 	"File Date, Descending"
 	"File Name, Ascending"
