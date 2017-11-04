@@ -273,20 +273,20 @@ function setGalleryDelay(val){
 .dlgSftp #trButtons{display:none}
 .dlgSftp #divFiles{
 	background:#fff; color:#333; cursor:pointer; font-weight:normal;
-	height:15em; overflow-x:auto; overflow-y:auto; padding:5px;
+	height:15em; overflow-x:auto; overflow-y:auto; padding:0;
 	max-width:30em; overflow-wrap: break-word; word-break: break-all;
 }
 .dlgSftp #trFolder span{ cursor:pointer; }
-.dlgSftp #divFiles label{ background:#fff; display:block}
+.dlgSftp #divFiles label{ background:#fff; display:block; padding:0 5px; }
 .dlgSftp #divFiles .Selected{ background:#fff;}
 .dlgSftp #divFiles label input{ display:inline-table; margin:5px 0 0 0; width:1em; }
 </style>
 <div id=dlgSftp class=dlgSftp>
 	<table>
 		<tr><td>Host</td><td><input id=inpHost type=text value='192.168.1.247'></td></tr>
-		<tr><td>Port</td><td><input id=inpPort type=text value='22'></td></tr>
+		<tr><td>Port</td><td><input id=inpPort type=text value='22012'></td></tr>
 		<tr><td>User</td><td><input id=inpUser type=text value='chris'></td></tr>
-		<tr><td>Password</td><td><input id=inpPw type=password value=''></td></tr>
+		<tr><td>Password</td><td><input id=inpPw type=password value='lxdeuser'></td></tr>
 		<tr><td>Default Path</td><td><input id=inpPath type=text value='/home/chris/completed'></td></tr>
 		<tr><td>&nbsp;</td><td style='padding:0.5em 4em 0 0; text-align:center'>
 			<button id=btnAuto onclick='dlgSFTP.autoClick(event)'>Auto</button>
@@ -311,7 +311,7 @@ function setGalleryDelay(val){
 	background-size:cover; border:1px outset #334;
 	display:none; padding:0.5em; text-align:left; z-index:1100;
 }
-.sftpDlgAuto label, .sftpDlgAutoDel label{ display:block; }
+.sftpDlgAuto label, .sftpDlgAutoDel label{ cursor:pointer; display:block; }
 </style>
 <div class=sftpDlgAuto>
 	<label id=lblCon> 		<input type=checkbox checked> Connect to remote server</label>

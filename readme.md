@@ -118,15 +118,21 @@ c:/website/
 ```
 
 ## ToDo
-- complete testing new SFTP auto connect/download functions
+- complete testing SFTP auto connect/download functions
 - complete testing Bulk Ops dialog
-- display image name/dimensions/kb during slideshow as caption  
+- re-write SFTP functions with async/await
+- display image name/dimensions/kb in slideshow as caption  
 - save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 - update keyboardshortcuts.txt
 
 
 ## Changes
+Nov 5/17
+- bug fixes for sftpDlg Auto functions
+- update to Node v8.9
+- update to Electron v1.81
+
 Oct 30/17
 - no errors in bulkOpsDlg since last update
 - add to bulkOps: create zero length files (and empty folders of all files)
