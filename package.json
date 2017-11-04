@@ -33,6 +33,7 @@
     "electron": "1.7.9",
     "image-size": "^0.5.5",
     "ini": "^1.3.4",
+    "iniparser": "^1.0.5",
     "isotope-layout": "^3.0.4",
     "isotope-packery": "^2.0.0",
     "packery": "^2.0.0",

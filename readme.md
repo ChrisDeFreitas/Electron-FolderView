@@ -122,7 +122,6 @@ c:/website/
 - complete testing Bulk Ops dialog
 - re-write SFTP functions with async/await
 - display image name/dimensions/kb in slideshow as caption  
-- save/restore SFTP settings
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 - update keyboardshortcuts.txt
 
@@ -132,6 +131,7 @@ Nov 5/17
 - bug fixes for sftpDlg Auto functions
 - update to Node v8.9
 - update to Electron v1.7.9
+- added tmp/settings to store default sftp connection settings (using node-iniparser)
 
 Oct 30/17
 - no errors in bulkOpsDlg since last update
@@ -215,6 +215,7 @@ Apr 4/17:
 - http://electron.atom.io/  
 - http://elusiveicons.com/  
 - https://github.com/electron-userland/electron-packager  
+- https://www.npmjs.com/package/iniparser
 - https://nodejs.org/  
 - https://www.npmjs.com/package/argv-to-object  
 - https://www.npmjs.com/package/image-size  
