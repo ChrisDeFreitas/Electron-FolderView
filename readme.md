@@ -131,7 +131,7 @@ c:/website/
 Nov 5/17
 - bug fixes for sftpDlg Auto functions
 - update to Node v8.9
-- update to Electron v1.81
+- update to Electron v1.7.9
 
 Oct 30/17
 - no errors in bulkOpsDlg since last update

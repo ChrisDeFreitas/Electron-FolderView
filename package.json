@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "argv-to-object": "^1.0.1",
-    "electron": "^1.7.9",
+    "electron": "1.7.9",
     "image-size": "^0.5.5",
     "ini": "^1.3.4",
     "isotope-layout": "^3.0.4",
