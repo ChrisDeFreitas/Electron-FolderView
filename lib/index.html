@@ -271,11 +271,9 @@ function setGalleryDelay(val){
 	width:100%; height:auto;
 }
 .dlgSftp table td{ vertical-align:top; }
-.dlgSftp input{
-	background:transparent; border:0; border-bottom:1px inset silver;
-	color:#aaa; font-weight:bold;
-	width:100%;
-}
+.dlgSftp table .tdOpName{ max-width:3.5em; padding-left:0.5em; }
+.dlgSftp table .tdOp{ padding-right:1em; }
+.dlgSftp input{ background:transparent; border:0; border-bottom:1px inset silver; color:#aaa; font-weight:bold; width:100%; }
 .dlgSftp #trFolder,
 .dlgSftp #trFiles,
 .dlgSftp #trButtons{display:none}
@@ -291,11 +289,11 @@ function setGalleryDelay(val){
 </style>
 <div id=dlgSftp class=dlgSftp>
 	<table>
-		<tr><td>Host</td><td><input id=inpHost type=text value='192.168.1.247'></td></tr>
-		<tr><td>Port</td><td><input id=inpPort type=text value='22'></td></tr>
-		<tr><td>User</td><td><input id=inpUser type=text value='chris'></td></tr>
-		<tr><td>Password</td><td><input id=inpPw type=password value=''></td></tr>
-		<tr><td>Default Path</td><td><input id=inpPath type=text value='/home/chris/'></td></tr>
+		<tr><td class=tdOpName>Host</td><td class=tdOp><input id=inpHost type=text value='192.168.1.247'></td></tr>
+		<tr><td class=tdOpName>Port</td><td class=tdOp><input id=inpPort type=text value='22'></td></tr>
+		<tr><td class=tdOpName>User</td><td class=tdOp><input id=inpUser type=text value='chris'></td></tr>
+		<tr><td class=tdOpName>Password</td>		<td class=tdOp><input id=inpPw type=password value=''></td></tr>
+		<tr><td class=tdOpName>Default Path</td><td class=tdOp><input id=inpPath type=text value='/home/chris/'></td></tr>
 		<tr><td colspan=2 style='padding:1em 0 0 0; text-align:center'>
 			<button id=btnAuto onclick='dlgSFTP.autoClick(event)'>Auto</button>
 			<button id=btnCon>Connect</button>
