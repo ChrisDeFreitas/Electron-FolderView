@@ -296,7 +296,7 @@ function setGalleryDelay(val){
 		<tr><td>User</td><td><input id=inpUser type=text value='chris'></td></tr>
 		<tr><td>Password</td><td><input id=inpPw type=password value=''></td></tr>
 		<tr><td>Default Path</td><td><input id=inpPath type=text value='/home/chris/'></td></tr>
-		<tr><td>&nbsp;</td><td style='padding:0.5em 4em 0 0; text-align:center'>
+		<tr><td colspan=2 style='padding:0.5em 0 0 0; text-align:center'>
 			<button id=btnAuto onclick='dlgSFTP.autoClick(event)'>Auto</button>
 			<button id=btnCon>Connect</button>
 			<button id=btnDis>Disconnect</button>
@@ -320,6 +320,7 @@ function setGalleryDelay(val){
 	display:none; padding:0.5em; text-align:left; z-index:1100;
 }
 .sftpDlgAuto label, .sftpDlgAutoDel label{ cursor:pointer; display:block; }
+.sftpDlgAuto label:hover, .sftpDlgAutoDel label:hover{ color:#ffaf00; }
 </style>
 <div class=sftpDlgAuto>
 	<label id=lblCon> 		<input type=checkbox checked> Connect to remote server</label>
@@ -327,8 +328,6 @@ function setGalleryDelay(val){
 	<label id=lblDownload> 		<input type=checkbox checked> Download all files in remote folder</label>
 	<label id=lblMin> 		<input type=checkbox checked> Minimize dialog while downloading</label>
 	<label id=lblReload> <input type=checkbox checked> Reload local folder items after download</label>
-	<!--label id=lblDel>		<input type=checkbox disabled> Delete remote files after download</label>
-	<label id=lblClose>	<input type=checkbox > Close dialog after all operations</label-->
 </div>
 <div class=sftpDlgAutoDel>
 	<label id=lblDelDelete>		<input type=checkbox checked> Delete currently selected remote files</label>
@@ -337,7 +336,6 @@ function setGalleryDelay(val){
 	<label id=lblDelDownload> 	<input type=checkbox checked> Download all files in remote folder</label>
 	<label id=lblDelMin> 			<input type=checkbox checked> Minimize dialog while downloading</label>
 	<label id=lblDelLocReload> 		<input type=checkbox checked> Reload local folder items after download</label>
-	<!--label id=lblDelClose><input type=checkbox checked> Close dialog after all operations</label-->
 </div>
 
 </body>
