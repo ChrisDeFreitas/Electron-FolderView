@@ -84,8 +84,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * handled by "argv-to-object"
     * if --path option not supplied app looks to commandline arguments for path, for example:  
 				\> node main.js c:\users\pictures  
-				\> electron main.js c:\users\pictures	--layout=cols  
-				\> FolderView.exe c:\users\pictures	--fullscreen  
+				\> electron main.js c:\users\pictures	--fullscreen --layout=cols  
+				\> FolderView.exe c:\users\pictures	--fullscreen --layout=cols
     * commandline arguments documented in main.js:  
 ```Javascript
 var argmap =
@@ -127,6 +127,19 @@ c:/website/
 
 
 ## Changes
+Jan 22/19
+- upgraded to Node v10
+- upgraded to Electron v4.0.2
+- upgraded to Electron Package Manager v13.0.1
+- addresssed new security issue: https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
+- ignored all warnings "[Violation] 'XXX' handler took NNNms"
+- fixed Move operation error when moving items between drives: "EXDEV: cross-device link not permitted ..."
+- changed on all menus: "Close" to "Exit (Alt+F4)"
+- added to context menu: "Folder Up (Backspace)"
+- added to context menu: "Copy to Clipboard"; when selected text available
+- removed from context menu: "Dev Tools (F12)"; currently available on "App Menu"
+- removed Application memory usage due to deprecation of process.getProcessMemoryInfo() in Electron v4 (will add later)
+
 Nov 5/17
 - bug fixes for sftpDlg Auto functions
 - update to Node v8.9

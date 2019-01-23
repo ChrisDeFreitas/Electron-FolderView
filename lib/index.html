@@ -7,6 +7,9 @@
 <meta http-equiv="Reply-to" content="chrisd@europa.com">
 <title>FolderView - folderDisplayed</title>
 
+<!-- new, https://electronjs.org/docs/tutorial/security#6-define-a-content-security-policy>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'" -->
+
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/elusive-icons-2.0.0/css/elusive-icons.min.css">
 
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/photoswipe.css">
@@ -28,6 +31,7 @@
 //ui.args=main.js/args
 //exts={}
 //items=null
+//ui.var.OS=null
 
 //nodejs_comment_begin
 //code for electron only
@@ -97,9 +101,11 @@ function init() {
 	console.log(`shuffle: ${ui.args.shuffle}`)
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
-	//console.log('\n')	//end of app args
+
+	console.log('\n')	//end of app args
+	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
+
 	ui.gridLoad(lastLayoutMode)
-	//dlgFactory.bbl('Hi')
 
 	document.addEventListener('keydown', (event) => {
 		if(event.altKey===true) {

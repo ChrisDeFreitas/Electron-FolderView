@@ -8,6 +8,8 @@ const electron = require('electron')
 const {app, BrowserWindow/*, dialog,  globalShortcut*/} = electron
 const sizeOf = require(__dirname+'/node_modules/image-size')
 
+exports.startTime = Date.now()
+
 //handle commandline arguments
 var argtoobj = require( 'argv-to-object' );
 var argmap = {
@@ -113,6 +115,7 @@ function appInit(){
 function safeLstat(apath) {
 	var result = null
 	try { result = fs.lstatSync(apath) }
+	//try { return fs.lstatSync(apath) }
 	catch(e){ console.log('safeLstat() error: ', e) }
 	return result
 }
@@ -217,7 +220,7 @@ function fldrObjGen(file) {
 		var ext = path.extname(val).toLowerCase()
 		var fn = path.basename(val)
 		var fullfilename = path.resolve(folder, val),
-		 	fullfilenameFixed = fullfilename.replace(/\\/g,'/')
+		 		fullfilenameFixed = fullfilename.replace(/\\/g,'/')
 
 		stat = safeLstat(fullfilename)	//fs.lstatSync( fullfilename )
 		if(stat===null) {
@@ -314,6 +317,7 @@ function htmlGen(fldrobj){
 		'//ui.args=main.js/args':`ui.args=${JSON.stringify(fldrobj.args)}`,
 		'//exts={}':'exts = '+JSON.stringify(fldrobj.exts),
 		'//items=null':'items = '+JSON.stringify(fldrobj.items),
+		'//ui.var.OS=null':`ui.var.OS = "${process.platform}"`
 	}
 	if(isElectron===true){
 		keys['<!--electron_comment_begin-->']= '<!--'
@@ -337,6 +341,7 @@ function browserLaunch(fldrobj) {
 			args 		= fldrobj.args
 	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({
+		nodeIntegration: false,		//new, https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
 		//autoHideMenuBar: true,
 		backgroundColor: '#00000',
 		center: true,
