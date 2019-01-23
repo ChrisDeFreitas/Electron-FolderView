@@ -105,7 +105,7 @@ var argmap =
 	sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
 	shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
 	width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
-	}
+}
 ```
 
 ## Sample customLibraries.ini
@@ -118,8 +118,6 @@ c:/website/
 ```
 
 ## ToDo
-- complete testing SFTP auto connect/download functions
-- complete testing Bulk Ops dialog
 - re-write SFTP functions with async/await
 - display image name/dimensions/kb in slideshow as caption  
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
@@ -127,9 +125,10 @@ c:/website/
 
 
 ## Changes
+
 Jan 22/19
 - upgraded to Node v10
-- upgraded to Electron v4.0.2
+- upgraded to Electron v3.1.1;	electron v4.0.2 has problem where dblcick event maximizes video before calling user code
 - upgraded to Electron Package Manager v13.0.1
 - addresssed new security issue: https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
 - ignored all warnings "[Violation] 'XXX' handler took NNNms"
@@ -218,24 +217,24 @@ Apr 4/17:
 - fixed issues with rename dialog box  
 - fixed "Change Folder" and Reload functions  
 - changed shortcut for "Change Folder" to F3  (changed to F6 April 14/17)
-- added menu item: App/"System Info" , F2 to toggle  
+- added menu item: App/"System Info", F2 to toggle  
 - changed double-clicking folder icon to open new folderView.exe instance.  This will probably change in the future.  
 - updated dev to electron 1.6.2  
 - added and updated screen shots
 
 
 ## Thanks To
-- http://electron.atom.io/  
-- http://elusiveicons.com/  
+- http://electron.atom.io  
+- http://elusiveicons.com  
 - https://github.com/electron-userland/electron-packager  
-- https://www.npmjs.com/package/iniparser
-- https://nodejs.org/  
+- https://www.npmjs.com/package/iniparser  
+- https://nodejs.org  
 - https://www.npmjs.com/package/argv-to-object  
 - https://www.npmjs.com/package/image-size  
 - https://github.com/npm/ini   
-- https://github.com/tyzbit/Electron-FolderView  
+- https://github.com/tyzbit/Electron-FolderView   
 - http://isotope.metafizzy.co  
-- http://photoswipe.com/  
+- http://photoswipe.com  
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html  
 - https://github.com/mscdex/ssh2  
 
