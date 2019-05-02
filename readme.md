@@ -26,7 +26,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ## App Notes
 1. Install:
     - Windows only; I use it on Win81 and Win7  
-    - requires Node.js and Electron (https://electronjs.org/) on your system  
+    - requires Node.js be installed on your system  
     - download to a local folder:  
         \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView  
         \> cd Electron-FolderView  
