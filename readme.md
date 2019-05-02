@@ -26,13 +26,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ## App Notes
 1. Install:
     - Windows only; I use it on Win81 and Win7  
-    - requires Node.js be installed on your system  
+    - requires Node.js be installed on your system (https://nodejs.org/)  
     - download to a local folder:  
         \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView  
         \> cd Electron-FolderView  
-    - to use with a global installation of electron:  
+    - to use with a global installation of Electron:  
         \> npm install electron -g  
-    - install required packages (installs local electron if not installed globally):  
+    - install required packages (installs local Electron if not installed globally):  
         \> npm install  
     - if you want to generate an executable, install Electron Package Manager:  
         \> npm install electron-packager -g  
