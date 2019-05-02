@@ -39,7 +39,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 2. Test:  
     - the test script is not included as it is specific to my sytem  
-    - create a batch file to execute your tests: test/testFolderView.bat  
+    - create this batch file to execute your tests: scripts/testFolderView.bat  
     - then run  
  			  \> npm run test  
 
@@ -51,11 +51,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 4. Build FolderView.exe:  
     \> npm run build
-    * the app is built with Electron Packager so it can be used as a regular Windows program.
-    * Electron Packager must be install globally:  npm install electron-packager -g
+    * the app is built with Electron Packager so it can be used as a regular Windows program.  
+    * Electron Packager must be install globally:  npm install electron-packager -g  
     * npm executes "build..." scripts from package.json: npm run build  
-    * the scripts build, then zip, the Win64 version in the ./dist/ folder.  
-    * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat
+    * the scripts will build, then zip, the Win64 version in the ./dist/ folder.  
+    * you can modify this to use for your own purposes, see scripts/electronPackager.bat and scripts/zip.bat  
+    * the executable is: dist\\FolderView-win32-x64\\FolderView.exe  
+    * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app  
 
 5. Keyboard Shortcuts  
 	 alt+up/down: scale grid items  
