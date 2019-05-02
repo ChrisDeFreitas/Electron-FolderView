@@ -124,9 +124,9 @@ Here is an example:
 [sftp]
 host=192.168.0.111
 port=22
-user=SftpUserName
-pw=SftpPassword
-defaultpath=/home/SftpUserName/filesToDownload
+user=SshUserName
+pw=SshPassword
+defaultpath=/home/UserName/filesToDownload
 
 ```
 
@@ -139,7 +139,7 @@ defaultpath=/home/SftpUserName/filesToDownload
 ## Changes
 
 Apr 28/19
-- upgraded to Electron v3.1.8; could not upgrade Electron to v5.0.0 because problem with default double-click event running before user defined event called still exists 
+- upgraded to Electron v3.1.8; could not upgrade Electron to v5.0.0 because the browser's default double-click hanlder is run before the user defined handler 
 - upgraded to Electron Package Manager v13.1.1 
 - added mv (https://github.com/andrewrk/node-mv) because fs.rename fails between drives and the file system's move command fails with certain file names 
 - pathBar.js: clicking header buttons toggles associated list
@@ -149,7 +149,7 @@ Apr 28/19
 - pathBar.js: folder items now display file date and size in tooltip
 - pathBar.js: fixed bug that occurred when selecting a file, a new file list would be returned
 - updated keyboardshortcuts.txt with slideshow keys
-- included sample config files and notes for settings.ini
+- included sample and note for settings.ini
 
 Jan 22/19
 - upgraded to Node v10 
