@@ -27,16 +27,15 @@ This is a work in progress.  Feel free to use and modify as you wish.
 1. Install:
     - Windows only; I use it on Win81 and Win7  
     - requires Node.js and Electron (https://electronjs.org/) on your system  
-    - downloading to a local folder:  
-        1. > git clone https://github.com/ChrisDeFreitas/Electron-FolderView  
-        2. > cd Electron-FolderView  
+    - download to a local folder:  
+        > git clone https://github.com/ChrisDeFreitas/Electron-FolderView  
+        > cd Electron-FolderView  
     - to use with a global installation of electron:  
-        1. > npm install electron -g  
-        2. > npm install  
-    - if you don't want to install electron globally:  
-           > npm install  
+        > npm install electron -g  
+    - install required packages (installs local electron if not installed globally):  
+        > npm install  
     - if you want to generate an executable, install Electron Package Manager:  
-           > npm install electron-packager -g  
+        > npm install electron-packager -g  
 
 2. Test:  
     - the test script is not included as it is specific to my sytem  
@@ -51,7 +50,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
         > electron main.js  
 
 4. Build FolderView.exe:  
-    \> npm run build
+    > npm run build
     * the app is built with Electron Packager so it can be used as a regular Windows program.
     * Electron Packager must be install globally:  npm install electron-packager -g
     * npm executes "build..." scripts from package.json: npm run build  
