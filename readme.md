@@ -118,16 +118,27 @@ c:/website/
 ```
 
 ## ToDo
-- re-write SFTP functions with async/await
-- display image name/dimensions/kb in slideshow as caption  
+- re-write SFTP functions with async/await  
+- display image name/dimensions/kb in slideshow as tooltip  
 - sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
-- update keyboardshortcuts.txt
 
 
 ## Changes
 
+Apr 28/19
+- upgraded to Electron v3.1.8; could not upgrade Electron to v5.0.0 because problem with default double-click event running before user defined event called still exists 
+- upgraded to Electron Package Manager v13.1.1 
+- added mv (https://github.com/andrewrk/node-mv) because fs.rename fails between drives and the file system's move command fails with certain file names 
+- pathBar.js: clicking header buttons toggles associated list
+- pathBar.js: added hoverDelayMs (500ms) to header buttons, this smooths navigation by preventing the lists from popping up immediately when mouse enters a header buttons 
+- pathBar.js: added highlighting to folder item under mouse cursor (.btnFolderItem:hover)
+- pathBar.js: sped up loading folder items
+- pathBar.js: folder items now display file date and size in tooltip
+- pathBar.js: fixed bug that occurred when selecting a file, a new file list would be returned
+- updated keyboardshortcuts.txt with slideshow keys
+
 Jan 22/19
-- upgraded to Node v10
+- upgraded to Node v10 
 - upgraded to Electron v3.1.1;	electron v4.0.2 has problem where dblcick event maximizes video before calling user code
 - upgraded to Electron Package Manager v13.0.1
 - addresssed new security issue: https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
@@ -231,6 +242,7 @@ Apr 4/17:
 - https://nodejs.org  
 - https://www.npmjs.com/package/argv-to-object  
 - https://www.npmjs.com/package/image-size  
+- https://github.com/andrewrk/node-mv 
 - https://github.com/npm/ini   
 - https://github.com/tyzbit/Electron-FolderView   
 - http://isotope.metafizzy.co  

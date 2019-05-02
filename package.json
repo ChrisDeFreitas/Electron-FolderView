@@ -35,6 +35,7 @@
     "iniparser": "^1.0.5",
     "isotope-layout": "^3.0.4",
     "isotope-packery": "^2.0.0",
+    "mv": "^2.1.1",
     "packery": "^2.0.0",
     "ssh2": "^0.5.5"
   },

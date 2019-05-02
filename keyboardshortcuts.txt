@@ -48,7 +48,11 @@ Alt+Left  Arrow   | Set display scale to .3
 Alt+Right Arrow   | Set display scale to 1
 
 Slideshow Navigation
----------------------
-Key      | Function
----------|-----------
-ToDo!  See readme.md
+-----------------------------
+Key              | Function
+-----------------|-----------
+Esc              | close slideshow
+Right Arrow      | next image
+Left Arrow  		 | prior image
+Ctrl+Up    Arrow | Increase image size by .1
+Ctrl+Down  Arrow | Decrease image size by .1

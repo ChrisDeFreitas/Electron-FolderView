@@ -62,9 +62,9 @@ function log(msg, lineno){
 	mainWindow.webContents.send('applog',msg)
 }
 
-exports.fldrLoad = function(fldr) {
+exports.fldrLoad = function(fldr, simple) {
 	if(fldr===undefined) fldr=args.path
-	return fldrObjGen(fldr)
+	return fldrObjGen(fldr, simple)
 }
 //
 
@@ -190,9 +190,14 @@ function scaleFix(fileObj){
 		}
 	}
 }
-function fldrObjGen(file) {
+function fldrObjGen(file, simple) {
+	//assume: simple != true return complex data
+	//				else return {fldr:file, fileErrors:[], items:[ {basename, isDirectory, date, size}, ...] }
+	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
 		return {args:args, exts:{}, fldr:file, items:[]}
+	if(simple== undefined) simple = false
+	
 	var exts={}
 	var defaultfile = path.basename(file)
 	var folder = path.dirname(file)
@@ -200,11 +205,14 @@ function fldrObjGen(file) {
 	if(stat!==null){
 		if(stat.isDirectory()==true){
 			file = pathTrailingSlash(file)
-			log('--path is a folder')
+			log('fldrObjGen(): path is a folder')
 			defaultfile = ''
 			folder = file
 		}	else {
-			log('--path is a file')
+			log('fldrObjGen(): path is a file')
+			if(simple===true){
+				return {fldr:file, items:[]}
+			}
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
@@ -225,6 +233,16 @@ function fldrObjGen(file) {
 		stat = safeLstat(fullfilename)	//fs.lstatSync( fullfilename )
 		if(stat===null) {
 			ferrors.push(fullfilename)
+			continue
+		}
+		if(simple === true){
+			var obj = {
+				basename:fn, 
+				date:stat.mtime, 
+				size:stat.size,
+				isDirectory:stat.isDirectory()
+			}
+			fls2.push(obj)
 			continue
 		}
 		++id
@@ -284,9 +302,15 @@ function fldrObjGen(file) {
 		else exts[obj.type]++
 		fls2.push(obj)
 	}
-	args.defaultImageName = defaultImageName
-	args.defaultImageNum = defaultImageNum
-	var result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors}
+	var result = null
+	if(simple===true){
+		result = {fldr:file, items:fls2, fileErrors:ferrors}
+	}
+	else{
+		args.defaultImageName = defaultImageName
+		args.defaultImageNum = defaultImageNum
+		result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors}
+	}
 	return result
 }
 
@@ -335,13 +359,13 @@ function htmlGen(fldrobj){
 	})
 	return outfile
 }
-//function browserLaunch(fileObj, defaultImageNum, devTools, scale, fullscreen, layout, shuffle, fontsize) {
 function browserLaunch(fldrobj) {
-	var //fileObj = fldrobj,
-			args 		= fldrobj.args
+	var args 		= fldrobj.args
 	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({
-		nodeIntegration: false,		//new, https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
+		webPreferences:{						//added for Electron v3.1.8 to prevent "require not defined" error in chrome
+			nodeIntegration: true,		//originally disabled for v3.1.1 as per: https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
+		},
 		//autoHideMenuBar: true,
 		backgroundColor: '#00000',
 		center: true,
