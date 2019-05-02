@@ -108,13 +108,26 @@ var argmap =
 }
 ```
 
-## Sample customLibraries.ini
+## Sample tmp/customLibraries.ini
 ```
 [paths]
 c:/users/chris/code/
 c:/electron/
 c:/users/chris/temp/
 c:/website/
+```
+
+## tmp/settings.ini
+At this point, this file only contains default sftp settings. The values are initially empty.
+Here is an example:
+```
+[sftp]
+host=192.168.0.111
+port=22
+user=SftpUserName
+pw=SftpPassword
+defaultpath=/home/SftpUserName/filesToDownload
+
 ```
 
 ## ToDo
@@ -136,6 +149,7 @@ Apr 28/19
 - pathBar.js: folder items now display file date and size in tooltip
 - pathBar.js: fixed bug that occurred when selecting a file, a new file list would be returned
 - updated keyboardshortcuts.txt with slideshow keys
+- included sample config files and notes for settings.ini
 
 Jan 22/19
 - upgraded to Node v10 
