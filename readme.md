@@ -25,25 +25,30 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 ## App Notes
 1. Install:
-    - Windows only; I use it on Win81 and Win7
-    - requires node.js and electron  
-    - after downloading to a local folder:  
-        1. \> npm install electron -g  
-        2. \> npm install  
-        3. \> electron main.js  
-        4. if you want to generate an executable:  
-            \> npm install electron-packager -g  
+    - Windows only; I use it on Win81 and Win7  
+    - requires Node.js and Electron (https://electronjs.org/) on your system  
+    - downloading to a local folder:  
+        1. > git clone https://github.com/ChrisDeFreitas/Electron-FolderView  
+        2. > cd Electron-FolderView  
+    - to use with a global installation of electron:  
+        1. > npm install electron -g  
+        2. > npm install  
+    - if you don't want to install electron globally:  
+           > npm install  
+    - if you want to generate an executable, install Electron Package Manager:  
+           > npm install electron-packager -g  
 
 2. Test:  
- 		\> npm run test
-    * executes scripts/testFolderView.bat
-    * these are specific tests based on my folder structure; you will need to customize
+    - the test script is not included as it is specific to my sytem  
+    - create a batch file to execute your tests: test/testFolderView.bat  
+    - then run  
+ 			  > npm run test  
 
 3. Execute main.js:  
-    - electron version (requires: "npm install electron -g")  
-        \> electron main.js  
-    - node version (runs in default browser, HTML only, no menu functions)   
-        \> node main.js  
+    - with a local installation of Electron  
+        > "node_modules/electron/dist/electron.exe" main.js  
+    - with a global installation of Electron  
+        > electron main.js  
 
 4. Build FolderView.exe:  
     \> npm run build
@@ -139,6 +144,7 @@ defaultpath=/home/UserName/filesToDownload
 ## Changes
 
 Apr 28/19
+- run under Node.js v10 LTS
 - upgraded to Electron v3.1.8; could not upgrade Electron to v5.0.0 because the browser's default double-click hanlder is run before the user defined handler 
 - upgraded to Electron Package Manager v13.1.1 
 - added mv (https://github.com/andrewrk/node-mv) because fs.rename fails between drives and the file system's move command fails with certain file names 
