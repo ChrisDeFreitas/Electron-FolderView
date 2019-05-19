@@ -22,7 +22,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - create zero length files; when a folder is selected this function will delete all files in sub-folders but sub-folders will remain
 - export lists of file in various text file formats
 - pathBar dialog: handy dialog for selecting a folder
-
+- rename dialog: handy tools for renaming a file
 
 ## App Notes
 1. Install:
@@ -63,7 +63,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 5. Keyboard Shortcuts
 		see keyboardshortcuts.txt
 
-6. commandline switches
+6. Commandline switches
     * handled by "argv-to-object"
     * if "--path" option not supplied app looks to commandline arguments for path, for example:
 				\> electron main.js c:\users\pictures	--fullscreen=true --layout=cols
@@ -114,9 +114,9 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- BulkOps dialog: add rename function to work with sets of files
+- BulkOps dialog: add rename function to work with a list of files
 - BulkOps dialog: create async copy operation
-- create dialog: view keyboardshortcuts.txt
+- create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
 - SFTP dialog: sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
@@ -125,8 +125,10 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ## Changes
 
 May 10/2019
-Changes primarily make it easier to copy/delete/edit/move/rename folder items.  After many years of use its a new direction for the application.
+
+Primarily made it easier to copy/delete/edit/move/rename folder items.  After many years of use its a new direction for the application.
 And it seems to be working pretty well.  With the new rename dialog, I've gone rename crazy (perhaps due to years of trauma with Windows Explorer: F2, Home, delete, delete, etc)
+
 - copying folders now works
 - removed keyboard shortcuts: c(col mode), r(row mode), s(scroll), v(vert mode), w(wall mode); use Alt+ combintaions
 - showSlideCaptions application argument: enabled and documented, default=true; displays captions filename, dimensions, size in slideshow
@@ -160,7 +162,7 @@ And it seems to be working pretty well.  With the new rename dialog, I've gone r
 - Delete function: if item in selectList, will open bulkOps
 - Delete function: now activated by "Delete" key
 - BulkOps dialog: added "Auto Mode" checkbox, disables confirmation and closes dialog after selected operation completes.
-- BulkOps dialog: automode is OFF only when opened via Tools/Bulk Operations context menu
+- BulkOps dialog: automode is OFF only when opened via "Tools/Bulk Operations" context menu
 - BulkOps dialog: tried to make interface easier to use
 - BulkOps dialog: many bug fixes
 - Tools/"Bulk Operations" context menu: will use selectList if item in list; default to autoMode = false
@@ -297,4 +299,5 @@ Apr 4/17:
 Good Luck!
 
 Chris
+
 chrisd@europa.com
