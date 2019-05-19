@@ -28,38 +28,30 @@ This is a work in progress.  Feel free to use and modify as you wish.
 1. Install:
     - Windows only; I use it on Win81 and Win7
     - requires Node.js be installed on your system (https://nodejs.org/)
-    - download to a local folder:
-
-        \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView
-
-        \> cd Electron-FolderView
-
-    - to use with a global installation of Electron:
-
-        \> npm install electron -g
-
-    - install required packages (installs local Electron if not installed globally):
-
-        \> npm install
-
-    - if you want to generate an executable, install Electron Package Manager:
-
-        \> npm install electron-packager -g
+    - download to a local folder: <br>
+        \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView<br>
+        \> cd Electron-FolderView<br>
+    - to use with a global installation of Electron:<br>
+        \> npm install electron -g<br>
+    - install required packages (installs local Electron if not installed globally):<br>
+        \> npm install<br>
+    - if you want to generate an executable, install Electron Package Manager:<br>
+        \> npm install electron-packager -g<br>
 
 2. Test:
     - the test script is not included as it is specific to my sytem
     - create this batch file to execute your tests: scripts/testFolderView.bat
-    - then run
+    - then run<br>
  			  \> npm run test
 
 3. Execute main.js:
-    - with a local installation of Electron
-        \> "node_modules/electron/dist/electron.exe" main.js
-    - with a global installation of Electron
-        \> electron main.js
+    - with a local installation of Electron<br>
+        \> "node_modules/electron/dist/electron.exe" main.js<br>
+    - with a global installation of Electron<br>
+        \> electron main.js<br>
 
-4. Build FolderView.exe:
-    \> npm run build
+4. Build FolderView.exe:<br>
+    \> npm run build<br>
     * the app is built with Electron Packager so it can be used as a regular Windows program.
     * Electron Packager must be install globally:  npm install electron-packager -g
     * npm executes "build..." scripts from package.json: npm run build
