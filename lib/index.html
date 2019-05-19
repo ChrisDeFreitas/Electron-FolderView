@@ -99,6 +99,7 @@ function init() {
 	console.log(`scale: ${ui.args.scale}`)
 	console.log(`scroll: ${ui.args.scroll}`)
 	console.log(`shuffle: ${ui.args.shuffle}`)
+	console.log(`showSlideCaptions: ${ui.args.showSlideCaptions}`)
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
 
@@ -106,9 +107,15 @@ function init() {
 	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
 	ui.gridLoad(lastLayoutMode)
+//	document.querySelector('#obj0').focus()
 
+/* code moved to ui.init()
 	document.addEventListener('keydown', (event) => {
-		if(event.altKey===true) {
+		console.log('keydown', event.key, event.ctrlKey, event.target.id)
+		if(event.target.id == ''){	//nothing selected, check for delete key to delete item
+			
+		}
+		if(event.altKey===true) {		//handle MainMenu://Order/Folders/...
 			if(event.shiftKey===true) {
 				const key = event.key;
 				if(key==='F'){
@@ -130,10 +137,10 @@ function init() {
 			}
 		}
 	})
-
-	window.onpopstate = function(event) {
-	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-	}
+*/
+//	window.onpopstate = function(event) {
+//	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+//	}
 
 	//renderer.bulk()
 }
@@ -158,10 +165,22 @@ function setGalleryDelay(val){
 	}
 /*	.grid-item:hover {border:1px solid whitesmoke}*/
 	.gridItemSelected{ border:1px solid #f00; }
+	.gridItemMultiSelect{ border:1px dashed #0f0; }
 	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
 	video{cursor:pointer; margin:0 auto; /*height:250px*/; }
 	.selGalleryDelay{padding:0; }
 	.selGalleryDelay button{ display:block; text-align:center; width:7em; }
+	.imgCaption {
+    background-color: #f1e487;
+    color: rgb(51, 51, 51);
+    border: 0px none;
+    border-radius: 0.25em;
+    font-family: arial;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    outline: 0;
+    z-index: 1500;
+	}
 </style>
 </head>
 <body onload='init()'>
@@ -246,13 +265,20 @@ function setGalleryDelay(val){
 
 <style>
 .dlgBulk{}
+.dlgBulk .dlgFooter button{ font-size:0.9em; border-radius:0.25em; font-weight:bold; padding:0.5em 1em; }
+.dlgBulk .dlgFooter button:hover{ color:#F1E487; text-shadow:1px 1px 2px #888;}
+.dlgBulk .dlgFooter #btn1,
+.dlgBulk .dlgFooter #btn4{ margin-right:1em;}
+#lblBulkAutoMode{ cursor:pointer; }
 .divBulkOptions{ color:#ffaf00; font-weight:bold; margin:0.5em 0; }
 .divBulkOptions input{ padding:0; vertical-align:middle;  }
 .divBulkOptions button{ cursor:pointer; font-size:0.8em; padding:2px 4px;  }
+#divBulkOptCount{ display:inline-table; text-align:right; position:absolute; right:20px; }
 #inpBulkDest{ width:72%; }
-#divBulkList{background:white; margin:0 0 0.5em 0; max-height:40vh; overflow:auto; padding:0.25em 0 0 0; }
-#divBulkList label{ cursor:pointer; display:block; }
-#divBulkList label input{ vertical-align:middle; }
+#divBulkList{background:white; margin:0 0 0.5em 0; max-height:25vh; min-height:10em; overflow:auto; padding:0.25em 0 0 0; }
+#divBulkList label{ cursor:pointer; display:block; font-size:1.1em; padding:0 0 0.1em 0.5em; }
+#divBulkList label input{ cursor:pointer; margin-top:1px; vertical-align:middle; }
+.lblBulkListCounter{display:inline-table; width:1.5em; text-align:right; }
 
 .dlgRename label{ color:#ffaf00; }
 .dlgRename label input{ color:#333; }

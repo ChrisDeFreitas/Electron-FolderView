@@ -6,7 +6,7 @@ const url = require('url')
 
 const electron = require('electron')
 const {app, BrowserWindow/*, dialog,  globalShortcut*/} = electron
-const sizeOf = require(__dirname+'/node_modules/image-size')
+const imgDimensions = require(__dirname+'/node_modules/image-size')
 
 exports.startTime = Date.now()
 
@@ -16,7 +16,7 @@ var argmap = {
 		descending:{keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
 		devtools:{	keypath:'devtools', 	type:'boolean', default:false },
 		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)" },
-		fontsize:{	keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
+		fontsize:{	keypath:'fontsize', 	type:'string',  default:'20px',	notes:'set the default font size for the document.' },
 		folders:{		keypath:'folders',	type:'string', default:'first', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 		height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
@@ -24,14 +24,14 @@ var argmap = {
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
+		scale:{				keypath:'scale',			type:'number',  default:0.8, range:{greaterThan:0}, notes:"scale size of grid items." },
 		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
 		sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
 		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+		showSlideCaptions:{	keypath:'showSlideCaptions', type:'boolean',	default:true,	notes:"Display slideshow captions" },
 		width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 var args = argtoobj( argmap );
-//console.log(args)
 
 //allow logging to main browser window
 Object.defineProperty(global, '__stack', {
@@ -74,7 +74,7 @@ var mainWindow=null
 var isElectron = (app!=undefined)
 var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
 
-if(isElectron===false){	//nodejs functionality
+if(isElectron===false){	//nodejs functionality -- not working/useful these days
 	log('nodejs app running')
 	var fldrobj = parseArgs()
 	var htmlfile = htmlGen(fldrobj)
@@ -198,21 +198,23 @@ function fldrObjGen(file, simple) {
 		return {args:args, exts:{}, fldr:file, items:[]}
 	if(simple== undefined) simple = false
 	
-	var exts={}
-	var defaultfile = path.basename(file)
-	var folder = path.dirname(file)
-	var stat = safeLstat(file)	//fs.lstatSync(file)
+	let exts={},
+			defaultfile = '',
+			folder = '',
+			stat = safeLstat(file)
 	if(stat!==null){
 		if(stat.isDirectory()==true){
 			file = pathTrailingSlash(file)
-			log('fldrObjGen(): path is a folder')
-			defaultfile = ''
+			//log('fldrObjGen(): path is a folder')
+			//defaultfile = ''
 			folder = file
 		}	else {
-			log('fldrObjGen(): path is a file')
+			//log('fldrObjGen(): path is a file')
 			if(simple===true){
 				return {fldr:file, items:[]}
 			}
+			defaultfile = path.basename(file)
+			folder = path.dirname(file)
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
@@ -223,16 +225,16 @@ function fldrObjGen(file, simple) {
 	var defaultImageName=null
 	var defaultImageNum=null
 	var ferrors = []
+	var dirname__ = __dirname.replace(/\\/g,'/')
 	for(var key in fls){
-		var val = fls[key]
-		var ext = path.extname(val).toLowerCase()
-		var fn = path.basename(val)
-		var fullfilename = path.resolve(folder, val),
-		 		fullfilenameFixed = fullfilename.replace(/\\/g,'/')
+		let val = fls[key],
+				ext = path.extname(val).toLowerCase(),
+				fn = path.basename(val),
+				posixpath = path.join(folder, val).replace(/\\/g,'/')
 
-		stat = safeLstat(fullfilename)	//fs.lstatSync( fullfilename )
+		stat = safeLstat(posixpath)	
 		if(stat===null) {
-			ferrors.push(fullfilename)
+			ferrors.push(posixpath)
 			continue
 		}
 		if(simple === true){
@@ -251,20 +253,20 @@ function fldrObjGen(file, simple) {
 			defaultImageNum = id	//image in argv displayed when web page opens
 			console.log('defaultImageNum:',defaultImageNum, defaultImageName)
 		}
-		var dirname__ = __dirname.replace(/\\/g,'/')
+
 		var obj = {
 			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
 			//isFile:stat.isFile(),
-			path: fullfilenameFixed,
+			path: posixpath,
 			pid: id,
-			src: 'file:///'+fullfilenameFixed,
-			//src: function(){return 'file:///'+this.path.replace(/\\/g,'/'), },
+			src: 'file:///'+posixpath,	
 			title: val,
 			type: ext
 		}
 		if(obj.isDirectory===true){				//folders
-			obj.path = pathTrailingSlash(obj.path)
+			if(obj.path[obj.path -1] != path.posix.sep)
+				obj.path += path.posix.sep
 			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
 			obj.w = 320
 			obj.h = 200
@@ -272,7 +274,7 @@ function fldrObjGen(file, simple) {
 		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
 			try{
-				var dim = sizeOf(fullfilename)
+				var dim = imgDimensions(posixpath)
 				obj.w = dim.width
 				obj.h = dim.height
 			}
@@ -410,7 +412,6 @@ function browserLaunch(fldrobj) {
 function pathTrailingSlash(str){	//verifies path ends in a trailing slash
 	//copied from lib/ui.js
 	str = str.trim().replace(/\\/g,'/')
-	//if(str[str.length-1]!='\\') str += '\\'
 	if(str[str.length-1]!='/') str += '/'
 	return str
 }
