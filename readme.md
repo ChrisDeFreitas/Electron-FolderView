@@ -129,6 +129,7 @@ May 10/2019
 Primarily made it easier to copy/delete/edit/move/rename folder items.  After many years of use its a new direction for the application.
 And it seems to be working pretty well.  With the new rename dialog, I've gone rename crazy (perhaps due to years of trauma with Windows Explorer: F2, Home, delete, delete, etc)
 
+- added screenshot of new rename dialog
 - copying folders now works
 - removed keyboard shortcuts: c(col mode), r(row mode), s(scroll), v(vert mode), w(wall mode); use Alt+ combintaions
 - showSlideCaptions application argument: enabled and documented, default=true; displays captions filename, dimensions, size in slideshow
