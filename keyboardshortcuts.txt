@@ -19,7 +19,7 @@ Grid Navigation
 ------------------------------
 Key               | Function
 ------------------|-----------
-Up Arrow          | Scroll up 
+Up Arrow          | Scroll up
 Down  Arrow       | Scroll down
 Home              | Scroll to start of grid
 End               | Scroll to end of grid
@@ -44,24 +44,24 @@ Item Functions
 ------------------------------
 Key               | Function
 ------------------|-----------
-C                 | Copy item or selectedItems
-M                 | Move item or selectedItems
-Delete            | Delete item or selectedItems
+C                 | Copy item or selectList
+M                 | Move item or selectList
+Delete            | Delete item or selectList
 Enter             | Open slideshow with item currently selected (red border)
 Alt+Up    Arrow   | Increase display size by .1
 Alt+Down  Arrow   | Decrease display size by .1
 Alt+Left  Arrow   | Set display scale to .3
 Alt+Right Arrow   | Set display scale to 1
-Left Click   			| Empty selectedItems and perform default click action for item
-Ctrl+Left Click   | Toggle item in selectedItems (green border)
-Alt+A / Ctrl+A 		| If selectedItems empty then select all items else empty selectedItems
-Drop on folder    | Open BulkOperations dialog with selected item or list
+Left Click        | Empty selectList and perform default click action for item
+Ctrl+Left Click   | Toggle item in selectList (green border)
+Alt+A / Ctrl+A    | If selectList empty then select all items else empty selectList
+Drop on folder    | Open BulkOperations dialog with selected item or selectList
 
 Slideshow Navigation
 ------------------------------
 Key               | Function
 ------------------|-----------
-C                 | Copy item 
+C                 | Copy item
 M                 | Move item
 Delete            | Delete current item
 Enter             | Toggle start/close slideshow
