@@ -27,13 +27,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 ## App Notes
 1. Install:
     - Windows only; I use it on Win81 and Win7
-    - requires Node.js be installed on your system
+    - requires Node.js be installed on your system (https://nodejs.org/)
     - download to a local folder:
         \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView
         \> cd Electron-FolderView
-    - to use with a global installation of electron:
+    - to use with a global installation of Electron:
         \> npm install electron -g
-    - install required packages (installs local electron if not installed globally):
+    - install required packages (installs local Electron if not installed globally):
         \> npm install
     - if you want to generate an executable, install Electron Package Manager:
         \> npm install electron-packager -g
@@ -124,7 +124,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
-May 10/19
+May 10/2019
 Changes primarily make it easier to copy/delete/edit/move/rename folder items.  After many years of use its a new direction for the application.
 And it seems to be working pretty well.  With the new rename dialog, I've gone rename crazy (perhaps due to years of trauma with Windows Explorer: F2, Home, delete, delete, etc)
 - copying folders now works
