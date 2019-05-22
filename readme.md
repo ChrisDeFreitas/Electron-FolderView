@@ -128,7 +128,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ## Changes
 
 
-May 19/2019
+May 21/2019 (or May 112/2019)
 
 Lots of bug fixes and refactoring for the many changes in the last update--expect more because of the number of changes.
 Also created an execution que (execQue.js) to copy files asynchronously, thereby freeing the UI and allowing an opportunity for performance optimization.
