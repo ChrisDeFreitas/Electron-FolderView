@@ -25,6 +25,9 @@
 <script src="file:///C:/website/node/imageView/lib/ui.js"></script>
 <script src="file:///C:/website/node/imageView/lib/pathBar.js"></script>
 <script src="file:///C:/website/node/imageView/lib/dlgSftp.js"></script>
+<script src="file:///C:/website/node/imageView/lib/execQue.js"></script>
+<script src="file:///C:/website/node/imageView/lib/dlgBulk.js"></script>
+<script src="file:///C:/website/node/imageView/lib/dlgRename.js"></script>
 
 <script>
 //////do not delete: vars populated by main.js:
@@ -69,7 +72,7 @@ function init() {
 		, title:'Select Folder to View'
 		,	onSelect: function(path){
 				dlgFactory.bbl('Loading items in folder: '+path)
-				ui.var.lastOrder=ui.args.order
+//				ui.var.lastOrder=ui.args.order
 				renderer.folderLoad(path)
 			}
 		})
@@ -107,43 +110,8 @@ function init() {
 	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
 	ui.gridLoad(lastLayoutMode)
-//	document.querySelector('#obj0').focus()
-
-/* code moved to ui.init()
-	document.addEventListener('keydown', (event) => {
-		console.log('keydown', event.key, event.ctrlKey, event.target.id)
-		if(event.target.id == ''){	//nothing selected, check for delete key to delete item
-			
-		}
-		if(event.altKey===true) {		//handle MainMenu://Order/Folders/...
-			if(event.shiftKey===true) {
-				const key = event.key;
-				if(key==='F'){
-					var cur = ui.args.folders
-					if(cur==='' || cur==='default') renderer.folderMenuClick('first')
-					else if(cur==='first') renderer.folderMenuClick('hidden')
-					else if(cur==='hidden') renderer.folderMenuClick('last')
-					else if(cur==='last') renderer.folderMenuClick('default')
-					return ui.eventStop(event)
-				}else
-				if(key==='O'){
-					var cur = ui.var.lastOrder
-					if(cur==='' || cur==='date') renderer.ordMenuClick('name')
-					else if(cur==='name') renderer.ordMenuClick('size')
-					else if(cur==='size') renderer.ordMenuClick('type')
-					else if(cur==='type') renderer.ordMenuClick('date')
-					return ui.eventStop(event)
-				}
-			}
-		}
-	})
-*/
-//	window.onpopstate = function(event) {
-//	  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-//	}
-
-	//renderer.bulk()
 }
+
 function setGalleryDelay(val){
 	galleryDelay=val
 	document.getElementById('btnGalleryDelay').innerHTML=(val/1000)+'s'
@@ -261,7 +229,7 @@ function setGalleryDelay(val){
 
 </div>
 
-<div id=grid class="grid">&nbsp;</div>
+<div id=grid class="grid" onclick='gridClick(event)'>&nbsp;</div>
 
 <style>
 .dlgBulk{}
@@ -283,6 +251,8 @@ function setGalleryDelay(val){
 .dlgRename label{ color:#ffaf00; }
 .dlgRename label input{ color:#333; }
 /*.dlgRename .dlgBody i{ font-size:1em; height:20px; width:20px;  }*/
+.dlgRename .dlgBody{ margin-bottom:-2em; }
+
 
 .dlgSftpParent, .dlgBulk, .dlgRename{
 	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');

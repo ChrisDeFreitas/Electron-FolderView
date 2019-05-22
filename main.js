@@ -57,7 +57,7 @@ function log(msg, lineno){
 		console.log(msg)
 		return
 	}
-	if(lineno!==undefined)
+	if(lineno!=null)
 		mainWindow.webContents.send('applog',`${__filename}, Line #${lineno}:`)
 	mainWindow.webContents.send('applog',msg)
 }
@@ -192,29 +192,27 @@ function scaleFix(fileObj){
 }
 function fldrObjGen(file, simple) {
 	//assume: simple != true return complex data
-	//				else return {fldr:file, fileErrors:[], items:[ {basename, isDirectory, date, size}, ...] }
+	//				else return {fldr:file, fileErrors:[], isfile:boolean, items:[ {basename, isDirectory, date, size}, ...] }
 	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
-		return {args:args, exts:{}, fldr:file, items:[]}
+		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:['Error, file argument is empty.']}
 	if(simple== undefined) simple = false
-	
+
 	let exts={},
-			defaultfile = '',
 			folder = '',
+			defaultfile = '',
+			isDirectory = true,
 			stat = safeLstat(file)
 	if(stat!==null){
 		if(stat.isDirectory()==true){
 			file = pathTrailingSlash(file)
-			//log('fldrObjGen(): path is a folder')
-			//defaultfile = ''
 			folder = file
 		}	else {
-			//log('fldrObjGen(): path is a file')
-			if(simple===true){
-				return {fldr:file, items:[]}
-			}
-			defaultfile = path.basename(file)
+			if(simple===true)
+				return {fldr:file, items:[], isDirectory:false, fileErrors:[]}
 			folder = path.dirname(file)
+			defaultfile = path.basename(file)
+			isDirectory = false
 		}
 	}
 	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
@@ -232,15 +230,15 @@ function fldrObjGen(file, simple) {
 				fn = path.basename(val),
 				posixpath = path.join(folder, val).replace(/\\/g,'/')
 
-		stat = safeLstat(posixpath)	
+		stat = safeLstat(posixpath)
 		if(stat===null) {
-			ferrors.push(posixpath)
+			ferrors.push(`Could not stat: [${posixpath}]`)
 			continue
 		}
 		if(simple === true){
 			var obj = {
-				basename:fn, 
-				date:stat.mtime, 
+				basename:fn,
+				date:stat.mtime,
 				size:stat.size,
 				isDirectory:stat.isDirectory()
 			}
@@ -260,7 +258,7 @@ function fldrObjGen(file, simple) {
 			//isFile:stat.isFile(),
 			path: posixpath,
 			pid: id,
-			src: 'file:///'+posixpath,	
+			src: 'file:///'+posixpath,
 			title: val,
 			type: ext
 		}
@@ -306,12 +304,12 @@ function fldrObjGen(file, simple) {
 	}
 	var result = null
 	if(simple===true){
-		result = {fldr:file, items:fls2, fileErrors:ferrors}
+		result = {fldr:file, items:fls2, fileErrors:ferrors, isDirectory:isDirectory}
 	}
 	else{
 		args.defaultImageName = defaultImageName
 		args.defaultImageNum = defaultImageNum
-		result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors}
+		result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors, isDirectory:isDirectory}
 	}
 	return result
 }

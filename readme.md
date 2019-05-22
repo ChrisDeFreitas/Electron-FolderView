@@ -18,11 +18,12 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - clicking images starts slideshow
 - slideshow functions: copy, delete, fullscreen, move, zoom, auto play, auto play delay
 - "Tools/Open With" context menu: run any application on disk with selected file as argument
-- SFTP functions: browse, delete, download, minimize by clicking dialog title bar
+- SFTP functions: auto download, browse, delete, download, minimize by clicking dialog title bar
 - create zero length files; when a folder is selected this function will delete all files in sub-folders but sub-folders will remain
 - export lists of file in various text file formats
 - pathBar dialog: handy dialog for selecting a folder
 - rename dialog: handy tools for renaming a file
+- log messages written to Javascript console (F12 or Ctrl+Shift+i)
 
 ## App Notes
 1. Install:
@@ -114,8 +115,10 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
+- watch execQue for instability/bugs/optimizations
+- create a way to monitor jobs in execQue, especially needed when copying large files
+- expand the ability to execute applications: allow command line switches
 - BulkOps dialog: add rename function to work with a list of files
-- BulkOps dialog: create async copy operation
 - create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
@@ -123,6 +126,30 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 
 ## Changes
+
+
+May 19/2019
+
+Lots of bug fixes and refactoring for the many changes in the last update--expect more because of the number of changes.
+Also created an execution que (execQue.js) to copy files asynchronously, thereby freeing the UI and allowing an opportunity for performance optimization.
+The que will eventually be used to spawn all commands for now I'm watching it for bugs and optimizations.
+
+- Recent menu: added to main menu for quick access to previosly opened folders
+- dlgRename: reload button was incrementing file name before replacing
+- dlgRename: fixed bug where the replace function was working on last file name instead of the current
+- dlgRename: refactored
+- Order/Shuffle menu: moved from Layout menu and changed to checkbox so it can override other sort orders
+- Layout/Folders menu: moved from Order menu
+- Layout/Show Hidden menu: deleted because it duplicates "Filter/Show All" menu
+- "Open With/Find..." context menu: fixed error that was attaching trailing slash to paths
+- execQue.js: implemented to control the execution of console commands
+- execQue.js: ui.var.execQueMax controls number of parallel commands executed
+- execQue.js: found that when copying files, execQueMax=1 gives best performance; testing with 4 folders ~5GB, found ~15% faster than Explorer dragging and dropping the same folders
+- copy menu: now using execQue
+- dlgBulk: now using execQue for copying files
+- dlgBulk: bug fixes and refactored
+- slideshow: new feature allows viewing only items in selectList (if item clicked in selectList then only display images in selectList, else display all images)
+- grid: clicking background removes all selections
 
 May 10/2019
 
@@ -153,7 +180,7 @@ And it seems to be working pretty well.  With the new rename dialog, I've gone r
 - Rename dialog: added functions to select/unselect text
 - Rename dialog: added search and replace function
 - ui.var.selectList: implemented code to manage a subset of items, items in list have a green border, last item added has red border (a standard selection)
-- Filter/Selected All menu (Alt+A/Ctrl+A): if selectList is empty, add all items to selectList, else empty selectList
+- Filter/Selected All menu (Alt+A/Ctrl+A): if selectList is empty and itemselected is null, add all items to selectList, else empty selectList and/or unselect item
 - Ctrl+Left Click: Toggle assigning to selectList
 - Left Click: Empty selectList, execute default click action for item
 - Copy context menu: new function to copy items or selectList, keyboard shortcut = "c"

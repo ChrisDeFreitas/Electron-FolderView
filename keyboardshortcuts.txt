@@ -27,7 +27,7 @@ PageUp            | Scroll grid up one screen
 PageDown          | Scroll grid down one screen
 Alt+S             | Toggle grid auto-scroll
 
-Grid Item Arrangement
+Grid Item Layout
 ------------------------------
 Key               | Function
 ------------------|-----------
@@ -54,7 +54,7 @@ Alt+Left  Arrow   | Set display scale to .3
 Alt+Right Arrow   | Set display scale to 1
 Left Click        | Empty selectList and perform default click action for item
 Ctrl+Left Click   | Toggle item in selectList (green border)
-Alt+A / Ctrl+A    | If selectList empty then select all items else empty selectList
+Alt+A / Ctrl+A    | If selectList empty and itemselected=null then select all items, else empty selectList and/or unselect item
 Drop on folder    | Open BulkOperations dialog with selected item or selectList
 
 Slideshow Navigation
