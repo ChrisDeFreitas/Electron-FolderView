@@ -115,8 +115,8 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
+- add error notification/handling to dlgExecQ; at this point an error will probably require a page reload--haven't tested this yet, as copy function is very stable.
 - watch execQue for instability/bugs/optimizations
-- create a way to monitor jobs in execQue, especially needed when copying large files
 - expand the ability to execute applications: allow command line switches
 - BulkOps dialog: add rename function to work with a list of files
 - create new dialog: view keyboardshortcuts.txt
@@ -127,6 +127,16 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+
+May 22/2019
+
+Created a dialog box for execQue, dlgExecQ, to display status of commands executed. Still monitoring execQue; the limit of ui.var.execQueMax=1
+still provides best performance for large files--probably due to my laptop hardware.
+
+- execQue: added dlgExecQ to display status of commands that are executed
+- pathBar: decreased hoverDelayMs for menu buttons, so their lists popup faster
+- recent list: list size now controlled by ui.var.recentListMax; increased to 25 from 15
+- dlgBulk: tweaks
 
 May 21/2019 (or May 112/2019)
 

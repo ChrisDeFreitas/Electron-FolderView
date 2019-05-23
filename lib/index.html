@@ -110,6 +110,20 @@ function init() {
 	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
 	ui.gridLoad(lastLayoutMode)
+/*
+	dlgFactory.tac2({
+		to:{
+			ctrl:document.body,
+			from:'topright'
+		}
+	, from:'topright'
+	,	html:`<div id=divExecQue title='List of commands currently running'>
+		<div id=eqLabel>Remaining commands: 3/4</div>
+		<div class=eqStatus>Copying xxx.yyy xxx.yyy xxx.yyy xxx.yyy</div>
+		<div class=eqStatus>Copying xxx.yyy</div>
+	</div>`
+	})
+*/
 }
 
 function setGalleryDelay(val){
@@ -118,6 +132,10 @@ function setGalleryDelay(val){
 }
 </script>
 <style>
+	#divExecQue{ background-color:transparent;	cursor:default; text-align:center; margin:1em 0 0 0; padding:0; max-width:15em; width:15em; }
+	#eqLabel{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
+	.eqStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; padding:0.25em; width:100%; }
+
 	body{
 		background: black repeat url('file:///C:/website/node/imageView/resources/tileable-fabric-textures-1.jpg');
 		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0;
