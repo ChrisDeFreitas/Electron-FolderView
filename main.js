@@ -24,7 +24,7 @@ var argmap = {
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
 		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-		scale:{				keypath:'scale',			type:'number',  default:0.8, range:{greaterThan:0}, notes:"scale size of grid items." },
+		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
 		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
 		sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
 		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
@@ -73,6 +73,11 @@ log('Init..')
 var mainWindow=null
 var isElectron = (app!=undefined)
 var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
+
+let imgtypes = ['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
+//let medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
+var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mp5','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
+let audtypes = ['.flac','.mp3','.wma']
 
 if(isElectron===false){	//nodejs functionality -- not working/useful these days
 	log('nodejs app running')
@@ -191,8 +196,8 @@ function scaleFix(fileObj){
 	}
 }
 function fldrObjGen(file, simple) {
-	//assume: simple != true return complex data
-	//				else return {fldr:file, fileErrors:[], isfile:boolean, items:[ {basename, isDirectory, date, size}, ...] }
+	//assume: simple === true return {fldr:file, fileErrors:[], isDirectory:boolean, items:[ {basename, isDirectory, date, size}, ...] }
+	//				else returns items[{}, ...] with file type info
 	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
 		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:['Error, file argument is empty.']}
@@ -215,8 +220,7 @@ function fldrObjGen(file, simple) {
 			isDirectory = false
 		}
 	}
-	var imgtypes =['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
-	var medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
+
 	var fls = fs.readdirSync(folder)
 	var fls2 = []
 	var id=-1
@@ -249,13 +253,12 @@ function fldrObjGen(file, simple) {
 		if(defaultImageNum===null	&& defaultfile==fn) {
 			defaultImageName = fn
 			defaultImageNum = id	//image in argv displayed when web page opens
-			console.log('defaultImageNum:',defaultImageNum, defaultImageName)
 		}
 
 		var obj = {
 			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
-			//isFile:stat.isFile(),
+			mediaType: 'unknown',
 			path: posixpath,
 			pid: id,
 			src: 'file:///'+posixpath,
@@ -263,6 +266,7 @@ function fldrObjGen(file, simple) {
 			type: ext
 		}
 		if(obj.isDirectory===true){				//folders
+			obj.mediaType = 'folder'
 			if(obj.path[obj.path -1] != path.posix.sep)
 				obj.path += path.posix.sep
 			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
@@ -270,7 +274,8 @@ function fldrObjGen(file, simple) {
 			obj.h = 200
 			obj.type = 'folder'
 		}	else
-		if(imgtypes.indexOf(ext) >= 0){			//image types, not svg
+		if(imgtypes.indexOf(ext) >= 0){			//images, not svg
+			obj.mediaType = 'image'
 			try{
 				var dim = imgDimensions(posixpath)
 				obj.w = dim.width
@@ -281,18 +286,22 @@ function fldrObjGen(file, simple) {
 				obj.h = 100
 			}
 		}	else
-		if(medtypes.indexOf(ext) >= 0){			//media types
+		if(vidtypes.indexOf(ext) >= 0){			//video types
+			obj.mediaType = 'video'
 			obj.w = 320
 			obj.h = 200
 		}	else
-		if(obj.type=='youtube'){
-			html += `<iframe id="img${obj.pid}"	src="${obj.src}" frameborder="0" allowfullscreen></iframe>
-			<div style='padding:0; width:${300 *scale}px; overflow:hidden; text-overflow:ellipsis;'>${obj.basename}</div>`
-		} else
-		if(ext === '.svg'){							//svg files
+		if(audtypes.indexOf(ext) >= 0){			//audio types
+			obj.mediaType = 'audio'
 			obj.w = 320
 			obj.h = 200
-		}	else{			//handle other types
+		}	else
+		if(ext === '.svg'){									//svg files
+			obj.mediaType = 'svg'
+			obj.w = 320
+			obj.h = 200
+		}
+		else{			//handle other types
 			obj.src = 'file:///'+dirname__+"/resources/new_document_64.png"
 			obj.w = 320
 			obj.h = 200
@@ -314,19 +323,11 @@ function fldrObjGen(file, simple) {
 	return result
 }
 
-//function htmlGen(fldr, fls2, defaultImageNum, exts, layout, shuffle, scale, fontsize){
 function htmlGen(fldrobj){
-	var //fldr	= fldrobj.fldr,
-			//items	= fldrobj.items,
-			//defaultImageNum= fldrobj.defaultImageNum,
-			//exts	= fldrobj.exts,
-			args	= fldrobj.args
+	//assume: fldrobj is returned from: fldrObjGen(path, simple=false)
+	var args	= fldrobj.args
 			args.isElectron	= isElectron
 			args.path	= fldrobj.fldr
-			//layout	=args.layout,
-			//shuffle	=args.shuffle,
-			//scale		= args.scale,
-			//fontsize=args.fontsize
 
 	var outfolder = path.join(__dirname,'tmp')
 	if(fs.existsSync(outfolder)===false)
@@ -360,6 +361,7 @@ function htmlGen(fldrobj){
 	return outfile
 }
 function browserLaunch(fldrobj) {
+	//assume: fldrobj is returned from: fldrObjGen(path, simple=false)
 	var args 		= fldrobj.args
 	if(args.scale===undefined) scale = 1
 	var win = new BrowserWindow({

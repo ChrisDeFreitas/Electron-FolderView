@@ -109,7 +109,7 @@ function init() {
 	console.log('\n')	//end of app args
 	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
-	ui.gridLoad(lastLayoutMode)
+	gridLoad(lastLayoutMode)
 /*
 	dlgFactory.tac2({
 		to:{
@@ -134,22 +134,16 @@ function setGalleryDelay(val){
 <style>
 	#divExecQue{ background-color:transparent;	cursor:default; text-align:center; margin:1em 0 0 0; padding:0; max-width:15em; width:15em; }
 	#eqLabel{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
-	.eqStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; padding:0.25em; width:100%; }
+	.eqStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; overflow-wrap:break-word; padding:0.25em; width:100%; }
 
 	body{
 		background: black repeat url('file:///C:/website/node/imageView/resources/tileable-fabric-textures-1.jpg');
 		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0;
 		text-align:center;
 	}
-	#grid{
-		 border:0; margin:0 auto; outline:0; padding:0; vertical-align:top;
-	 }
-	.grid-item {
-		outline:0;	border:1px solid transparent;
-/*	outline:1px solid transparent;	border:1px solid transparent;*/
-		text-align:center;	vertical-align:middle;
-	}
-/*	.grid-item:hover {border:1px solid whitesmoke}*/
+	#grid{ border:0; margin:0 auto; outline:0; padding:0; vertical-align:top; }
+	.grid-item { outline:0; border:1px solid transparent;	text-align:center; vertical-align:middle; }
+	.grid-itemCaption { padding:0 0.5em; margin:0 auto; overflow-wrap:break-word; text-overflow:ellipsis; }
 	.gridItemSelected{ border:1px solid #f00; }
 	.gridItemMultiSelect{ border:1px dashed #0f0; }
 	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
@@ -203,18 +197,18 @@ function setGalleryDelay(val){
 
                 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
-                <!--button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button-->
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
 								<!-- custom funcs -->
 								<style>
 									.btnGallery{background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.5em; font-weight:bold; margin:0.6em 0 0 0;}
 									.btnGallery:hover{color:#fff}
 								</style>
-								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onmousedown='galleryImageScale(null, false)'>&minus;</button>
-								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onmousedown='galleryImageScale(null, true)'>&plus;</button>
-								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onmousedown='galleryPlay(true); return event.preventDefault;'>&sc;</button>
-								<button id=btnGalleryDelay class=btnGallery onmousedown='if(dlgGalleryDelay===null) galleryDelayGet(); else dlgFactory.close(dlgGalleryDelay);' style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.'>15s</button>
-								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onmousedown='galleryPlay(false); return event.preventDefault;'>&pr;</button>
+								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onclick='galleryImageScale(null, false)'>&minus;</button>
+								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onclick='galleryImageScale(null, true)'>&plus;</button>
+								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onclick='galleryPlay(true); return event.preventDefault;'>&sc;</button>
+								<button id=btnGalleryDelay class=btnGallery onclick='if(dlgGalleryDelay===null) galleryDelayGet(); else dlgFactory.close(dlgGalleryDelay);' style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.'>15s</button>
+								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onclick='galleryPlay(false); return event.preventDefault;'>&pr;</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->
@@ -231,7 +225,7 @@ function setGalleryDelay(val){
                 <div class="pswp__share-tooltip"></div>
             </div>
 
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            <button class="pswp__button pswp__button--arrow--left" title="Prior (arrow left)">
             </button>
 
             <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">

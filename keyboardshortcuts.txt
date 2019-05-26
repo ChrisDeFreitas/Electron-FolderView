@@ -31,13 +31,13 @@ Grid Item Layout
 ------------------------------
 Key               | Function
 ------------------|-----------
-Alt+C             | col mode: arrange items in three columns
+Alt+C             | col mode: arrange items in three columns (default)
 Alt+R             | row mode: arrange items in rows
 Alt+V             | vert mode: arrange items in a single column with item details
 Alt+W             | wall mode: arrange items like posters on a wall
 Alt+1 (through 9) | Toggle display of detected file extensions
 Alt+H             | Toggle hidden items
-Alt+Shift+F       | Toggle folder display to be "Default", "First", "Hidden", or "Last"
+Alt+Shift+F       | Toggle folder display through: "Default", "First", "Hidden", "Last"
 Alt+Shift+S       | Shuffle items: arrange items randomly
 
 Item Functions

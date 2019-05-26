@@ -66,7 +66,8 @@
   height: 100%;
   background: #000;
   opacity: 0;
-  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   will-change: opacity; }
 
@@ -96,8 +97,7 @@
   -ms-user-select: none;
       user-select: none;
   -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-}
+  -webkit-touch-callout: none; }
 
 .pswp__zoom-wrap {
   position: absolute;
@@ -137,10 +137,7 @@
   width: auto;
   height: auto;
   top: 0;
-  left: 0;
-  /*chris:20170101*/
-	transition:opacity 0.5s;
-}
+  left: 0; }
 
 /*
 	stretched thumbnail or div placeholder element (see below)

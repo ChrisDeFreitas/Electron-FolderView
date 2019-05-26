@@ -115,10 +115,10 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- add error notification/handling to dlgExecQ; at this point an error will probably require a page reload--haven't tested this yet, as copy function is very stable.
-- watch execQue for instability/bugs/optimizations
+- allow dlgExecQ to display error and warning messages.
+- watch execQue & dlgExecQ for instability/bugs/optimizations
 - expand the ability to execute applications: allow command line switches
-- BulkOps dialog: add rename function to work with a list of files
+- BulkOps dialog: add rename function to work against a group of files
 - create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
@@ -127,6 +127,16 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+
+May 26/2019
+
+Refactored ui.js/gridLoad() function and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion Electron.
+
+- slideshow: now using Photoswipe v4.1.3,
+- slideshow: removed animations so images display quicker; background is black, now longer translucent
+- ui.js/gridLoad(): refactored code that loads grid items
+- main.js/fldrLoad(): optimized code that reads folder items; this started back in the April 29 update or so
+- random UI and code tweaks
 
 May 22/2019
 
