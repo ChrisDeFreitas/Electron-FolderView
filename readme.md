@@ -130,7 +130,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 May 26/2019
 
-Refactored ui.js/gridLoad() function and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion Electron.
+Refactored ui.js/gridLoad() function and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion to Electron.
 
 - slideshow: now using Photoswipe v4.1.3,
 - slideshow: removed animations so images display quicker; background is black, now longer translucent
