@@ -11,19 +11,19 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 ## Features
 - main purpose is to view folder items
-- item functions: copy, clipboard..., delete, explore, open, move, rename, set image as background, zero
+- item functions: copy, clipboard..., delete, explore, folder size, open, move, rename, set image as background, zero
 - items displayed in a grid
-- grid functions: hide items, filter, folder up, last folder, order, scale, scroll, click an image to start slideshow, double-click item to launch with Windows' default application
+- grid functions: hide items, filter, folder up, last folder, order, scale, scroll, shuffle, click an image to start slideshow, double-click item to launch with Windows' default application
 - grid layouts: cols, rows, vert, wall
-- clicking images starts slideshow
-- slideshow functions: copy, delete, fullscreen, move, zoom, auto play, auto play delay
+- clicking an image opens slideshow
+- slideshow functions: copy, delete, fullscreen, move, zoom, auto play, set delay
 - "Tools/Open With" context menu: run any application on disk with selected file as argument
 - SFTP functions: auto download, browse, delete, download, minimize by clicking dialog title bar
 - create zero length files; when a folder is selected this function will delete all files in sub-folders but sub-folders will remain
-- export lists of file in various text file formats
+- export list of file properties as: CSV, JSON, m3u, txt
 - pathBar dialog: handy dialog for selecting a folder
 - rename dialog: handy tools for renaming a file
-- log messages written to Javascript console (F12 or Ctrl+Shift+i)
+- log messages are written to Javascript console (F12 or Ctrl+Shift+i)
 
 ## App Notes
 1. Install:
@@ -115,9 +115,9 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- allow dlgExecQ to display error and warning messages.
+- allow dlgExecQ to display error and warning messages
 - watch execQue & dlgExecQ for instability/bugs/optimizations
-- expand the ability to execute applications: allow command line switches
+- expand the ability to execute applications; allow command line switches
 - BulkOps dialog: add rename function to work against a group of files
 - create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
@@ -127,13 +127,23 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+Jun 1/2019
+
+- ui.var.dblClickDelay: manually handling dlbclick events because the default click/dblclick events are triggered at the same time. For example, double-clicking an image will also trigger the click event, thereby launching the slideshow while the shell associated application is run.
+- grid: double-clicking an image will now open it in the shell associated application
+- slideshow: now only handles keyboard events with it's event.target.id (pswpMain); update for Photoswipe v4.1.3
+- "Folder Size" menu: display folder and subfolder sizes and file counts via sizeable (https://github.com/comodinx/sizeable)
+- "Tools/Folder Size" context menu: display size of subfolders
+- dlgBulk: click dialog caption to rollup dialog
+- dlgRename: no longer defaults to "Autoload Items" as modified item is updated in place
+- dlgRename: arrow keys now work when slideshow open due to Photoswipe keyboard event update
 
 May 26/2019
 
-Refactored ui.js/gridLoad() function and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion to Electron.
+Refactored ui.js/gridLoad() and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion to Electron.
 
 - slideshow: now using Photoswipe v4.1.3,
-- slideshow: removed animations so images display quicker; background is black, now longer translucent
+- slideshow: removed animations so images display quicker; background is black, no longer translucent
 - ui.js/gridLoad(): refactored code that loads grid items
 - main.js/fldrLoad(): optimized code that reads folder items; this started back in the April 29 update or so
 - random UI and code tweaks
@@ -342,6 +352,7 @@ Apr 4/17:
 - http://photoswipe.com
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
 - https://github.com/mscdex/ssh2
+- https://github.com/comodinx/sizeable
 
 
 Good Luck!

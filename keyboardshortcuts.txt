@@ -70,3 +70,4 @@ Right Arrow       | Next image
 Left Arrow        | Prior image
 Ctrl+Up    Arrow  | Increase image size by .1
 Ctrl+Down  Arrow  | Decrease image size by .1
+Right Click       | Context menu

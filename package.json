@@ -37,6 +37,7 @@
     "isotope-packery": "^2.0.0",
     "mv": "^2.1.1",
     "packery": "^2.0.0",
+    "sizeable": "^0.1.4",
     "ssh2": "^0.5.5"
   },
   "devDependencies": {
