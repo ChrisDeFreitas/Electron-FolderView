@@ -129,6 +129,8 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 Jun 1/2019
 
+Mainly bug fixes. Added "Folder Size" menu. Tried to display videos in the slideshow put ran into some issues with Photoswipe's zoom function.
+
 - ui.var.dblClickDelay: manually handling dlbclick events because the default click/dblclick events are triggered at the same time. For example, double-clicking an image will also trigger the click event, thereby launching the slideshow while the shell associated application is run.
 - grid: double-clicking an image will now open it in the shell associated application
 - slideshow: now only handles keyboard events with it's event.target.id (pswpMain); update for Photoswipe v4.1.3
