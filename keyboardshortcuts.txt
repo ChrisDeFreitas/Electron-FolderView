@@ -11,6 +11,7 @@ F5           | Reload grid items from disk
 F6           | Change Folder
 F7           | Bulk Copy/Delete/Move
 F8/n         | Create new folder
+F9           | Folder size
 F11          | Fullscreen
 F12          | Dev Tools
 Ctrl+Shift+I | Dev Tools

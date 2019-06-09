@@ -28,6 +28,7 @@
 <script src="file:///C:/website/node/imageView/lib/execQue.js"></script>
 <script src="file:///C:/website/node/imageView/lib/dlgBulk.js"></script>
 <script src="file:///C:/website/node/imageView/lib/dlgRename.js"></script>
+<script src="file:///C:/website/node/imageView/lib/fileIcons.js"></script>
 
 <script>
 //////do not delete: vars populated by main.js:
@@ -95,6 +96,7 @@ function init() {
 	console.log(`fontSize: ${ui.args.fontsize}`)
 	console.log(`fullscreen: ${ui.args.fullscreen}`)
 	console.log(`height:  ${ui.args.height}`)
+	console.log('iconsOnly:', ui.args.iconsOnly)
 	console.log('items:', items)
 	console.log(`layout: ${ui.args.layout}`)
 	console.log(`order: ${ui.args.order}`)
@@ -110,20 +112,6 @@ function init() {
 	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
 	gridLoad(lastLayoutMode)
-/*
-	dlgFactory.tac2({
-		to:{
-			ctrl:document.body,
-			from:'topright'
-		}
-	, from:'topright'
-	,	html:`<div id=divExecQue title='List of commands currently running'>
-		<div id=eqLabel>Remaining commands: 3/4</div>
-		<div class=eqStatus>Copying xxx.yyy xxx.yyy xxx.yyy xxx.yyy</div>
-		<div class=eqStatus>Copying xxx.yyy</div>
-	</div>`
-	})
-*/
 }
 
 function setGalleryDelay(val){
@@ -133,12 +121,12 @@ function setGalleryDelay(val){
 </script>
 <style>
 	#divExecQue{ background-color:transparent;	cursor:default; text-align:center; margin:1em 0 0 0; padding:0; max-width:15em; width:15em; }
-	#eqLabel{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
-	.eqStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; overflow-wrap:break-word; padding:0.25em; width:100%; }
+	.eqStatus{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
+	.eqJobStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; cursor:pointer; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; overflow-wrap:break-word; padding:0.25em; width:100%; }
 
 	body{
 		background: black repeat url('file:///C:/website/node/imageView/resources/tileable-fabric-textures-1.jpg');
-		background-size:auto; color:#999; font-family:sans-serif; font-size:12px; padding:0;
+		background-size:auto; color:#aaa; font-family:sans-serif; font-size:12px; padding:0;
 		text-align:center;
 	}
 	#grid{ border:0; margin:0 auto; outline:0; padding:0; vertical-align:top; }
@@ -146,6 +134,15 @@ function setGalleryDelay(val){
 	.grid-itemCaption { padding:0 0.5em; margin:0 auto; overflow-wrap:break-word; text-overflow:ellipsis; }
 	.gridItemSelected{ border:1px solid #f00; }
 	.gridItemMultiSelect{ border:1px dashed #0f0; }
+	.vertTr{ vertical-align:top; }
+	.vertTd0{ padding:2em 2em 0 0; width:3em; }
+	.vertTd0 label{ cursor:pointer; }
+	.vertTd0 input{ cursor:pointer; }
+	.vertTd1{ padding-right:2em; text-align:center; }
+	.vertTd2{ padding:2em 2em 0 0; max-width:25em; overflow-wrap:break-word; }
+	.vertTd3{ padding:2em 2em 0 0; text-align:center; }
+	.vertTd4{ padding:2em 0 0 0; }
+
 	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
 	video{cursor:pointer; margin:0 auto; /*height:250px*/; }
 	.selGalleryDelay{padding:0; }

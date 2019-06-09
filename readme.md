@@ -79,6 +79,7 @@ var argmap =
 	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
 	fullscreen:{ keypath:'fullscreen', type:'boolean', default:false },
 	height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
+	iconsOnly:{	keypath:'iconsOnly', type:'boolean', default:false, notes:'display icons instead of audio/image/video controls' },
 	layout:{	keypath:'layout', type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 	order:{ keypath:'order', type:'string',	default:'name', range:['date','name','size','type'], notes:'Sort order of items' },
@@ -115,7 +116,6 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- allow dlgExecQ to display error and warning messages
 - watch execQue & dlgExecQ for instability/bugs/optimizations
 - expand the ability to execute applications; allow command line switches
 - BulkOps dialog: add rename function to work against a group of files
@@ -126,6 +126,30 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 
 ## Changes
+
+
+Jun 9/2019
+
+The vert layout was broken after the May 26 update. I took the opportunity to update the app to handle folders with over 400 audio/image/video items.  In these situations Chrome does a lot of disk thrashing as it tries to create thumbnails for the HTML controls--it looks like Chrome (as well as Windows) doesn't meter this disk access.  To avoid this I added the iconOnly menu item to only display file type icons. And made vert layout much easier to read and select items so working with long lists is easier.  The new column sort function of the FolderSize dialog also helps by allowing max/min item counts/sizes to be easily identified.
+
+The execQue has been very stable.  The item move functionality has been implemented there now.  And the ability to kill copy jobs and pause/resume/stop the que.
+
+- FolderSize dialog: added column sorting
+- FolderSize menu: added F9 keyboard shortcut
+- "open With.../Default Application" context menu: fixed opening Directories; creates a new FolderView instance containing Directory contents
+- move context menu: now executed through execQue
+- dlbBulk: move function now executed through execQue
+- execQue: refactored code
+- execQue: can now execute functions as well as console commands
+- execQue: kill copy jobs by clicking status dialog
+- execQue: added que pause/resume and stop functionality
+- now using file type icons from https://github.com/dmhendricks/file-icon-vectors
+- vert layout: re-constructed as it was very broken after the May 26 updated
+- "Layout/Icons Only" menu: added functionality to allow folders with > 400 items to be displayed without disk thrashing caused by Chrome creating icons for images and videos
+- iconsOnly applicatin argument: boolean, display file icons instead of audio/image/video controls
+- more bug fixes and tweaks
+- added m4v and webp to the media types
+
 
 Jun 1/2019
 
@@ -346,6 +370,7 @@ Apr 4/17:
 - https://www.npmjs.com/package/iniparser
 - https://nodejs.org
 - https://www.npmjs.com/package/argv-to-object
+- https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
 - https://github.com/andrewrk/node-mv
 - https://github.com/npm/ini

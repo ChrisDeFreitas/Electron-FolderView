@@ -20,6 +20,7 @@ var argmap = {
 		folders:{		keypath:'folders',	type:'string', default:'first', range:['default','first','hidden','last'] },
 		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
 		height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
+		iconsOnly:{	keypath:'iconsOnly', type:'boolean', default:false, notes:'display icons instead of audio/image/video controls' },
 		layout:{			keypath:'layout', 		type:'string',	default:'cols',	range:['cols','rows','vert','wall']
 	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
 		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
@@ -74,9 +75,8 @@ var mainWindow=null
 var isElectron = (app!=undefined)
 var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
 
-let imgtypes = ['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png']
-//let medtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp3','.mp4','.mpg','.mov','.ogg','.qt','.swf','.webm','.wma','.wmv']
-var vidtypes = ['.avi','.flc','.flv','.mkv','.mov','.mp4','.mp5','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
+let imgtypes = ['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png','.webp']
+var vidtypes = ['.avi','.flc','.flv','.m4v','.mkv','.mov','.mp4','.mp5','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
 let audtypes = ['.flac','.mp3','.wma']
 
 if(isElectron===false){	//nodejs functionality -- not working/useful these days
@@ -261,6 +261,8 @@ function fldrObjGen(file, simple) {
 			mediaType: 'unknown',
 			path: posixpath,
 			pid: id,
+			w: 320,
+			h: 200,
 			src: 'file:///'+posixpath,
 			title: val,
 			type: ext
@@ -269,9 +271,8 @@ function fldrObjGen(file, simple) {
 			obj.mediaType = 'folder'
 			if(obj.path[obj.path -1] != path.posix.sep)
 				obj.path += path.posix.sep
-			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
-			obj.w = 320
-			obj.h = 200
+//			obj.src = 'file:///'+dirname__+"/resources/folder_closed_64.png"
+			obj.src = 'file:///'+dirname__+"/resources/icons/folder-open.svg"
 			obj.type = 'folder'
 		}	else
 		if(imgtypes.indexOf(ext) >= 0){			//images, not svg
@@ -288,23 +289,15 @@ function fldrObjGen(file, simple) {
 		}	else
 		if(vidtypes.indexOf(ext) >= 0){			//video types
 			obj.mediaType = 'video'
-			obj.w = 320
-			obj.h = 200
 		}	else
 		if(audtypes.indexOf(ext) >= 0){			//audio types
 			obj.mediaType = 'audio'
-			obj.w = 320
-			obj.h = 200
 		}	else
 		if(ext === '.svg'){									//svg files
 			obj.mediaType = 'svg'
-			obj.w = 320
-			obj.h = 200
 		}
 		else{			//handle other types
 			obj.src = 'file:///'+dirname__+"/resources/new_document_64.png"
-			obj.w = 320
-			obj.h = 200
 		}
 		//store file types for filter menu
 		if(exts[obj.type]===undefined) exts[obj.type]=1
