@@ -132,7 +132,7 @@ Jun 9/2019
 
 The vert layout was broken after the May 26 update. I took the opportunity to update the app to handle folders with over 400 audio/image/video items.  In these situations Chrome does a lot of disk thrashing as it tries to create thumbnails for the HTML controls--it looks like Chrome (as well as Windows) doesn't meter this disk access.  To avoid this I added the iconOnly menu item to only display file type icons. And made vert layout much easier to read and select items so working with long lists is easier.  The new column sort function of the FolderSize dialog also helps by allowing max/min item counts/sizes to be easily identified.
 
-The execQue has been very stable.  The item move functionality has been implemented there now.  And the ability to kill copy jobs and pause/resume/stop the que.
+The execQue has been very stable.  The item move functionality has been implemented there now.  And added the ability to kill copy jobs and pause/resume/stop the que; move jobs can't be killed because they are functions.
 
 - FolderSize dialog: added column sorting
 - FolderSize menu: added F9 keyboard shortcut
@@ -142,13 +142,14 @@ The execQue has been very stable.  The item move functionality has been implemen
 - execQue: refactored code
 - execQue: can now execute functions as well as console commands
 - execQue: kill copy jobs by clicking status dialog
-- execQue: added que pause/resume and stop functionality
+- execQue: added que pause/resume/stop functionality
 - now using file type icons from https://github.com/dmhendricks/file-icon-vectors
 - vert layout: re-constructed as it was very broken after the May 26 updated
+- vert layout screenshot: created new, deleted old
 - "Layout/Icons Only" menu: added functionality to allow folders with > 400 items to be displayed without disk thrashing caused by Chrome creating icons for images and videos
-- iconsOnly applicatin argument: boolean, display file icons instead of audio/image/video controls
+- iconsOnly application argument (main.js/argmap): boolean, display file icons instead of audio/image/video controls
 - more bug fixes and tweaks
-- added m4v and webp to the media types
+- added .m4v and .webp to the media types
 
 
 Jun 1/2019
