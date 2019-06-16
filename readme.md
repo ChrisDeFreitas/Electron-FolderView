@@ -116,9 +116,8 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- watch execQue & dlgExecQ for instability/bugs/optimizations
 - expand the ability to execute applications; allow command line switches
-- BulkOps dialog: add rename function to work against a group of files
+- BulkOps dialog: add rename function to work on a group of files
 - create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
@@ -128,9 +127,23 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ## Changes
 
 
+Jun 16/2019
+
+Added a find dialog and an item index to make it easier to navigate large lists. The item index slides from the left side of the page--clicking an item scrolls it into view.  The item index is only available when the main window has scroll bars.
+
+- Find menu: opens a dialog to find folder items, Ctrl+F
+- dlgIdx: item index slides out from the left side of page when more that 10 items in folder
+- dlgExecQue: mouseover hint displays list of remaining jobs
+- ui.var.execQueTitleMaxJobs: controls number of jobs listed in dlgExecQue mouseover hint, default=10
+- isotope: updated to latest version
+- removed from package.json because not used:
+    "packery": "^2.1.2",
+- small tweaks and fixes
+
+
 Jun 9/2019
 
-The vert layout was broken after the May 26 update. I took the opportunity to update the app to handle folders with over 400 audio/image/video items.  In these situations Chrome does a lot of disk thrashing as it tries to create thumbnails for the HTML controls--it looks like Chrome (as well as Windows) doesn't meter this disk access.  To avoid this I added the iconOnly menu item to only display file type icons. And made vert layout much easier to read and select items so working with long lists is easier.  The new column sort function of the FolderSize dialog also helps by allowing max/min item counts/sizes to be easily identified.
+The vert layout was broken after the May 26 update. I took the opportunity to update the app to handle folders with over 400 audio/image/video items.  In these situations Chrome does a lot of disk thrashing as it tries to create thumbnails for the HTML controls--it looks like Chrome (as well as Windows) doesn't throttle disk access.  To avoid this I added the iconOnly menu item to only display file type icons. And made vert layout much easier to read and select items so working with long lists is easier.  The new column sort function of the FolderSize dialog also helps by allowing max/min item counts/sizes to be easily identified.
 
 The execQue has been very stable.  The item move functionality has been implemented there now.  And added the ability to kill copy jobs and pause/resume/stop the que; move jobs can't be killed because they are functions.
 

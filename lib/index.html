@@ -16,10 +16,6 @@
 <link rel="stylesheet" href="file:///C:/website/node/imageView/lib/default-skin/default-skin.css">
 <script src="file:///C:/website/node/imageView/lib/photoswipe.js"></script>
 <script src="file:///C:/website/node/imageView/lib/photoswipe-ui-default.js"></script>
-<!--electron_comment_begin-->
-<script src="file:///C:/website/node/imageView/lib/isotope.pkgd.js"></script>
-<script src="file:///C:/website/node/imageView/lib/packery-mode.pkgd.js"></script>
-<!--electron_comment_end-->
 
 <script src="file:///C:/website/node/imageView/lib/dlgFactory.js"></script>
 <script src="file:///C:/website/node/imageView/lib/ui.js"></script>
@@ -29,6 +25,7 @@
 <script src="file:///C:/website/node/imageView/lib/dlgBulk.js"></script>
 <script src="file:///C:/website/node/imageView/lib/dlgRename.js"></script>
 <script src="file:///C:/website/node/imageView/lib/fileIcons.js"></script>
+<script src="file:///C:/website/node/imageView/lib/dlgIdx.js"></script>
 
 <script>
 //////do not delete: vars populated by main.js:
@@ -37,8 +34,6 @@
 //items=null
 //ui.var.OS=null
 
-//nodejs_comment_begin
-//code for electron only
 const Isotope = require('isotope-layout')
 const packery = require('isotope-packery')
 //const horiz 	= require('isotope-horizontal')
@@ -53,7 +48,6 @@ require('electron').ipcRenderer.on('applog', (event, message) => {
 //support logging from main thread, because console.log doesn't work without debuggerer
   console.log(message)
 })
-//nodejs_comment_end
 
 var dlgExport = null	//press F4 to toggle
 var dlgPathBar=null		//press F6 to toggle
@@ -113,13 +107,21 @@ function init() {
 
 	gridLoad(lastLayoutMode)
 }
-
-function setGalleryDelay(val){
-	galleryDelay=val
-	document.getElementById('btnGalleryDelay').innerHTML=(val/1000)+'s'
-}
 </script>
 <style>
+	#dlgIdx{ /*background:white;*/ padding:10px; text-align:left; transition: left 0.5s; }
+	#dlgIdxChild{ /*flex-wrap:wrap; display:flex;	align-content:space-evenly;*/	}
+	.dlgIdxItem{
+		position:absolute;
+		background-color:#fefefe; border:0; border-radius:5px; box-shadow:2px 2px saddlebrown;
+		color:#333; cursor:pointer; font-size:14px; text-shadow:1px 1px  #ddd;
+		height:20px; margin:0; padding:7px 0px 2px 5px;
+		text-overflow:ellipsis; white-space:nowrap; overflow:hidden; word-break:break-all;	}
+	#dlgIdxThumb{ background-color: #c00;
+		border-left: 0px solid #700; border-bottom: 3px solid #700;
+		border-right: 3px solid #f00; border-top: 3px solid #f00;	border-radius:3px;
+		cursor:pointer;  height:10vh; opacity:0.4; position:absolute; right:8px; top:42vh; width:15px;	}
+
 	#divExecQue{ background-color:transparent;	cursor:default; text-align:center; margin:1em 0 0 0; padding:0; max-width:15em; width:15em; }
 	.eqStatus{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
 	.eqJobStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; cursor:pointer; border:none; border-radius:5px; box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2); text-shadow:1px 1px 2px #0e306d; margin:0 0 0.5em 0; overflow-wrap:break-word; padding:0.25em; width:100%; }
@@ -129,13 +131,14 @@ function setGalleryDelay(val){
 		background-size:auto; color:#aaa; font-family:sans-serif; font-size:12px; padding:0;
 		text-align:center;
 	}
-	#grid{ border:0; margin:0 auto; outline:0; padding:0; vertical-align:top; }
+	#grid{ border:0; margin:0 0 0 5px; outline:0; padding:0; vertical-align:top; }
 	.grid-item { outline:0; border:1px solid transparent;	text-align:center; vertical-align:middle; }
 	.grid-itemCaption { padding:0 0.5em; margin:0 auto; overflow-wrap:break-word; text-overflow:ellipsis; }
 	.gridItemSelected{ border:1px solid #f00; }
 	.gridItemMultiSelect{ border:1px dashed #0f0; }
+	.vertTb{ border-spacing:0; border-collapse:collapse; }
 	.vertTr{ vertical-align:top; }
-	.vertTd0{ padding:2em 2em 0 0; width:3em; }
+	.vertTd0{ padding:2em 2em 0 1em; width:3em; }
 	.vertTd0 label{ cursor:pointer; }
 	.vertTd0 input{ cursor:pointer; }
 	.vertTd1{ padding-right:2em; text-align:center; }

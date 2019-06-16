@@ -14,6 +14,7 @@ F8/n         | Create new folder
 F9           | Folder size
 F11          | Fullscreen
 F12          | Dev Tools
+Ctrl+F       | Find Item dialog
 Ctrl+Shift+I | Dev Tools
 
 Grid Navigation

@@ -337,14 +337,6 @@ function htmlGen(fldrobj){
 		'//items=null':'items = '+JSON.stringify(fldrobj.items),
 		'//ui.var.OS=null':`ui.var.OS = "${process.platform}"`
 	}
-	if(isElectron===true){
-		keys['<!--electron_comment_begin-->']= '<!--'
-		keys['<!--electron_comment_end-->']  = '-->'
-	}
-	else{
-		keys['//nodejs_comment_begin']= '/*'
-		keys['//nodejs_comment_end']  = '*/'
-	}
 	const tmpl	 = require(__dirname+'/lib/cls_tmplFile.js');
 	tmpl.xlate({
 		filename: path.join(__dirname,'lib/index.html'),
