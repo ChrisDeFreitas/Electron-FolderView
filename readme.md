@@ -10,7 +10,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 
 ## Features
-- *New 20200423: Youtube video download
+- Youtube video download
 - main purpose is to view folder items
 - item functions: copy, clipboard..., delete, explore, folder size, open, move, rename, set image as background, zero
 - items displayed in a grid
