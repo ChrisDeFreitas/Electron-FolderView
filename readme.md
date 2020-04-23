@@ -10,7 +10,6 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 
 ## Features
-- Youtube video download
 - main purpose is to view folder items
 - item functions: copy, clipboard..., delete, explore, folder size, open, move, rename, set image as background, zero
 - items displayed in a grid
@@ -25,6 +24,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - pathBar dialog: handy dialog for selecting a folder
 - rename dialog: handy tools for renaming a file
 - log messages are written to Javascript console (F12 or Ctrl+Shift+i)
+- Youtube video download
 
 ## App Notes
 1. Install:
