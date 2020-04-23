@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Lang" content="en">
+<meta name="author" content="Chris DeFreitas">
+<meta http-equiv="Reply-to" content="chrisd@europa.com">
+<title>FolderView - </title>
+
+<!-- new, https://electronjs.org/docs/tutorial/security#6-define-a-content-security-policy>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'" -->
+
+<link rel="stylesheet" href="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/elusive-icons-2.0.0/css/elusive-icons.min.css">
+
+<link rel="stylesheet" href="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/photoswipe.css">
+<link rel="stylesheet" href="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/default-skin/default-skin.css">
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/photoswipe.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/photoswipe-ui-default.js"></script>
+
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/dlgFactory.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/ui.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/pathBar.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/dlgSftp.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/execQue.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/dlgBulk.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/dlgRename.js"></script>
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/fileIcons.js"></script>
+<!--script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/dlgIdx.js"></script-->
+<script src="file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/videoDl.js"></script>
+
+<script>
+//////do not delete: vars populated by main.js:
+ui.args={"_":[],"descending":false,"devtools":false,"find":"","fontsize":"20px","folders":"first","fullscreen":false,"height":1080,"iconsOnly":false,"layout":"cols","order":"name","path":"","scale":1,"scroll":false,"sftpDownloadMax":2,"shuffle":false,"showSlideCaptions":true,"width":1920,"isElectron":true}
+exts = {}
+items = []
+ui.var.OS = "win32"
+
+const Isotope = require('isotope-layout')
+const packery = require('isotope-packery')
+//const horiz 	= require('isotope-horizontal')
+
+//default electron/nodejs code for this app
+const renderer = require('C:/Users/chris/Documents/GitHub/Electron-FolderView/lib/renderer.js')
+//var electronWin = renderer.electronWin
+renderer.sayhey()
+renderer.mainMenuGen(exts, lastLayoutMode)
+renderer.contextMenuSet(exts)
+require('electron').ipcRenderer.on('applog', (event, message) => {
+//support logging from main thread, because console.log doesn't work without debuggerer
+  console.log(message)
+})
+
+var dlgExport = null	//press F4 to toggle
+var dlgPathBar=null		//press F6 to toggle
+var dlgBulk=null			//F7
+//var dlgFind=null			//Ctrl+F
+
+function init() {
+	//////do not delete these comments: vars populated by main.js:
+	ui.args={"_":[],"descending":false,"devtools":false,"find":"","fontsize":"20px","folders":"first","fullscreen":false,"height":1080,"iconsOnly":false,"layout":"cols","order":"name","path":"","scale":1,"scroll":false,"sftpDownloadMax":2,"shuffle":false,"showSlideCaptions":true,"width":1920,"isElectron":true}
+
+	if(items.length > 0)
+		renderer.recentAdd(ui.args.path)
+	else {
+		var bar = new pathBar()
+		bar.show({
+			library:renderer.libraries()
+		,	recent:renderer.recent
+		, title:'Select Folder to View'
+		,	onSelect: function(path){
+				dlgFactory.bbl('Loading items in folder: '+path)
+//				ui.var.lastOrder=ui.args.order
+				renderer.folderLoad(path)
+			}
+		})
+	}
+
+	Object.assign(gExtFilter, exts)	//clone
+	if(lastLayoutMode===null) lastLayoutMode="wall"
+
+	isElectron=ui.args.isElectron
+	lastLayoutMode=ui.args.layout
+	scale=ui.args.scale
+
+	console.log(`\nApplication arguments:`)
+	console.log(`defaultImageName: ${ui.args.defaultImageName}`)
+	console.log(`defaultImageNum: ${ui.args.defaultImageNum}`)
+	console.log(`descending: ${ui.args.descending}`)
+	console.log(`devtools: ${ui.args.devtools}`)
+	console.log('exts:', exts)	//=== gExtFilter
+	console.log(`folders: ${ui.args.folders}`)
+	console.log(`fontSize: ${ui.args.fontsize}`)
+	console.log(`fullscreen: ${ui.args.fullscreen}`)
+	console.log(`height:  ${ui.args.height}`)
+	console.log('iconsOnly:', ui.args.iconsOnly)
+	console.log('items:', items)
+	console.log(`layout: ${ui.args.layout}`)
+	console.log(`order: ${ui.args.order}`)
+	console.log(`path: ${ui.args.path}`)
+	console.log(`scale: ${ui.args.scale}`)
+	console.log(`scroll: ${ui.args.scroll}`)
+	console.log(`shuffle: ${ui.args.shuffle}`)
+	console.log(`showSlideCaptions: ${ui.args.showSlideCaptions}`)
+	console.log(`width:  ${ui.args.width}`)
+	ui.init()
+
+	console.log('\n')	//end of app args
+	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
+
+	gridLoad(lastLayoutMode)
+	//renderer.fileFind()
+}
+</script>
+<style>
+	.tbRowHilight tr:hover td { color:#3b3; }
+	.tdRight{ text-align:right }
+	.tdCenter{ text-align:center }
+	input[type="checkbox"], input[type="radio"]{ cursor:pointer; }
+
+	#dlgVideoDlList { max-height:75vh; overflow-y:auto; }
+	#dlgVideoDlList table { border-collapse:collapse; margin:0.2em 0 0 3em; }
+	#dlgVideoDlList table tr{ color:#fff; cursor:pointer; font-weight:normal; }
+	#dlgVideoDlList table tr:hover{ background-color: rgb(0, 221, 51); }
+	#dlgVideoDlList table tr:nth-child(1){ cursor:default; font-style:italic; text-align:center; }
+	#dlgVideoDlList table tr:nth-child(1):hover{ background-color: transparent; }
+/*
+	#dlgIdx{ padding:10px; text-align:left; transition: left 0.5s; }
+	#dlgIdxChild{ 	}
+	.dlgIdxItem{
+		position:absolute;
+		background-color:#fefefe; border:0; border-radius:5px; box-shadow:2px 2px saddlebrown;
+		color:#333; cursor:pointer; font-size:14px; text-shadow:1px 1px  #ddd;
+		height:20px; margin:0; padding:7px 0px 2px 5px;
+		text-overflow:ellipsis; white-space:nowrap; overflow:hidden; word-break:break-all;	}
+	#dlgIdxThumb{ background-color: #c00;
+		border-left: 0px solid #700; border-bottom: 3px solid #700;
+		border-right: 3px solid #f00; border-top: 3px solid #f00;	border-radius:3px;
+		cursor:pointer;  height:10vh; opacity:0.4; position:absolute; right:8px; top:42vh; width:15px;	}
+*/
+	#divExecQue{ background-color:transparent;	cursor:default; text-align:center; margin:1em 0 0 0; padding:0; max-width:15em; width:15em; }
+	.eqStatus{ background-color:#eee; color:#254678; border:none; border-radius:5px; margin:0.5em 0 0.5em 0; padding:0.25em; width:100%; }
+	.eqJobStatus{ /*transition:transform 1.5s 0.5s;*/ background-color:#254678; color:#eee; cursor:pointer; border:none; border-radius:5px; /*box-shadow:2px 2px 1px rgba(255, 0, 0, 0.2);*/ /*text-shadow:1px 1px 2px #0e306d;*/ margin:0 0 0.5em 0; overflow-wrap:break-word; padding:0.25em; width:100%; }
+
+	body{
+		background: black repeat url('file:///C:/Users/chris/Documents/GitHub/Electron-FolderView/resources/tileable-fabric-textures-1.jpg');
+		background-size:auto; color:#aaa; font-family:sans-serif; font-size:12px; padding:0;
+		text-align:center;
+	}
+	#grid{ border:0; margin:0 0 0 5px; outline:0; padding:0; vertical-align:top; }
+	.grid-item { outline:0; border:1px solid transparent;	text-align:center; vertical-align:middle; }
+	.grid-itemCaption { padding:0 0.5em; margin:0 auto; overflow-wrap:break-word; text-overflow:ellipsis; }
+	.gridItemSelected{ border:1px solid #f00; }
+	.gridItemMultiSelect{ border:1px dashed #0f0; }
+	.vertTb{ border-spacing:0; border-collapse:collapse; }
+	.vertTr{ vertical-align:top; }
+	.vertTd0{ padding:2em 2em 0 1em; width:3em; }
+	.vertTd0 label{ cursor:pointer; }
+	.vertTd0 input{ cursor:pointer; }
+	.vertTd1{ padding-right:2em; text-align:center; }
+	.vertTd2{ padding:2em 2em 0 0; max-width:25em; overflow-wrap:break-word; }
+	.vertTd3{ padding:2em 2em 0 0; text-align:center; }
+	.vertTd4{ padding:2em 0 0 0; }
+
+	img{cursor:pointer; margin:0; padding:0; border:0; outline:0; }
+	video{cursor:pointer; margin:0 auto; /*height:250px*/; }
+	.selGalleryDelay{padding:0; }
+	.selGalleryDelay button{ display:block; text-align:center; width:7em; }
+	.imgCaption {
+    background-color: #f1e487;
+    color: rgb(51, 51, 51);
+    border: 0px none;
+    border-radius: 0.25em;
+    font-family: arial;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    outline: 0;
+    z-index: 1500;
+	}
+/*	.galleryVideo{ margin:0 auto; max-width:96%; max-height:96%; position:relative; top:calc(100% / 6); } */
+/*	.galleryVideo{ max-width:96%; max-height:96%;  }*/
+/*.pswp--animated-in .pswp__zoom-wrap{
+  transition-property:transform;
+  transition-duration: 0.1ms;
+  transition-timing-function: linear;
+}*/
+</style>
+</head>
+<body onload='init()'>
+
+<div id=pswpMain class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element, as animating opacity is faster than rgba(). -->
+    <div id=pswp__bg class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+				<div id=pswp__container class="pswp__container">
+            <!-- don't modify these 3 pswp__item elements, data is added later on -->
+            <div id=pswp__item1 class="pswp__item"></div>
+            <div id=pswp__item2 class="pswp__item"></div>
+            <div id=pswp__item3 class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+								<!-- custom funcs -->
+								<style>
+									.btnGallery{background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.5em; font-weight:bold; margin:0.6em 0 0 0;}
+									.btnGallery:hover{color:#fff}
+								</style>
+								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onclick='galleryImageScale(null, false)'>&minus;</button>
+								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onclick='galleryImageScale(null, true)'>&plus;</button>
+								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onclick='galleryPlay(true); return event.preventDefault;'>&sc;</button>
+								<button id=btnGalleryDelay class=btnGallery onclick='if(dlgGalleryDelay===null) galleryDelayGet(); else dlgFactory.close(dlgGalleryDelay);' style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.'>15s</button>
+								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onclick='galleryPlay(false); return event.preventDefault;'>&pr;</button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Prior (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+</div>
+
+<div id=grid class="grid" onclick='gridClick(event)'>&nbsp;</div>
+
+<style>
+.dlgBulk{}
+.dlgBulk .dlgFooter button{ font-size:0.9em; border-radius:0.25em; font-weight:bold; padding:0.5em 1em; }
+.dlgBulk .dlgFooter button:hover{ color:#F1E487; text-shadow:1px 1px 2px #888;}
+.dlgBulk .dlgFooter #btn1,
+.dlgBulk .dlgFooter #btn4{ margin-right:1em;}
+#lblBulkAutoMode{ cursor:pointer; }
+.divBulkOptions{ color:#ffaf00; font-weight:bold; margin:0.5em 0; }
+.divBulkOptions input{ padding:0; vertical-align:middle;  }
+.divBulkOptions button{ cursor:pointer; font-size:0.8em; padding:2px 4px;  }
+#divBulkOptCount{ display:inline-table; text-align:right; position:absolute; right:20px; }
+#inpBulkDest{ width:72%; }
+#divBulkList{background:white; margin:0 0 0.5em 0; max-height:25vh; min-height:10em; overflow:auto; padding:0.25em 0 0 0; }
+#divBulkList label{ cursor:pointer; display:block; font-size:1.1em; padding:0 0 0.1em 0.5em; }
+#divBulkList label input{ cursor:pointer; margin-top:1px; vertical-align:middle; }
+.lblBulkListCounter{display:inline-table; width:1.5em; text-align:right; }
+
+.dlgRename label{ color:#ffaf00; }
+.dlgRename label input{ color:#333; }
+/*.dlgRename .dlgBody i{ font-size:1em; height:20px; width:20px;  }*/
+.dlgRename .dlgBody{ margin-bottom:-2em; }
+
+
+.dlgSftpParent, .dlgBulk, .dlgRename{
+	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');
+	background-size:cover;
+	border:1px outset rgba(138, 134, 134, 0.6); border-radius:5px;
+	width:35em; padding:1em 1em 0.5em 1em;
+	z-index:1000;
+}
+.dlgSftpParent .{ }
+.dlgSftpParent .dlgFooter,
+.dlgBulk .dlgFooter,
+.dlgRename .dlgFooter
+{ background:transparent; }
+.dlgSftp{ display:none; color:#ffaf00; font-weight:bold; font-family:sans-serif; font-size:12px; padding:0; text-align:left; }
+.dlgSftp button{ border-radius:2px; cursor:pointer; font-size:0.8em; padding:0.25em 0.5em; width:6.5em; }
+.dlgSftp button:hover{ color:#0a0; }
+.dlgSftp table{
+	width:100%; height:auto;
+}
+.dlgSftp table td{ vertical-align:top; }
+.dlgSftp table .tdOpName{ max-width:3.5em; padding-left:0.5em; }
+.dlgSftp table .tdOp{ padding-right:1em; }
+.dlgSftp input{ background:transparent; border:0; border-bottom:1px inset silver; color:#aaa; font-weight:bold; width:100%; }
+.dlgSftp #trFolder,
+.dlgSftp #trFiles,
+.dlgSftp #trButtons{display:none}
+.dlgSftp #divFiles{
+	background:#fff; color:#333; cursor:pointer; font-weight:normal;
+	height:15em; overflow-x:auto; overflow-y:auto; padding:0;
+	/*max-width:30em;*/ overflow-wrap: break-word; word-break: break-all;
+}
+.dlgSftp #trFolder span{ cursor:pointer; }
+.dlgSftp #divFiles label{ background:#fff; display:block; padding:0 5px; }
+.dlgSftp #divFiles .Selected{ background:#fff;}
+.dlgSftp #divFiles label input{ display:inline-table; margin:5px 0 0 0; width:1em; }
+</style>
+<div id=dlgSftp class=dlgSftp>
+	<table>
+		<tr><td class=tdOpName>Host</td><td class=tdOp><input id=inpHost type=text value='192.168.1.247'></td></tr>
+		<tr><td class=tdOpName>Port</td><td class=tdOp><input id=inpPort type=text value='22'></td></tr>
+		<tr><td class=tdOpName>User</td><td class=tdOp><input id=inpUser type=text value='chris'></td></tr>
+		<tr><td class=tdOpName>Password</td>		<td class=tdOp><input id=inpPw type=password value=''></td></tr>
+		<tr><td class=tdOpName>Default Path</td><td class=tdOp><input id=inpPath type=text value='/home/chris/'></td></tr>
+		<tr><td colspan=2 style='padding:1em 0 0 0; text-align:center'>
+			<button id=btnAuto onclick='dlgSFTP.autoClick(event)'>Auto</button>
+			<button id=btnCon>Connect</button>
+			<button id=btnDis>Disconnect</button>
+			<button id=btnSftpClose onclick='dlgFactory.close( dlgFactory.getDlgParent(this) )' title='Close SFTP dialog'>Close</button>
+		</td></tr>
+		<tr id=trFolder><td colspan=2 id=tdFolder title='Click to open folder' style='padding:0.5em 0 0 0'></td></tr>
+		<tr id=trFiles><td colspan=2><div id=divFiles style='width:100%'></div></td></tr>
+		<tr id=trButtons><td colspan=2 style='padding:0.5em 0 0 0; text-align:center'>
+			<button id=btnDelAuto onclick='dlgSFTP.deleteAutoClick(event)' title='Auto delete functions'>Auto</button>
+			<button id=btnAll onclick='dlgSFTP.selectAllClick(event)' title='Select/Deselect all items'>All</button>
+			<button id=btnDel onclick='dlgSFTP.deleteClick(event)'title='Delete selected files'>Delete</button>
+			<button id=btnDown onclick='dlgSFTP.downloadClick(event)'title='Download selected files'>Download</button>
+			<button id=btnUp onclick='dlgSFTP.folderUpClick(event)' title='Show parent folder'>Up</button>
+		</td></tr>
+	</table>
+</div>
+
+<style>
+.sftpDlgAuto, .sftpDlgAutoDel {
+	background: white repeat url('../resources/e8465fca2a3e8f3388b6373e486cfad5.jpg');
+	background-size:cover; border:1px outset #334;
+	display:none; padding:0.5em; text-align:left; z-index:1100;
+}
+.sftpDlgAuto label, .sftpDlgAutoDel label{ cursor:pointer; display:block; }
+.sftpDlgAuto label:hover, .sftpDlgAutoDel label:hover{ color:#ffaf00; }
+</style>
+<div class=sftpDlgAuto>
+	<label id=lblCon> 		<input type=checkbox checked> Connect to remote server</label>
+	<label id=lblExit> 	<input type=checkbox checked> Close if no files in remote folder</label>
+	<label id=lblDownload> 		<input type=checkbox checked> Download all files in remote folder</label>
+	<label id=lblMin> 		<input type=checkbox checked> Minimize dialog while downloading</label>
+	<label id=lblReload> <input type=checkbox checked> Reload local folder items after download</label>
+</div>
+<div class=sftpDlgAutoDel>
+	<label id=lblDelDelete>		<input type=checkbox checked> Delete currently selected remote files</label>
+	<label id=lblDelRemReload> <input type=checkbox checked> Reload remote file list</label>
+	<label id=lblDelExit><input type=checkbox checked> Close if no files in remote folder</label>
+	<label id=lblDelDownload> 	<input type=checkbox checked> Download all files in remote folder</label>
+	<label id=lblDelMin> 			<input type=checkbox checked> Minimize dialog while downloading</label>
+	<label id=lblDelLocReload> 		<input type=checkbox checked> Reload local folder items after download</label>
+</div>
+
+</body>

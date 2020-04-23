@@ -11,28 +11,27 @@ const imgDimensions = require(__dirname+'/node_modules/image-size')
 exports.startTime = Date.now()
 
 //handle commandline arguments
-var argtoobj = require( 'argv-to-object' );
 var argmap = {
-		descending:{keypath:'descending',	type:'boolean', default:false, notes:'items in descending order' },
-		devtools:{	keypath:'devtools', 	type:'boolean', default:false },
-		find:{			keypath:'find',				type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)" },
-		fontsize:{	keypath:'fontsize', 	type:'string',  default:'20px',	notes:'set the default font size for the document.' },
-		folders:{		keypath:'folders',	type:'string', default:'first', range:['default','first','hidden','last'] },
-		fullscreen:{	keypath:'fullscreen', type:'boolean', default:false },
-		height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
-		iconsOnly:{	keypath:'iconsOnly', type:'boolean', default:false, notes:'display icons instead of audio/image/video controls' },
-		layout:{			keypath:'layout', 		type:'string',	default:'cols',	range:['cols','rows','vert','wall']
-	 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
-		order:{				keypath:'order', 			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items' },
-		path:{				keypath:'path', 			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-		scale:{				keypath:'scale',			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
-		scroll:{			keypath:'scroll',			type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
-		sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
-		shuffle:{			keypath:'shuffle',		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
-		showSlideCaptions:{	keypath:'showSlideCaptions', type:'boolean',	default:true,	notes:"Display slideshow captions" },
-		width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
+		descending:{type:'boolean', default:false, notes:'items in descending order', alias:['--descending'] },
+		devtools:{	type:'boolean', default:false, alias:['--devtools']},
+		find:{			type:'string',  default:'',	notes:"search flickr for images with `find`.(not implemented in FileBrowser, see chrisd.gq/slideshow?find=Altay)", alias:['--find'] },
+		fontsize:{	type:'string',  default:'20px',	notes:'set the default font size for the document.', alias:['--fontsize'] },
+		folders:{		type:'string', default:'first', range:['default','first','hidden','last'], alias:['--folders'] },
+		fullscreen:{type:'boolean', default:false, alias:['--fullscreen'] },
+		height:{		type:'number', default:0, notes:'default window height; 0 = max height', alias:['--height'] },
+		iconsOnly:{	type:'boolean', default:false, notes:'display icons instead of audio/image/video controls', alias:['--iconsOnly'] },
+		layout:{		type:'string',	default:'cols',	range:['cols','rows','vert','wall'], notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"`, alias:['--layout'] },
+		order:{			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items', alias:['--order'] },
+		path:{			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).', alias:['--path'] },
+		scale:{			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items.", alias:['--scale'] },
+		scroll:{		type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded.", alias:['--scroll'] },
+		sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once.", alias:['--sftpDownloadMax'] },
+		shuffle:{		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()", alias:['--shuffle'] },
+		showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions", alias:['--showSlideCaptions'] },
+		width:{			type:'number', default:0, notes:'default window width; 0 = max width', alias:['--width'] }
 }
-var args = argtoobj( argmap );
+//var args = require( 'argv-to-object' )( argmap );
+var args = require('./lib/grinder/lib/grinder.js').grindArgv(argmap)
 
 //allow logging to main browser window
 Object.defineProperty(global, '__stack', {
@@ -62,6 +61,7 @@ function log(msg, lineno){
 		mainWindow.webContents.send('applog',`${__filename}, Line #${lineno}:`)
 	mainWindow.webContents.send('applog',msg)
 }
+
 
 exports.fldrLoad = function(fldr, simple) {
 	if(fldr===undefined) fldr=args.path
@@ -145,7 +145,7 @@ function parseArgs() {
 		} else
 			console.log('Default argv path not found')
 	}
-	if(args.path === ''){
+	if(args.path == null || args.path == ''){
 		if(isElectron===false) file='./'
 		args.path = file
 	}
@@ -156,7 +156,7 @@ function parseArgs() {
 	if(args.descending===undefined) args.descending=false
 	if(args.devtools===undefined) args.devtools=false
 	if(args.folders===undefined) args.folders='first'
-	if(args.fontsize[0]==='"' || args.fontsize[0]==="'") {	//remove quotes if needed
+	if(args.fontsize && (args.fontsize[0]==='"' || args.fontsize[0]==="'")) {	//remove quotes if needed
 		console.log("Fix args.fontsize: ", args.fontsize)
 		args.fontsize = args.fontsize.substr(1, args.fontsize.length-2)
 	}
@@ -165,15 +165,21 @@ function parseArgs() {
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
 	if(args.width===0 || args.height===0){
-		const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-		if(args.width===0) args.width = width
-		if(args.height===0) args.height = height
+		if(isElectron == true){
+			const	{width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+			if(args.width===0) args.width = width
+			if(args.height===0) args.height = height
+		}
+		else{
+			if(args.width===0) args.width = 1024
+			if(args.height===0) args.height = 800
+		}
 	}
 	log('Arguments:')
 	log(args)
 	log('Reading files..')
 	file = file.trim()
-	//if(file==='') //process.exit(1)
+
 	var fldrobj = fldrObjGen(file)
 	return fldrobj
 }
@@ -196,6 +202,7 @@ function scaleFix(fileObj){
 	}
 }
 function fldrObjGen(file, simple) {
+	//todo: replace fs.readdir with exec("dir /-c /n /on /tw /4") for speed
 	//assume: simple === true return {fldr:file, fileErrors:[], isDirectory:boolean, items:[ {basename, isDirectory, date, size}, ...] }
 	//				else returns items[{}, ...] with file type info
 	//				pathBar.js uses simple===true
@@ -230,7 +237,6 @@ function fldrObjGen(file, simple) {
 	var dirname__ = __dirname.replace(/\\/g,'/')
 	for(var key in fls){
 		let val = fls[key],
-				ext = path.extname(val).toLowerCase(),
 				fn = path.basename(val),
 				posixpath = path.join(folder, val).replace(/\\/g,'/')
 
@@ -249,8 +255,11 @@ function fldrObjGen(file, simple) {
 			fls2.push(obj)
 			continue
 		}
+
 		++id
-		if(defaultImageNum===null	&& defaultfile==fn) {
+		let	ext = path.extname(val).toLowerCase()
+
+		if(isDirectory === false && defaultImageNum===null	&& defaultfile==fn) {
 			defaultImageName = fn
 			defaultImageNum = id	//image in argv displayed when web page opens
 		}
@@ -391,6 +400,7 @@ function browserLaunch(fldrobj) {
 		slashes: true
 	}))
 	//if(args.fullscreen===true) win.setFullScreen(true)
+	//log(111111, args.devtools)
 	if(args.devtools===true) win.webContents.openDevTools()
 	return win
 }

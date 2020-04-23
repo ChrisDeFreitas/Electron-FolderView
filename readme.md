@@ -10,6 +10,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 
 ## Features
+- *New 20200423: Youtube video download
 - main purpose is to view folder items
 - item functions: copy, clipboard..., delete, explore, folder size, open, move, rename, set image as background, zero
 - items displayed in a grid
@@ -65,10 +66,9 @@ This is a work in progress.  Feel free to use and modify as you wish.
 		see keyboardshortcuts.txt
 
 6. Commandline switches
-    * handled by "argv-to-object"
-    * if "--path" option not supplied app looks to commandline arguments for path, for example:
-				\> electron main.js c:\users\pictures	--fullscreen=true --layout=cols
-				\> FolderView.exe c:\users\pictures	--fullscreen=true --layout=cols
+    * if "path" option not supplied app looks to commandline arguments for path, for example:
+				\> electron main.js c:\users\pictures	fullscreen=true layout=cols
+				\> FolderView.exe c:\users\pictures	fullscreen=true layout=cols
     * commandline arguments documented in main.js:
 ```Javascript
 var argmap =
@@ -125,6 +125,24 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 
 ## Changes
+
+Apr 23/2020
+- the Jul 2019 update was not uploaded to GIT
+- updated Electron to v8.x
+- updated ytdl-core to 2.01
+
+Jul --/2019
+
+- Last Folder (F8): updated algorithm to find last folder viewed
+- Video Download menu (F10): created to download Youtube videos
+- ffmpeg.exe: application now includes ./bin/ffmpeg.exe to combine audio and video streams into an .mkv file
+- execQue.js: modified to handle video downloads be creating cmdType=immediate, runs command immediately
+- removed node-iniparser: duplicated functionality provided by ini
+- removed argv-to-obj: replaced by custom library, commandline arguments no longer require "--" prefixes
+- added Inspect context menu: allows UI controls to be inpsected in Chrome debugger
+- dlgFind: expanded Find functionality
+- removed dlgIdx.js: functionality duplicated and expanded by dlgFind
+- removed sizeable:  functionality duplicated and expanded by folderWalk.js
 
 
 Jun 16/2019
@@ -381,9 +399,8 @@ Apr 4/17:
 - http://electron.atom.io
 - http://elusiveicons.com
 - https://github.com/electron-userland/electron-packager
-- https://www.npmjs.com/package/iniparser
+- https://www.npmjs.com/package/ini
 - https://nodejs.org
-- https://www.npmjs.com/package/argv-to-object
 - https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
 - https://github.com/andrewrk/node-mv
@@ -393,7 +410,8 @@ Apr 4/17:
 - http://photoswipe.com
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
 - https://github.com/mscdex/ssh2
-- https://github.com/comodinx/sizeable
+- https://www.npmjs.com/package/sanitize-filename
+- https://www.npmjs.com/package/ytdl-core
 
 
 Good Luck!

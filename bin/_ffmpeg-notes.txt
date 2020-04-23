@@ -1,0 +1,11 @@
+﻿
+FFmpeg is a third party software utitlity, from their website (https://ffmpeg.org/about.html):
+
+FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything that humans and machines have created. It supports the most obscure ancient formats up to the cutting edge. No matter if they were designed by some standards committee, the community or a corporation. It is also highly portable: FFmpeg compiles, runs, and passes our testing infrastructure FATE across Linux, Mac OS X, Microsoft Windows, the BSDs, Solaris, etc. under a wide variety of build environments, machine architectures, and configurations.
+
+These FFmpeg binaries downloaded from: https://ffmpeg.org/download.html
+
+Source code available at: https://git.ffmpeg.org/ffmpeg.git
+
+FFmpeg license:  https://ffmpeg.org/legal.html, http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+

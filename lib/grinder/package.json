@@ -1,0 +1,33 @@
+{
+  "author": "Chris DeFreitas, chrisd@europa.com",
+  "bugs": {
+    "url": "http://chrisd.gq/",
+    "email": "chrisd@europa.com"
+  },
+  "dependencies": {},
+  "description": "Test harness for grinder.js library, a library that tokenizes strings like commandline arguments.",
+  "devDependencies": {},
+  "homepage": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "",
+  "name": "grinderTestHarness",
+  "repository": {},
+  "scripts": {
+    "test": "node console.js",
+    "testEqual": "node console.js pid=123 ",
+    "testColon": "node console.js pid:123 ",
+    "testNumber": "node console.js nm 35 '35' thirtyfive ",
+    "testDate": "node console.js dt \"20017-1-1 12:35 pst\" \"2015-2-2\" 1960 -- appleseed",
+    "testAlias": "node console.js f babbage path /srv/website",
+    "testMultiple1": "node console.js -y val1 val2 val3 -- done1",
+    "testMultiple2": "node console.js --zz val1 val2 val3 -- done2 done3",
+    "testJson1": "node console.js debug true obj \"{ \\\"hey\\\":\\\"You!\\\", \\\"key2\\\":222 }\" ",
+    "testJson2": "node console.js debug true obj {\\\"hey\\\":\\\"You!\\\",\\\"key2\\\":222} ",
+    "testCallback": "node console.js cb",
+    "testAll": "node console.js unique1 unique2 debug true find bug path = '/home/chris/bin/' nm \"55\" dt \"20017-1-1 12:35 pst\" \"2015-2-2\" --zz = zzValue cb zzz obj {\\\"hey\\\":\\\"Yao!\\\"}",
+    "testHelp": "node console.js help",
+    "testFind": "node console.js find bug path = '/home/chris/bin/'"
+  },
+  "version": "1.0.0"
+}

@@ -1,0 +1,33 @@
+{
+  "author": "Chris DeFreitas, chrisd@europa.com",
+  "bugs": {
+    "url": "http://chrisd.gq/",
+    "email": "chrisd@europa.com"
+  },
+  "dependencies": {},
+  "description": "Test harness for folderWalk.js.",
+  "devDependencies": {},
+  "homepage": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "",
+  "name": "folderWalkTestHarness",
+  "repository": {},
+  "scripts": {
+    "test0": "node console.js folder=\"G:\\Media\\_Archive\" find=stone",
+    "test": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\"",
+    "test1": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" subFolders=true",
+    "test2": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=test",
+    "test3": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=test subFolders=true",
+    "test4": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=xxx subFolders=true",
+    "test-summary": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" summary=true",
+    "test-summary1": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" summary=true subFolders=true",
+    "test-summary2": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=test summary=true",
+    "test-summary3": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=test summary=true subFolders=true",
+    "test-summary4": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=xxx summary=true subFolders=true",
+    "test-summary5": "node console.js folder=\"C:/Users/chris/Videos/LXDE/_food/New folder0/\" find=copy summary=true subFolders=true",
+    "test-re1": "node console.js findRegex=true folder=\"G:\\Media\\_Archive\" find=\"^BBC\"",
+    "test-re2": "node console.js findRegex=true folder=\"G:\\Media\\_Archive\" find=\"TV$\" subFolders=true"
+  },
+  "version": "1.0.0"
+}
