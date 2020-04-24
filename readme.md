@@ -131,6 +131,7 @@ Apr 23/2020
 - updated Electron to v8.x
 - updated ytdl-core to 2.01
 
+
 Jul --/2019
 
 - Last Folder (F8): updated algorithm to find last folder viewed
