@@ -65,10 +65,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 5. About FireFox Tools
 - built to test FireFox extension development and simplify Youtube video downloads
-- add a few extra features to see whether they would work
-- at the moment there are no plans to expand beyond the existing functionality
-- to use the extension must be loaded into FireFox as a temporary extension and the socket.io client muse be listening in FolderView, top menu/FireFox Tools
-- the socket.io server in FolderView.exe must be installed via "npm install"
+- added a few extra features to see whether they would work
+- some features are not fully implemented, however, there are no plans to expand beyond the existing functionality
+- to use, the extension must be loaded into FireFox as a temporary extension and the socket.io client muse be listening in FolderView, top menu/FireFox Tools
+- the socket.io server in FolderView.exe will be installed via "npm install".  So older installations will need to run "npm install" to get the code.
 - the socket.io client exists within the FireFox folder
 - instructions to install a temporary FireFox extension:  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Trying_it_out
 
@@ -137,7 +137,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
-May --/2020
+May 22/2020
 - FireFox Tools Extension: sends video urls to FolderView for downloading and other functions
 - grinder: fixed bug that occured when parsing strings like "url=https://a.b?c=1" (the part after the second = was lost)
 - Video Download: added commandline argument to open on startup (videoURL=http...)
