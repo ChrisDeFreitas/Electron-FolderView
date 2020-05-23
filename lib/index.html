@@ -27,6 +27,8 @@
 <script src="file:///C:/website/node/imageView/lib/fileIcons.js"></script>
 <!--script src="file:///C:/website/node/imageView/lib/dlgIdx.js"></script-->
 <script src="file:///C:/website/node/imageView/lib/videoDl.js"></script>
+<script src="file:///C:/website/node/imageView/lib/browserTools.js"></script>
+<!--script src="file:///C:/website/node/imageView/lib/browser/nativeMsg.js"></script-->
 
 <script>
 //////do not delete: vars populated by main.js:
@@ -100,6 +102,7 @@ function init() {
 	console.log(`scale: ${ui.args.scale}`)
 	console.log(`scroll: ${ui.args.scroll}`)
 	console.log(`shuffle: ${ui.args.shuffle}`)
+	console.log(`videoURL: ${ui.args.videoURL}`)
 	console.log(`showSlideCaptions: ${ui.args.showSlideCaptions}`)
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
@@ -109,6 +112,12 @@ function init() {
 
 	gridLoad(lastLayoutMode)
 	//renderer.fileFind()
+
+	if(typeof ui.args.videoURL == 'string' && ui.args.videoURL != ''){
+		videoDl.init({url:ui.args.videoURL})	
+	}
+
+	//btools.init()
 }
 </script>
 <style>
@@ -226,11 +235,11 @@ function init() {
 									.btnGallery{background:transparent; border:0; color:#ddd; cursor:pointer; float:right; font-size:1.5em; font-weight:bold; margin:0.6em 0 0 0;}
 									.btnGallery:hover{color:#fff}
 								</style>
-								<button class=btnGallery style="" title='Scale image by -0.1 (Ctrl+Down)' onclick='galleryImageScale(null, false)'>&minus;</button>
-								<button class=btnGallery style="" title='Scale image by +0.1 (Ctrl+Up)' onclick='galleryImageScale(null, true)'>&plus;</button>
-								<button class=btnGallery style="" title='Toggle slideshow (Ctrl+Right)' onclick='galleryPlay(true); return event.preventDefault;'>&sc;</button>
+								<button class=btnGallery title='Scale image by -0.1 (Ctrl+Down)' onclick='galleryImageScale(null, false)'>&minus;</button>
+								<button class=btnGallery title='Scale image by +0.1 (Ctrl+Up)' onclick='galleryImageScale(null, true)'>&plus;</button>
+								<button class=btnGallery title='Toggle slideshow (Ctrl+Right)' onclick='galleryPlay(true); return event.preventDefault;'>&sc;</button>
 								<button id=btnGalleryDelay class=btnGallery onclick='if(dlgGalleryDelay===null) galleryDelayGet(); else dlgFactory.close(dlgGalleryDelay);' style="font-weight:normal; font-size:1em; padding:0.75em 0 0 0;" title='Slide duration, click to change.'>15s</button>
-								<button class=btnGallery style="" title='Toggle reverse slideshow (Ctrl+Left)' onclick='galleryPlay(false); return event.preventDefault;'>&pr;</button>
+								<button class=btnGallery title='Toggle reverse slideshow (Ctrl+Left)' onclick='galleryPlay(false); return event.preventDefault;'>&pr;</button>
 
                 <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
                 <!-- element will get class pswp__preloader--active when preloader is running -->
@@ -266,7 +275,7 @@ function init() {
 <div id=grid class="grid" onclick='gridClick(event)'>&nbsp;</div>
 
 <style>
-.dlgBulk{}
+/* .dlgBulk{} */
 .dlgBulk .dlgFooter button{ font-size:0.9em; border-radius:0.25em; font-weight:bold; padding:0.5em 1em; }
 .dlgBulk .dlgFooter button:hover{ color:#F1E487; text-shadow:1px 1px 2px #888;}
 .dlgBulk .dlgFooter #btn1,
@@ -295,7 +304,7 @@ function init() {
 	width:35em; padding:1em 1em 0.5em 1em;
 	z-index:1000;
 }
-.dlgSftpParent .{ }
+/* .dlgSftpParent { } */
 .dlgSftpParent .dlgFooter,
 .dlgBulk .dlgFooter,
 .dlgRename .dlgFooter

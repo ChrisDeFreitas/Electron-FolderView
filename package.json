@@ -1,6 +1,6 @@
 {
   "name": "folderview",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Browse folder contents, with image slideshows, playable videos, and handy tools. Built for Windows (sorry).",
   "keywords": [
     "directories",
@@ -41,6 +41,7 @@
     "isotope-packery": "^2.0.1",
     "mv": "^2.1.1",
     "sanitize-filename": "^1.6.1",
+    "socket.io": "^2.3.0",
     "ssh2": "^0.5.5",
     "ytdl-core": "^2.0.1"
   },

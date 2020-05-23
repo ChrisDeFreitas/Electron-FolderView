@@ -28,6 +28,7 @@ var argmap = {
 		sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once.", alias:['--sftpDownloadMax'] },
 		shuffle:{		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()", alias:['--shuffle'] },
 		showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions", alias:['--showSlideCaptions'] },
+		videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected', alias:['videourl','--videoURL'] },
 		width:{			type:'number', default:0, notes:'default window width; 0 = max width', alias:['--width'] }
 }
 //var args = require( 'argv-to-object' )( argmap );
@@ -53,8 +54,8 @@ Object.defineProperty(global, '__line', {
 function log(msg, lineno){
 	if(mainWindow==null) {
 		if(lineno!==undefined)
-			console.log(`${__filename}, Line #${lineno}:`)
-		console.log(msg)
+			console.error(`${__filename}, Line #${lineno}:`)
+		console.error(msg)
 		return
 	}
 	if(lineno!=null)
@@ -69,7 +70,7 @@ exports.fldrLoad = function(fldr, simple) {
 }
 //
 
-log('Init..')
+//log('Init..')
 
 var mainWindow=null
 var isElectron = (app!=undefined)
@@ -79,24 +80,27 @@ let imgtypes = ['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png','.webp']
 var vidtypes = ['.avi','.flc','.flv','.m4v','.mkv','.mov','.mp4','.mp5','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
 let audtypes = ['.flac','.mp3','.wma']
 
+
 if(isElectron===false){	//nodejs functionality -- not working/useful these days
 	log('nodejs app running')
 	var fldrobj = parseArgs()
 	var htmlfile = htmlGen(fldrobj)
-	console.log('Launching:['+htmlfile+']')
+	console.error('Launching:['+htmlfile+']')
 	const exec = require('child_process').exec;
 	const child = exec(htmlfile, (error, stdout, stderr) => {
 	  //error gen if browser already opened: if (error) throw error
-	  console.log('Launch results:\n['+stdout+']');
+	  console.error('Launch results:\n['+stdout+']');
 	})
 }
 else {		//electron functionality
-	if(isFolderView)	log('FolderView.exe running')
-	else	log('electron app running')
+	//no output to support browser extension native messaging
+	// if(isFolderView)	log('FolderView.exe running')
+	// else	log('electron app running')
 	appInit()
 }
 
 function appInit(){
+	app.allowRendererProcessReuse = true	//due to deprecation warning in v8, https://github.com/electron/electron/issues/18397
 	app.on('ready', function() {
 		var fldrobj = parseArgs()
 		mainWindow = browserLaunch(fldrobj)
@@ -120,16 +124,15 @@ function appInit(){
 function safeLstat(apath) {
 	var result = null
 	try { result = fs.lstatSync(apath) }
-	//try { return fs.lstatSync(apath) }
-	catch(e){ console.log('safeLstat() error: ', e) }
+	catch(e){  console.error('safeLstat() error: ', e) }
 	return result
 }
 function parseArgs() {
 	var file = ''
 
 	if(args.path === ''){	//check for path on the commandline; useCase: Windows drag and drop
-		console.log('no --path, checking for default argv path..')
-		console.log('argv: ',process.argv)
+		// console.error('no --path, checking for default argv path..')
+		// console.error('argv: ',process.argv)
 		if(process.argv.length > (isFolderView ?1 :2)){
 			var ss = process.argv[(isFolderView ?1 :2)]
 			if(ss != '' && ss.indexOf('--') < 0) {
@@ -140,10 +143,10 @@ function parseArgs() {
 				}
 			}
 		}
-		if(args.path!=''){
-			console.log('Found:', args.path)
-		} else
-			console.log('Default argv path not found')
+		// if(args.path!=''){
+		// 	console.error('Found:', args.path)
+		// } else
+		// 	console.error('Default argv path not found')
 	}
 	if(args.path == null || args.path == ''){
 		if(isElectron===false) file='./'
@@ -157,13 +160,14 @@ function parseArgs() {
 	if(args.devtools===undefined) args.devtools=false
 	if(args.folders===undefined) args.folders='first'
 	if(args.fontsize && (args.fontsize[0]==='"' || args.fontsize[0]==="'")) {	//remove quotes if needed
-		console.log("Fix args.fontsize: ", args.fontsize)
+		console.error("Fix args.fontsize: ", args.fontsize)
 		args.fontsize = args.fontsize.substr(1, args.fontsize.length-2)
 	}
 	if(args.layout===undefined) args.layout='cols'
 	if(args.order===undefined) args.order='name'
 	if(args.sftpDownloadMax===undefined) args.sftpDownloadMax=2
 	if(args.shuffle===undefined) args.shuffle=false
+	// if(args.videoURL===undefined) args.videoURL=''
 	if(args.width===0 || args.height===0){
 		if(isElectron == true){
 			const	{width, height} = electron.screen.getPrimaryDisplay().workAreaSize
@@ -175,9 +179,9 @@ function parseArgs() {
 			if(args.height===0) args.height = 800
 		}
 	}
-	log('Arguments:')
-	log(args)
-	log('Reading files..')
+	// log('Arguments:')
+	// log(args)
+	// log('Reading files..')
 	file = file.trim()
 
 	var fldrobj = fldrObjGen(file)
@@ -196,7 +200,7 @@ function scaleFix(fileObj){
 	}
 	else {
 		if(typeof args.scale==='string'){
-			console.log('scale has an undefined value: ['+args.scale+'], using 1 instead.')
+			// console.error('scale has an undefined value: ['+args.scale+'], using 1 instead.')
 			args.scale=1
 		}
 	}
@@ -410,3 +414,4 @@ function pathTrailingSlash(str){	//verifies path ends in a trailing slash
 	if(str[str.length-1]!='/') str += '/'
 	return str
 }
+

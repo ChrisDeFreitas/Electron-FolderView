@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="sidebar.css"/>
+
+<!-- fails: script type="module">
+  import { myFunction } from '../lib/module.js'
+  console.log('myFunction', myFunction) 
+</script-->
+
+</head>
+
+<body>
+  <div id = "frame">
+
+    <table id=heading>
+    <tr class=trTitle><td colspan=2>
+      Status
+    </td></tr>
+    <tr class=trData >
+      <td class=tdLabel><button id=btnStatus title='Connect to FolderView.'>Connect</button></td>
+      <td class=tdData>
+        <input id=fldStatus type=text value='Not connected'>
+      </td>
+      <td> &nbsp; </td>
+    </tr>
+    <tr class=trData >
+      <td class=tdLabel>Port</td>
+      <td class=tdData>
+        8124
+      </td>
+      <td> &nbsp; </td>
+    </tr>
+    <!--tr><td class=tdButton colspan=2>
+      <button id=btnSocket title='Make socket.io connection to local app.'>Socket</button>
+      <button id=btNativeApp title='test opening FolderView'>Launch FolderView</button>
+    </td></tr-->
+    </table>
+
+    <div id=content>
+      
+      <table>
+        <tr class=trTitle><td colspan=2>Video Download</td></tr>
+        <tr class=trData >
+            <td class=tdLabel>Title</td>
+            <td class=tdDatat colspan=2>
+              <input id="fld-title" type=text value=''>
+            </td>
+        </tr>
+        <tr class=trData >
+          <td class=tdLabel>URL</td>
+          <td class=tdData>
+            <input id=fld-url type=text title='Youtube Video to download' value=''>
+          </td>
+        </tr>
+        <tr>
+          <td class=tdButton colspan=3>
+            <button id=btnVideoSend title='Download video using FolderView.'>Send</button>
+            <button id=btnVideoGet title='Load settings from current browser tab.'>Load</button>
+          </td>
+        </tr>
+      </table>
+      
+      <table style='max-width:100%;'>
+        <tr class=trTitle><td  colspan=2>
+          Img
+          <button id=btnImgClear title='Load images in page.'>Clear</button>
+          <button id=btnImgList title='Load images in page.'>Load</button>
+        </td></tr>
+      </table>
+      <table id=tbImages>
+      </table>
+
+    </div>
+
+  </div>
+
+  <script src="../socket.io/socket.io.js"></script>
+  <script src="sidebar.js"></script>
+</body>
+
+</html>

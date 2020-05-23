@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color:#eee;
+  font:caption;
+  background: black repeat url("tileable-fabric-textures-1.jpg");
+}
+button{ border:1px solid silver;  border-radius:0.25em; cursor:pointer; font-size:11px; padding:0.25em 0.5em; text-align:center; width:5em; }
+input{ border:none; display:inline; }
+table{ border-collapse:collapse; margin:0 auto 1em auto; }
+td{ padding:none; }
+
+#frame{ font-size:14px; padding:0.5em 1em; }
+
+#frame #heading{ border:none; font-size:1em; margin:0; outline:0; padding:0;  }
+
+#frame #content{ border:none; font-size:1em; margin:0; outline:0; padding:0; }
+#frame #content table{ margin:0 auto; width:100%; }
+
+.tdButton{ font-size:0.8em; margin:0.5em 0; text-align:right; width:100%;}
+.tdButton button{ float:right; margin:0 0.5em 0 0;  }
+
+.trTitle{ color:rgba(255, 166, 64, 0.6); font-size:1.2em; font-weight:bold; }
+.trTitle td { width:100%; padding-top:1em; }
+.trTitle td:nth-child(1) { width:100%; }
+
+.tdLabel{ color:rgba(238, 238, 238, 0.5); font-weight:bold; padding-left:1em; }
+td input[type=text]{ background:transparent; color:rgba(238, 238, 238, 0.8); font-weight:lighter; text-align:left; text-overflow:ellipsis; width:100%; }
+
+#tbImages{ max-width:98%; text-overflow:ellipsis; }
+.trImg { vertical-align: top; }
+.trImg img { max-width:150px; max-height:150px; margin:0 auto; }
+.trImg .tdImgIcon { border:1px solid transparent; max-width:150px; text-align:center; }
+.trImg .tdImgLabel{ padding:0.5em 0 0 0.5em; text-align:left; }
+.trImg .tdImgLabel a{ text-decoration:none; color:#ccc; }
+#btnImgList, #btnImgClear{ float:right; margin:0 0.5em 0 0; }
+
+#frame #footer{ text-align:center; }

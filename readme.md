@@ -25,10 +25,11 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - rename dialog: handy tools for renaming a file
 - log messages are written to Javascript console (F12 or Ctrl+Shift+i)
 - Youtube video download
+- FireFox extenstion to transfer video urls to FolderView for downloading and other tools
 
 ## App Notes
 1. Install:
-    - Windows only; I use it on Win81 and Win7
+    - Windows only; I use it on Win10, Win81 and Win7
     - requires Node.js be installed on your system (https://nodejs.org/)
     - download to a local folder: <br>
         \> git clone https://github.com/ChrisDeFreitas/Electron-FolderView<br>
@@ -62,10 +63,19 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * the executable is: dist\\FolderView-win32-x64\\FolderView.exe
     * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app
 
-5. Keyboard Shortcuts
+5. About FireFox Tools
+- built to test FireFox extension development and simplify Youtube video downloads
+- add a few extra features to see whether they would work
+- at the moment there are no plans to expand beyond the existing functionality
+- to use the extension must be loaded into FireFox as a temporary extension and the socket.io client muse be listening in FolderView, top menu/FireFox Tools
+- the socket.io server in FolderView.exe must be installed via "npm install"
+- the socket.io client exists within the FireFox folder
+- instructions to install a temporary FireFox extension:  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Trying_it_out
+
+6. Keyboard Shortcuts
 		see keyboardshortcuts.txt
 
-6. Commandline switches
+7. Commandline switches
     * if "path" option not supplied app looks to commandline arguments for path, for example:
 				\> electron main.js c:\users\pictures	fullscreen=true layout=cols
 				\> FolderView.exe c:\users\pictures	fullscreen=true layout=cols
@@ -88,7 +98,8 @@ var argmap =
 	scroll:{ keypath:'scroll', type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
 	sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
 	showSlideCaptions:{	keypath:'showSlideCaptions', type:'boolean',	default:true,	notes:"Display slideshow captions" },
-	shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+    shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+    videoURL:{		type:'string',	notes:'Open Video Download with this URL selected', alias:['videourl,videoUrl'] },
 	width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 ```
@@ -126,10 +137,18 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+May --/2020
+- FireFox Tools Extension: sends video urls to FolderView for downloading and other functions
+- grinder: fixed bug that occured when parsing strings like "url=https://a.b?c=1" (the part after the second = was lost)
+- Video Download: added commandline argument to open on startup (videoURL=http...)
+- dlgRename: now indicates whether a rename failure was due to a locked file.
+- dldgMove: tweaked error messages to be more readable
+
 Apr 23/2020
-- the Jul 2019 update was not uploaded to GIT
+- the Jul 2019 update was not uploaded to Git
 - updated Electron to v8.x
 - updated ytdl-core to 2.01
+- updated Video Download to work with the new ytdl-core
 
 
 Jul --/2019
@@ -404,6 +423,7 @@ Apr 4/17:
 - https://nodejs.org
 - https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions
 - https://github.com/andrewrk/node-mv
 - https://github.com/npm/ini
 - https://github.com/tyzbit/Electron-FolderView
@@ -417,6 +437,4 @@ Apr 4/17:
 
 Good Luck!
 
-Chris
-
-chrisd@europa.com
+Chris.
