@@ -24,6 +24,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - pathBar dialog: handy dialog for selecting a folder
 - rename dialog: handy tools for renaming a file
 - log messages are written to Javascript console (F12 or Ctrl+Shift+i)
+- find dialog with advanced search functions (regex, case, invert results, search subfolders)
 - Youtube video download
 - FireFox extenstion to transfer video urls to FolderView for downloading and other tools
 
@@ -76,31 +77,29 @@ This is a work in progress.  Feel free to use and modify as you wish.
 		see keyboardshortcuts.txt
 
 7. Commandline switches
-    * if "path" option not supplied app looks to commandline arguments for path, for example:
-				\> electron main.js c:\users\pictures	fullscreen=true layout=cols
-				\> FolderView.exe c:\users\pictures	fullscreen=true layout=cols
+    * its safest to prefix path with --: FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)
     * commandline arguments documented in main.js:
 ```Javascript
 var argmap =
 {
-	descending:{	keypath:'descending',	type:'boolean', default:false, notes:'sort items in descending order' },
-	devtools:{keypath:'devtools',	type:'boolean', default:false },
-	folders:{	keypath:'folders',  type:'string',  default:'default', range:['default','first','hidden','last'] },
-	fontsize:{ keypath:'fontsize', 	type:'string',  default:'12px',	notes:'set the default font size for the document.' },
-	fullscreen:{ keypath:'fullscreen', type:'boolean', default:false },
-	height:{	keypath:'height', type:'number', default:0, notes:'default window height; 0 = max height' },
-	iconsOnly:{	keypath:'iconsOnly', type:'boolean', default:false, notes:'display icons instead of audio/image/video controls' },
-	layout:{	keypath:'layout', type:'string',	default:'wall',	range:['cols','rows','vert','wall']
+	descending:{ type:'boolean', default:false, notes:'sort items in descending order' },
+	devtools:{ type:'boolean', default:false },
+	folders:{ type:'string',  default:'default', range:['default','first','hidden','last'] },
+	fontsize:{ type:'string',  default:'12px',	notes:'set the default font size for the document.' },
+	fullscreen:{ type:'boolean', default:false },
+	height:{ type:'number', default:0, notes:'default window height; 0 = max height' },
+	iconsOnly:{	type:'boolean', default:false, notes:'display icons instead of audio/image/video controls' },
+	layout:{ type:'string',	default:'wall',	range:['cols','rows','vert','wall']
 				, notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"` },
-	order:{ keypath:'order', type:'string',	default:'name', range:['date','name','size','type'], notes:'Sort order of items' },
-	path:{ keypath:'path', type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).' },
-	scale:{	keypath:'scale', type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
-	scroll:{ keypath:'scroll', type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
-	sftpDownloadMax:{	keypath:'sftpDownloadMax', type:'number', default:2,	notes:"Set max number of files to download at once." },
-	showSlideCaptions:{	keypath:'showSlideCaptions', type:'boolean',	default:true,	notes:"Display slideshow captions" },
-    shuffle:{	keypath:'shuffle', type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
-    videoURL:{		type:'string',	notes:'Open Video Download with this URL selected', alias:['videourl,videoUrl'] },
-	width:{	keypath:'width', type:'number', default:0, notes:'default window width; 0 = max width' }
+	order:{ type:'string',	default:'name', range:['date','name','size','type'], notes:'Sort order of items' },
+	path:{ type:'string',	default:'',	notes:'file or folder to open; always prefix with --', alias:['--path'] },
+	scale:{	type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items." },
+	scroll:{ type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded." },
+	sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once." },
+	showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions" },
+    shuffle:{	type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+    videoURL:{	type:'string',	notes:'Open Video Download with this URL selected', alias:['videourl,videoUrl'] },
+	width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 ```
 
@@ -127,7 +126,6 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- expand the ability to execute applications; allow command line switches
 - BulkOps dialog: add rename function to work on a group of files
 - create new dialog: view keyboardshortcuts.txt
 - selectList: allow Shift+Click to select a range of items
@@ -137,19 +135,42 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+Jun 9/20
+Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.  
+
+Main goal was to simplify cleaning up media file names.  Created two major dlgRename features.  The first "Auto select left", automatically selects the trailing part of media file names containing format data.  The other feature allows selection steps (including "Delete Selection" and "Apply Changes") to be recorded, then played back against other files.  Although its fairly simple at this point, the code can be optimized and adapted for other file naming conventions.  Still being tested.  
+
+Along the way used dlgFind to lookup obscure media file names.  The RegEx search and Invert Results functions were previously implemented and are working well.  But added regex examples to th UI because despite being useful regex is terribly documented everywhere.  
+
+- dlgRename update: added "Auto select left" button to automatically highight text to be trimmed.  Designed for media files.  Very simple at this point.  
+- dlgRename update: added Record/Play selection operations (see actionMap.js).  
+- dlgRename update: added checkbox to indicate whether selection controls should keep file extension.  Default to true for files, false for folders.  
+- dlgFind update: added regex examples for a quick reference
+- NewFolder function fixed: looks like the usage of showSaveDialog function changed from when the new folder function was originally created  
+- vert layout fixed: dlgReplace fails to update ui element with message: "Cannot set property 'innerHTML' of undefined"
+- changed: video tag's preload=none (was metadata) because it was slowing down folders with lots of videos (>200)  
+- fixed: when path argument points to an image, the image is now correctly displayed in the slideshow
+- fixed: first argument to FolderView.exe was not processed
+- found: strange error where under certain conditons the path must be prefixed with -- (eg electron main.js --path="c:/a/b/c" shuffle=true).   
+- found: path operations will accept posix paths (so far) so will continue to use posix paths internally
+- update: startup errors are now written to Electron console
+- added: VSCode debugging for main process (main.js): https://www.electronjs.org/docs/tutorial/debugging-main-process-vscode
+- updated: Electron to v9.x
+- updated: ytdl-core to v3.x
+
+
 May 22/2020
 - FireFox Tools Extension: sends video urls to FolderView for downloading and other functions
 - grinder: fixed bug that occured when parsing strings like "url=https://a.b?c=1" (the part after the second = was lost)
 - Video Download: added commandline argument to open on startup (videoURL=http...)
 - dlgRename: now indicates whether a rename failure was due to a locked file.
-- dldgMove: tweaked error messages to be more readable
+- dlgMove: tweaked error messages to be more readable
 
 Apr 23/2020
 - the Jul 2019 update was not uploaded to Git
 - updated Electron to v8.x
 - updated ytdl-core to 2.01
 - updated Video Download to work with the new ytdl-core
-
 
 Jul --/2019
 
@@ -417,21 +438,20 @@ Apr 4/17:
 
 ## Thanks To
 - http://electron.atom.io
-- http://elusiveicons.com
+- https://github.com/tyzbit/Electron-FolderView
 - https://github.com/electron-userland/electron-packager
-- https://www.npmjs.com/package/ini
-- https://nodejs.org
+- http://elusiveicons.com
 - https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
-- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions
-- https://github.com/andrewrk/node-mv
 - https://github.com/npm/ini
-- https://github.com/tyzbit/Electron-FolderView
 - http://isotope.metafizzy.co
+- https://github.com/andrewrk/node-mv
+- https://nodejs.org
 - http://photoswipe.com
+- https://www.npmjs.com/package/sanitize-filename
 - http://www.iconarchive.com/show/series-folder-icons-by-softskin.html
 - https://github.com/mscdex/ssh2
-- https://www.npmjs.com/package/sanitize-filename
+- https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions
 - https://www.npmjs.com/package/ytdl-core
 
 

@@ -22,7 +22,7 @@ var argmap = {
 		iconsOnly:{	type:'boolean', default:false, notes:'display icons instead of audio/image/video controls', alias:['--iconsOnly'] },
 		layout:{		type:'string',	default:'cols',	range:['cols','rows','vert','wall'], notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"`, alias:['--layout'] },
 		order:{			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items', alias:['--order'] },
-		path:{			type:'string',	default:'',			notes:'no trailing backslash allowed (for argv-to-object).', alias:['--path'] },
+		path:{			type:'string',	default:'',		notes:'folder or file to open; always prefix with -- because it looks like path conflicts with an internal switch', alias:['--path'] },
 		scale:{			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items.", alias:['--scale'] },
 		scroll:{		type:'boolean', default:false,	notes:"turn on/off scrolling grid whenever items loaded.", alias:['--scroll'] },
 		sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once.", alias:['--sftpDownloadMax'] },
@@ -31,8 +31,7 @@ var argmap = {
 		videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected', alias:['videourl','--videoURL'] },
 		width:{			type:'number', default:0, notes:'default window width; 0 = max width', alias:['--width'] }
 }
-//var args = require( 'argv-to-object' )( argmap );
-var args = require('./lib/grinder/lib/grinder.js').grindArgv(argmap)
+var args = require('./lib/grinder/lib/grinder.js').grindArgv(argmap, null, 1)
 
 //allow logging to main browser window
 Object.defineProperty(global, '__stack', {
@@ -143,18 +142,23 @@ function parseArgs() {
 				}
 			}
 		}
-		// if(args.path!=''){
-		// 	console.error('Found:', args.path)
-		// } else
-		// 	console.error('Default argv path not found')
+		if(args.path!=''){
+			console.error('Found:', args.path)
+		} else
+			console.error('Default argv path not found')
 	}
 	if(args.path == null || args.path == ''){
 		if(isElectron===false) file='./'
 		args.path = file
 	}
 	else {
-		args.path = path.normalize(args.path)
-		file = args.path
+		file = args.path.trim()
+		if(file[0] == '"' || file[0] == "'"){
+			file = file.substring(1, file.length-1)
+			file = file.trim()
+		}	
+		file = path.normalize(file)
+		args.path = file
 	}
 	if(args.descending===undefined) args.descending=false
 	if(args.devtools===undefined) args.devtools=false
@@ -179,10 +183,9 @@ function parseArgs() {
 			if(args.height===0) args.height = 800
 		}
 	}
-	// log('Arguments:')
-	// log(args)
-	// log('Reading files..')
-	file = file.trim()
+	console.log('Arguments:')
+	console.log(args)
+	console.log('Reading files..')
 
 	var fldrobj = fldrObjGen(file)
 	return fldrobj
@@ -211,7 +214,7 @@ function fldrObjGen(file, simple) {
 	//				else returns items[{}, ...] with file type info
 	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
-		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:['Error, file argument is empty.']}
+		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, path argument has an error:[${file}].`]}
 	if(simple== undefined) simple = false
 
 	let exts={},
@@ -219,17 +222,20 @@ function fldrObjGen(file, simple) {
 			defaultfile = '',
 			isDirectory = true,
 			stat = safeLstat(file)
-	if(stat!==null){
-		if(stat.isDirectory()==true){
-			file = pathTrailingSlash(file)
-			folder = file
-		}	else {
-			if(simple===true)
-				return {fldr:file, items:[], isDirectory:false, fileErrors:[]}
-			folder = path.dirname(file)
-			defaultfile = path.basename(file)
-			isDirectory = false
-		}
+	if(stat==null){
+		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, could not stat: [${file}].`]}
+	}
+
+	if(stat.isDirectory()==true){
+		file = pathTrailingSlash(file)
+		folder = file
+	}
+	else {
+		if(simple===true)
+			return {fldr:file, items:[], isDirectory:false, fileErrors:[]}
+		folder = path.dirname(file)
+		defaultfile = path.basename(file)
+		isDirectory = false
 	}
 
 	var fls = fs.readdirSync(folder)
@@ -348,8 +354,10 @@ function htmlGen(fldrobj){
 		'//ui.args=main.js/args':`ui.args=${JSON.stringify(fldrobj.args)}`,
 		'//exts={}':'exts = '+JSON.stringify(fldrobj.exts),
 		'//items=null':'items = '+JSON.stringify(fldrobj.items),
-		'//ui.var.OS=null':`ui.var.OS = "${process.platform}"`
+		'//ui.var.OS=null':`ui.var.OS = "${process.platform}"`,
+		'//fileErrors=null':`fileErrors = ${JSON.stringify(fldrobj.fileErrors)}`
 	}
+	console.log('fldrobj.fileErrors', fldrobj.fileErrors)
 	const tmpl	 = require(__dirname+'/lib/cls_tmplFile.js');
 	tmpl.xlate({
 		filename: path.join(__dirname,'lib/index.html'),
@@ -404,7 +412,6 @@ function browserLaunch(fldrobj) {
 		slashes: true
 	}))
 	//if(args.fullscreen===true) win.setFullScreen(true)
-	//log(111111, args.devtools)
 	if(args.devtools===true) win.webContents.openDevTools()
 	return win
 }

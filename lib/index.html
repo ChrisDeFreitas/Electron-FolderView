@@ -29,6 +29,7 @@
 <script src="file:///C:/website/node/imageView/lib/videoDl.js"></script>
 <script src="file:///C:/website/node/imageView/lib/browserTools.js"></script>
 <!--script src="file:///C:/website/node/imageView/lib/browser/nativeMsg.js"></script-->
+<script src="file:///C:/website/node/imageView/lib/actionMap.js"></script>
 
 <script>
 //////do not delete: vars populated by main.js:
@@ -36,6 +37,7 @@
 //exts={}
 //items=null
 //ui.var.OS=null
+//fileErrors=null
 
 const Isotope = require('isotope-layout')
 const packery = require('isotope-packery')
@@ -56,6 +58,14 @@ var dlgExport = null	//press F4 to toggle
 var dlgPathBar=null		//press F6 to toggle
 var dlgBulk=null			//F7
 //var dlgFind=null			//Ctrl+F
+
+if(fileErrors != null && fileErrors.length > 0){
+	console.error('FolderView startup errors:')
+	ii=1
+	for(let err of fileErrors){
+		console.error(ii++, err)
+	}
+}
 
 function init() {
 	//////do not delete these comments: vars populated by main.js:
@@ -107,8 +117,7 @@ function init() {
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
 
-	console.log('\n')	//end of app args
-	console.log('Startup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
+	console.log('\nStartup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
 	gridLoad(lastLayoutMode)
 	//renderer.fileFind()
@@ -116,8 +125,6 @@ function init() {
 	if(typeof ui.args.videoURL == 'string' && ui.args.videoURL != ''){
 		videoDl.init({url:ui.args.videoURL})	
 	}
-
-	//btools.init()
 }
 </script>
 <style>
@@ -282,7 +289,7 @@ function init() {
 .dlgBulk .dlgFooter #btn4{ margin-right:1em;}
 #lblBulkAutoMode{ cursor:pointer; }
 .divBulkOptions{ color:#ffaf00; font-weight:bold; margin:0.5em 0; }
-.divBulkOptions input{ padding:0; vertical-align:middle;  }
+.divBulkOptions input{ outline:none; padding:0; vertical-align:middle;  }
 .divBulkOptions button{ cursor:pointer; font-size:0.8em; padding:2px 4px;  }
 #divBulkOptCount{ display:inline-table; text-align:right; position:absolute; right:20px; }
 #inpBulkDest{ width:72%; }
