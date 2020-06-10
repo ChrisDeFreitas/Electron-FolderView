@@ -135,6 +135,9 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+Jun 10/20  
+Testing Git LFS to include a zip version of the application in ./dist/.  
+
 Jun 9/20  
 Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.  
 
