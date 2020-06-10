@@ -126,8 +126,10 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- BulkOps dialog: add rename function to work on a group of files
-- create new dialog: view keyboardshortcuts.txt
+- add version to zip file and clean up code so zip version runs out of the box  
+- Add instructions on how to use zip file  
+- Verify zip file works when repository cloned
+- create new dialog: view keyboardshortcuts.txt  
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
 - SFTP dialog: sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
@@ -136,8 +138,9 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ## Changes
 
 Jun 10/20  
-Testing Git LFS to include a zip version of the application in ./dist/.  
-- zip file fails at this point.
+Installed Git LFS to include a zip version of the application in ./dist/.  Tested: zip file works when downloaded from GitHub (via download button on the <a href="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/dist/FolderView-win32-x64.zip">FolderView-win32-x64.zip page</a>).
+
+
 
 Jun 9/20  
 Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.  
