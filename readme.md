@@ -135,7 +135,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
-Jun 9/20
+Jun 9/20  
 Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.  
 
 Main goal was to simplify cleaning up media file names.  Created two major dlgRename features.  The first "Auto select left", automatically selects the trailing part of media file names containing format data.  The other feature allows selection steps (including "Delete Selection" and "Apply Changes") to be recorded, then played back against other files.  Although its fairly simple at this point, the code can be optimized and adapted for other file naming conventions.  Still being tested.  
