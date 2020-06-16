@@ -260,7 +260,8 @@ function fldrObjGen(file, simple) {
 				basename:fn,
 				date:stat.mtime,
 				size:stat.size,
-				isDirectory:stat.isDirectory()
+				isDirectory:stat.isDirectory(),
+				sortname:fn.toLowerCase(),	//preload to speed sorting
 			}
 			fls2.push(obj)
 			continue
@@ -277,6 +278,7 @@ function fldrObjGen(file, simple) {
 		var obj = {
 			basename:fn, date:stat.mtime, size:stat.size,
 			isDirectory:stat.isDirectory(),
+			sortname:fn.toLowerCase(),	//preload to speed sorting
 			mediaType: 'unknown',
 			path: posixpath,
 			pid: id,

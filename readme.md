@@ -29,6 +29,13 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - FireFox extenstion to transfer video urls to FolderView for downloading and other tools
 
 ## App Notes
+0. About the Zip File  
+    - At this point I'm not sure whether the zip file will remain in the repository, but its here for now and very convenient.
+    - For now, you can download directly via this <a href='https://github.com/ChrisDeFreitas/Electron-FolderView/raw/master/dist/FolderView-win32-x64.zip'>link</a>  
+    - After downloading, unzip and run FolderView.exe.  
+    - I setup Windows shortcuts where I pass commandline arguments for the default path, layout etc.  Here is a sample "Target" parameter for a Windows shortcut I use:  
+        C:\FolderView-win32-x64\FolderView.exe folders=first order=date layout=rows descending=true --path="f:\\Media\\LXQT\\" scale=0.9  
+
 1. Install:
     - Windows only; I use it on Win10, Win81 and Win7
     - requires Node.js be installed on your system (https://nodejs.org/)
@@ -44,7 +51,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 2. Test:
     - the test script is not included as it is specific to my sytem
-    - create this batch file to execute your tests: scripts/testFolderView.bat
+    - create this batch file to execute your tests: ./scripts/testFolderView.bat
     - then run<br>
  			  \> npm run test
 
@@ -126,9 +133,8 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
-- add version to zip file and clean up code so zip version runs out of the box  
-- Add instructions on how to use zip file  
-- Verify zip file works when repository cloned
+- test Filter menu operations (encountered a bug that appears to be random where extensions were mixed up)
+- add version to zip file name; remove unnecessary values from the settings files
 - create new dialog: view keyboardshortcuts.txt  
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
@@ -136,6 +142,19 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 
 ## Changes
+
+Jun 16/20
+I'm not sure it the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.  
+
+New functions in dlgRename are working well.  I've used them a lot without incident.  
+
+- folderNew() fix: requires the default path be translated from posix to win32  
+- folderNew() update: changed to accept a default path (was using the default application path)  
+- pathBar fix: folder items are now sorted alphabetically  
+- pathBar update: optimized loading of folder items  
+- pathBar update: renamed ui.var.apipath to ui.var.pathBarPath for clarity  
+- item grid update: optimized sort algorithm to speed loading folder items  
+
 
 Jun 10/20  
 Installed Git LFS to include a zip version of the application in ./dist/.  Tested: zip file works when downloaded from GitHub (via download button on the <a href="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/dist/FolderView-win32-x64.zip">FolderView-win32-x64.zip page</a>).
