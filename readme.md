@@ -34,7 +34,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
     - For now, you can download directly via this <a href='https://github.com/ChrisDeFreitas/Electron-FolderView/raw/master/dist/FolderView-win32-x64.zip'>link</a>  
     - After downloading, unzip and run FolderView.exe.  
     - I setup Windows shortcuts where I pass commandline arguments for the default path, layout etc.  Here is a sample "Target" parameter for a Windows shortcut I use:  
-        C:\FolderView-win32-x64\FolderView.exe folders=first order=date layout=rows descending=true --path="f:\\Media\\LXQT\\" scale=0.9  
+        C:\FolderView-win32-x64\FolderView.exe folders=first order=date layout=rows descending=true --path="f:\\\\Media\\\\LXQT\\\\" scale=0.9  
 
 1. Install:
     - Windows only; I use it on Win10, Win81 and Win7
@@ -143,7 +143,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
-Jun 16/20
+Jun 16/20  
 I'm not sure it the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.  
 
 New functions in dlgRename are working well.  I've used them a lot without incident.  
