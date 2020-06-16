@@ -30,11 +30,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 
 ## App Notes
 0. About the Zip File  
-    - At this point I'm not sure whether the zip file will remain in the repository, but its here for now and very convenient.
-    - For now, you can download directly via this <a href='https://github.com/ChrisDeFreitas/Electron-FolderView/raw/master/dist/FolderView-win32-x64.zip'>link</a>  
-    - After downloading, unzip and run FolderView.exe.  
-    - I setup Windows shortcuts where I pass commandline arguments for the default path, layout etc.  Here is a sample "Target" parameter for a Windows shortcut I use:  
-        C:\FolderView-win32-x64\FolderView.exe folders=first order=date layout=rows descending=true --path="f:\\\\Media\\\\LXQT\\\\" scale=0.9  
+    - removed because of quota limits of Git LFS.  To use now it must be built from source, see below.
+    - will update when another solution is found
 
 1. Install:
     - Windows only; I use it on Win10, Win81 and Win7
@@ -143,8 +140,11 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 ## Changes
 
+Jun 16/20 - 2  
+Removed the zip file and Git LFS because the quota limits were reached. If the product was better documented I would not have even attempted it as a 1GB download limit on a 160MB file is ridiculous. 
+
 Jun 16/20  
-I'm not sure it the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.  
+I'm not sure if the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.  
 
 New functions in dlgRename are working well.  I've used them a lot without incident.  
 
