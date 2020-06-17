@@ -26,7 +26,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - log messages are written to Javascript console (F12 or Ctrl+Shift+i)
 - find dialog with advanced search functions (regex, case, invert results, search subfolders)
 - Youtube video download
-- FireFox extenstion to transfer video urls to FolderView for downloading and other tools
+- FireFox extenstion to transfer video urls to FolderView for downloading, and other tools
 
 ## App Notes
 0. About the Zip File  
@@ -130,6 +130,7 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 ```
 
 ## ToDo
+- Windows Explorer menu (F3) fails
 - test Filter menu operations (encountered a bug that appears to be random where extensions were mixed up)
 - add version to zip file name; remove unnecessary values from the settings files
 - create new dialog: view keyboardshortcuts.txt  
@@ -139,6 +140,9 @@ defaultpath=/home/UserName/FolderWithFilesToDownload
 
 
 ## Changes
+
+Jun 16/20 - 3  
+- Windows Explorer menu: Electron changed shell function from shell.openItem to shell.openPath
 
 Jun 16/20 - 2  
 Removed the zip file and Git LFS because the quota limits were reached. If the product was better documented I would not have even attempted it as a 1GB download limit on a 160MB file is ridiculous. 
