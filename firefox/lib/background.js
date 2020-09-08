@@ -60,7 +60,6 @@ window.addEventListener('DOMContentLoaded',  function(event){
       console.log("Toggle sidebar visibility");
     }
   })
-  
   browser.runtime.onMessage.addListener( async function( message ){
     if(message.handler || !message.to || message.to !== 'background')
       return
@@ -127,7 +126,6 @@ window.addEventListener('DOMContentLoaded',  function(event){
       // message.handled = ui.calc.timeStamp()
     }
   })
-  
   console.log('background.init')    
 })
 
@@ -151,6 +149,46 @@ browser.tabs.onUpdated.addListener(function handleUpdated(tabId, changeInfo, tab
 })
 
 
+//menu test:  https://github.com/mdn/webextensions-examples/blob/master/menu-demo/background.js
+const openLabelledId = "open-labelled";
+function onCreated() {
+  if (browser.runtime.lastError) {
+    console.log(`Error: ${browser.runtime.lastError}`);
+  } else {
+    console.log("menu item created successfully");
+  }
+}
+function onRemoved() {
+  console.log("Item removed successfully");
+}
+function updateMenuItem(linkHostname) {
+  browser.menus.update(openLabelledId, {
+    title: `Open (${linkHostname})`
+  });
+  browser.menus.refresh();
+}
+browser.menus.create({
+    id: openLabelledId,
+    title: "FolderView Tools", //browser.i18n.getMessage("menuItemRemoveMe"),
+    contexts: ["all"]
+  }, 
+  onCreated
+)
+
+browser.menus.onShown.addListener(info => {
+  if (info.menuItemId === openLabelledId) {
+    console.log(openLabelledId, 'shown');
+    // let linkElement = document.createElement("a");
+    // linkElement.href = info.linkUrl;
+    // updateMenuItem('clicked')
+  }
+})
+browser.menus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === openLabelledId) {
+    console.log(openLabelledId, 'clicked')
+    updateMenuItem('Clicked')
+  }
+})
 
 
-console.log(`background js init`)
+console.log(`background.js init`)

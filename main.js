@@ -20,7 +20,7 @@ var argmap = {
 		fullscreen:{type:'boolean', default:false, alias:['--fullscreen'] },
 		height:{		type:'number', default:0, notes:'default window height; 0 = max height', alias:['--height'] },
 		iconsOnly:{	type:'boolean', default:false, notes:'display icons instead of audio/image/video controls', alias:['--iconsOnly'] },
-		layout:{		type:'string',	default:'cols',	range:['cols','rows','vert','wall'], notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"`, alias:['--layout'] },
+		layout:{		type:'string',	default:'cols',	range:['cols','rows','vert','videoWall','wall'], notes:`cols:"default to item.width=(window.innerWidth/3).",rows:"item.height=300px",vert:"single col",wall:"wallboard of images"`, alias:['--layout'] },
 		order:{			type:'string',	default:'name', range:['date','name','size','type'],			notes:'Sort order of items', alias:['--order'] },
 		path:{			type:'string',	default:'',		notes:'folder or file to open; always prefix with -- because it looks like path conflicts with an internal switch', alias:['--path'] },
 		scale:{			type:'number',  default:1, range:{greaterThan:0}, notes:"scale size of grid items.", alias:['--scale'] },
@@ -28,7 +28,9 @@ var argmap = {
 		sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once.", alias:['--sftpDownloadMax'] },
 		shuffle:{		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()", alias:['--shuffle'] },
 		showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions", alias:['--showSlideCaptions'] },
+		videoMetadata:{		type:'boolean',	default:false,		notes:'Load video metadata (thumbnails), will slow large folders', alias:['videometadata'] },
 		videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected', alias:['videourl','--videoURL'] },
+		//videoWall:{		type:'boolean',	default:false,		notes:'Open Video Wall dialog', alias:['vidWall','--videoWall'] },
 		width:{			type:'number', default:0, notes:'default window width; 0 = max width', alias:['--width'] }
 }
 var args = require('./lib/grinder/lib/grinder.js').grindArgv(argmap, null, 1)
@@ -68,9 +70,6 @@ exports.fldrLoad = function(fldr, simple) {
 	return fldrObjGen(fldr, simple)
 }
 //
-
-//log('Init..')
-
 var mainWindow=null
 var isElectron = (app!=undefined)
 var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
@@ -78,6 +77,8 @@ var isFolderView = (process.argv[0].indexOf('FolderView.exe') >= 0)
 let imgtypes = ['.bmp',/*'.ico',*/'.gif','.jpg','.jpeg','.png','.webp']
 var vidtypes = ['.avi','.flc','.flv','.m4v','.mkv','.mov','.mp4','.mp5','.mpg','.mov','.ogg','.qt','.swf','.webm','.wmv']
 let audtypes = ['.flac','.mp3','.wma']
+//ToDo: add more document types
+let doctypes = ['.c','.cpp','.css','.doc','.h','.htm','.html','.js','.pdf','.php','.svg','.txt','.xml']
 
 
 if(isElectron===false){	//nodejs functionality -- not working/useful these days
@@ -214,16 +215,17 @@ function fldrObjGen(file, simple) {
 	//				else returns items[{}, ...] with file type info
 	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
-		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, path argument has an error:[${file}].`]}
+		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, path argument has an error:[${file}].`]}
 	if(simple== undefined) simple = false
 
 	let exts={},
+			mediaTypes={},
 			folder = '',
 			defaultfile = '',
 			isDirectory = true,
 			stat = safeLstat(file)
 	if(stat==null){
-		return {args:args, exts:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, could not stat: [${file}].`]}
+		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, could not stat: [${file}].`]}
 	}
 
 	if(stat.isDirectory()==true){
@@ -282,6 +284,7 @@ function fldrObjGen(file, simple) {
 			mediaType: 'unknown',
 			path: posixpath,
 			pid: id,
+			uid: id,		//unique id, does not change for life of obj; for videWall, but generally required
 			w: 320,
 			h: 200,
 			src: 'file:///'+posixpath,
@@ -314,15 +317,22 @@ function fldrObjGen(file, simple) {
 		if(audtypes.indexOf(ext) >= 0){			//audio types
 			obj.mediaType = 'audio'
 		}	else
-		if(ext === '.svg'){									//svg files
-			obj.mediaType = 'svg'
-		}
+		if(doctypes.indexOf(ext) >= 0){			
+			obj.mediaType = 'document'
+		}	
+		// else
+		// if(ext === '.svg'){									//svg files
+		// 	obj.mediaType = 'svg'
+		// }
 		else{			//handle other types
 			obj.src = 'file:///'+dirname__+"/resources/new_document_64.png"
 		}
 		//store file types for filter menu
 		if(exts[obj.type]===undefined) exts[obj.type]=1
 		else exts[obj.type]++
+		//store media type for filter menu
+		if(mediaTypes[obj.mediaType]===undefined) mediaTypes[obj.mediaType]=1
+		else mediaTypes[obj.mediaType]++
 		fls2.push(obj)
 	}
 	var result = null
@@ -332,7 +342,8 @@ function fldrObjGen(file, simple) {
 	else{
 		args.defaultImageName = defaultImageName
 		args.defaultImageNum = defaultImageNum
-		result = {args:args, exts:exts, fldr:file, items:fls2, fileErrors:ferrors, isDirectory:isDirectory}
+		result = {args:args, exts:exts, mediaTypes:mediaTypes, fldr:file, items:fls2, 
+							fileErrors:ferrors, isDirectory:isDirectory}
 	}
 	return result
 }
@@ -355,6 +366,7 @@ function htmlGen(fldrobj){
 		'C:/website/node/imageView': __dirname.replace(/\\/g,'/'),
 		'//ui.args=main.js/args':`ui.args=${JSON.stringify(fldrobj.args)}`,
 		'//exts={}':'exts = '+JSON.stringify(fldrobj.exts),
+		'//mediaTypes={}':'mediaTypes = '+JSON.stringify(fldrobj.mediaTypes),
 		'//items=null':'items = '+JSON.stringify(fldrobj.items),
 		'//ui.var.OS=null':`ui.var.OS = "${process.platform}"`,
 		'//fileErrors=null':`fileErrors = ${JSON.stringify(fldrobj.fileErrors)}`

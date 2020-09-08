@@ -10,7 +10,7 @@
         "windows": {
           "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
         },
-        "args" : ["main.js", "--path=F:/media/_Archive", "devtools=true", "layout=rows", "order=date", "descending=true"],
+        "args" : ["main.js", "--path=f:/Media/LXQT/_tmp/","layout=rows","devtools=true","shuffle=false","videoMetadata=false","order=name", "descending=false"],
         "outputCapture": "std"
       }
     ]

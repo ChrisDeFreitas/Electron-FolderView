@@ -31,10 +31,16 @@
 <!--script src="file:///C:/website/node/imageView/lib/browser/nativeMsg.js"></script-->
 <script src="file:///C:/website/node/imageView/lib/actionMap.js"></script>
 
+<link rel="stylesheet" href="file:///C:/website/node/imageView/lib/dialog-polyfill.css">
+<script src="file:///C:/website/node/imageView/lib/dialog-polyfill.js"></script>
+<script src="file:///C:/website/node/imageView/lib/CDialog.js"></script>
+<script src="file:///C:/website/node/imageView/lib/videoWall.js"></script>
+
 <script>
 //////do not delete: vars populated by main.js:
 //ui.args=main.js/args
 //exts={}
+//mediaTypes={}
 //items=null
 //ui.var.OS=null
 //fileErrors=null
@@ -47,10 +53,10 @@ const packery = require('isotope-packery')
 const renderer = require('C:/website/node/imageView/lib/renderer.js')
 //var electronWin = renderer.electronWin
 renderer.sayhey()
-renderer.mainMenuGen(exts, lastLayoutMode)
+renderer.mainMenuGen(exts)
 renderer.contextMenuSet(exts)
 require('electron').ipcRenderer.on('applog', (event, message) => {
-//support logging from main thread, because console.log doesn't work without debuggerer
+	//support logging from main thread, because console.log doesn't work without debuggerer
   console.log(message)
 })
 
@@ -87,11 +93,11 @@ function init() {
 		})
 	}
 
-	Object.assign(gExtFilter, exts)	//clone
-	if(lastLayoutMode===null) lastLayoutMode="wall"
+	//Object.assign(gExtFilter, exts)	//clone
+	//if(lastLayoutMode===null) lastLayoutMode="wall"
 
 	isElectron=ui.args.isElectron
-	lastLayoutMode=ui.args.layout
+	//lastLayoutMode=ui.args.layout
 	scale=ui.args.scale
 
 	console.log(`\nApplication arguments:`)
@@ -112,22 +118,34 @@ function init() {
 	console.log(`scale: ${ui.args.scale}`)
 	console.log(`scroll: ${ui.args.scroll}`)
 	console.log(`shuffle: ${ui.args.shuffle}`)
+	console.log(`videoMetadata: ${ui.args.videoMetadata}`)
 	console.log(`videoURL: ${ui.args.videoURL}`)
+	console.log(`videoWall: ${ui.args.videoWall}`)
 	console.log(`showSlideCaptions: ${ui.args.showSlideCaptions}`)
 	console.log(`width:  ${ui.args.width}`)
 	ui.init()
 
 	console.log('\nStartup Duration:', ui.calc.timeEnd( renderer.startTime), 'ms' )
 
-	gridLoad(lastLayoutMode)
+	gridLoad(ui.args.layout)
+	// gridLoad(lastLayoutMode)
 	//renderer.fileFind()
 
 	if(typeof ui.args.videoURL == 'string' && ui.args.videoURL != ''){
 		videoDl.init({url:ui.args.videoURL})	
 	}
+	if(ui.args.videoWall === true){
+		videoWall.toggle()	//in videoWall.js
+	}
 }
 </script>
 <style>
+	#videoplayer{
+		background:black; border:1px outset pink; outline:none;
+		display:none;
+		position:absolute;
+		z-index: 1000;
+	}
 	.tbRowHilight tr:hover td { color:#3b3; }
 	.tdRight{ text-align:right }
 	.tdCenter{ text-align:center }

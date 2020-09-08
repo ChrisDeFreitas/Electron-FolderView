@@ -269,4 +269,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
   console.log(`sidebar.init`)
 });
 
-console.log(`sidebar js init`)
+console.log(`sidebar.js init`)

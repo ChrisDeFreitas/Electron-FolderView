@@ -68,19 +68,7 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * the executable is: dist\\FolderView-win32-x64\\FolderView.exe
     * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app
 
-5. About FireFox Tools
-- built to test FireFox extension development and simplify Youtube video downloads
-- added a few extra features to see whether they would work
-- some features are not fully implemented, however, there are no plans to expand beyond the existing functionality
-- to use, the extension must be loaded into FireFox as a temporary extension and the socket.io client muse be listening in FolderView, top menu/FireFox Tools
-- the socket.io server in FolderView.exe will be installed via "npm install".  So older installations will need to run "npm install" to get the code.
-- the socket.io client exists within the FireFox folder
-- instructions to install a temporary FireFox extension:  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Trying_it_out
-
-6. Keyboard Shortcuts
-		see keyboardshortcuts.txt
-
-7. Commandline switches
+## Commandline switches
     * its safest to prefix path with --: FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)
     * commandline arguments documented in main.js:
 ```Javascript
@@ -102,10 +90,14 @@ var argmap =
 	sftpDownloadMax:{	type:'number', default:2,	notes:"Set max number of files to download at once." },
 	showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions" },
     shuffle:{	type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
+	videoMetadata:{		type:'boolean',	default:false,		notes:'Load video metadata (thumbnails), will slow large folders', alias:['videometadata'] },
     videoURL:{	type:'string',	notes:'Open Video Download with this URL selected', alias:['videourl,videoUrl'] },
 	width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 ```
+
+## Keyboard Shortcuts
+    see keyboardshortcuts.txt
 
 ## Sample tmp/customLibraries.ini
 ```
@@ -117,8 +109,8 @@ c:/website/
 ```
 
 ## tmp/settings.ini
-At this point, this file only contains default sftp settings. The values are initially empty.
-Here is an example:
+This file is used to store SFTP and FireFox Tools settings.
+Here is example content:
 ```
 [sftp]
 host=192.168.0.111
@@ -127,19 +119,79 @@ user=SshUserName
 pw=SshPassword
 defaultpath=/home/UserName/FolderWithFilesToDownload
 
+[btools]
+autoListen=false
+port=8124
 ```
 
-## ToDo
-- Windows Explorer menu (F3) fails
-- test Filter menu operations (encountered a bug that appears to be random where extensions were mixed up)
+## Filtering Folder Items  
+- filtering is based on item type, either a folder or file extension.  It may be expanded in the future as new needs arise.  
+- the filter menu displays all the item types found in the current folder.  Click on an item type to view only that item type.  
+- multiple item types may be filtered together.  
+- Show All is autommatically selected when a folder is opened.  
+
+
+## About FireFox Tools
+- built to test FireFox extension development and simplify Youtube video downloads
+- added a few extra features to see whether they would work
+- some features are not fully implemented, however, there are no plans to expand beyond the existing functionality
+- to use, the extension must be loaded into FireFox as a temporary extension and the socket.io client muse be listening in FolderView, top menu/FireFox Tools
+- the socket.io server in FolderView.exe will be installed via "npm install".  So older installations will need to run "npm install" to get the code.
+- the socket.io client exists within the FireFox folder
+- instructions to install a temporary FireFox extension:  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Trying_it_out
+
+
+## About VideoWall Layout
+- working well, but still being monitored for bugs as it required a lot of code additions and changes
+- activate via Alt+T or main menu/Layout/Video Wall
+- when VideoWall layout is active, pressing ESC will toggle it's settings dialog
+- displays a customizable grid of video tiles.  Once a video finishes, the next unplayed video is played in the tile.
+- click a tile to play video in player
+- when video in player finishes, the video in the next tile is played automatically. However, videos may be skipped because durations vary.
+- respects existing sort and shuffle settings
+- plan is to eventually create a plugin system to provide alternative playback options
+- the file management tools are not integrated because the browser's lock on video files are not immediately released (this requires new code that will pole files to determine when lock is released and move/delete operations can be applied)
+
+
+## ToDo/Issues  
+- gallery zoom: fix mouse wheel zoom algorithm to zoom area under mouse only; currently zooms from center of image
+- filter menu: ?add invert filter function?
+- multi-select: sometimes delete key does not activate delete function 
+- dlgRename: sometimes the edit box does not accept text (re-opening dlg fixes)
 - add version to zip file name; remove unnecessary values from the settings files
-- create new dialog: view keyboardshortcuts.txt  
+- create new dialog: view keyboardshortcuts.txt, F1 key  
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
 - SFTP dialog: sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
 
 
 ## Changes
+
+Sep 07/20  
+There are a lot of changes that I am still monitoring for issues.
+The main update is the addition of a VideoWall layout.  It displays a grid of video tiles, clicking a tile opens the video in the larger player.  File management routines could not be integrated because the browser's file locks are not  released immediately.  Also, The VideoWall setting dialog is using new code based on the polyfill for the <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog'>HTML Dialog Element</a>.  New dialogs will use this technology; at this point the old dialog code will remain as it works, therefore little is gained by refactoring.
+   
+- VideoWall layout: new, see "About VideoWall Layout" above
+- gallery zoom: no longer scrolls image when zooming with mouse wheel (see ToDo for details)
+- find dlg: add "Paste and search" button
+- find dlg: results now now display search text 
+- refactored Layout menu  
+- more integrations of filter functionality into UI functions
+
+
+Jul ---  (forgot to upload)
+The filtering functionality was lost to the mists of time.  It has been re-worked to be more intuitive and added filtering by mediaTypes.
+
+- filter menu update: filter menu was displaying content for previous folder viewed
+- filter menu update: menu items are no longer checked by default
+- filter menu update: when menu item selected all other items are hidden
+- filter menu update: added mediaTypes  
+- dlgFind: when rolled up header will also shrink to take less space vertically
+- icons only menu: now retains existing filter
+- layout menus: now retains existing filter
+- order menus: now retains existing filter
+- scale menus: now retains existing filter
+- shuffle menu: now retains existing filter
 
 Jun 16/20 - 3  
 - Windows Explorer menu: Electron changed shell function from shell.openItem to shell.openPath
@@ -162,7 +214,6 @@ New functions in dlgRename are working well.  I've used them a lot without incid
 
 Jun 10/20  
 Installed Git LFS to include a zip version of the application in ./dist/.  Tested: zip file works when downloaded from GitHub (via download button on the <a href="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/dist/FolderView-win32-x64.zip">FolderView-win32-x64.zip page</a>).
-
 
 
 Jun 9/20  
@@ -471,6 +522,7 @@ Apr 4/17:
 - https://github.com/tyzbit/Electron-FolderView
 - https://github.com/electron-userland/electron-packager
 - http://elusiveicons.com
+- https://github.com/GoogleChrome/dialog-polyfill  
 - https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
 - https://github.com/npm/ini

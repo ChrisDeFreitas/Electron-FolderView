@@ -29,11 +29,11 @@
   "icons": {
     "16": "icons/donut_small-black-18dp.svg"
   },
-  "permissions": ["<all_urls>","activeTab","nativeMessaging","notifications","storage","tabs"],
+  "permissions": ["<all_urls>","activeTab","nativeMessaging","notifications","storage","tabs", "menus", "activeTab"],
   "sidebar_action": {
     "default_icon": "icons/donut_small-black-18dp.svg",
     "default_title" : "FolderView Tools",
     "default_panel": "sidebar/sidebar.html",
-    "open_at_install":true
+    "open_at_install":false
   }
 }
