@@ -145,7 +145,8 @@ port=8124
 - working well, but still being monitored for bugs as it required a lot of code additions and changes
 - activate via Alt+T or main menu/Layout/Video Wall
 - when VideoWall layout is active, pressing ESC will toggle it's settings dialog
-- displays a customizable grid of video tiles.  Once a video finishes, the next unplayed video is played in the tile.
+- displays a customizable grid of video tiles.  The default grid is 3 X 3.  Be careful increasing the number of tiles as it will affect the computer's performance.
+- when a video finishes, the next unplayed video is played in the tile
 - click a tile to play video in player
 - when video in player finishes, the video in the next tile is played automatically. However, videos may be skipped because durations vary.
 - respects existing sort and shuffle settings
