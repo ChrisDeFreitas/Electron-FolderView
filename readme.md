@@ -69,8 +69,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app
 
 ## Commandline switches
-    * its safest to prefix path with --: FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)
-    * commandline arguments documented in main.js:
+    - its safest to prefix path with --: FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)
+    - commandline arguments documented in main.js:
 ```Javascript
 var argmap =
 {
@@ -174,12 +174,12 @@ The main update is the addition of a VideoWall layout.  It displays a grid of vi
 - VideoWall layout: new, see "About VideoWall Layout" above
 - gallery zoom: no longer scrolls image when zooming with mouse wheel (see ToDo for details)
 - find dlg: add "Paste and search" button
-- find dlg: results now now display search text 
+- find dlg: results now display search text 
 - refactored Layout menu  
 - more integrations of filter functionality into UI functions
 
 
-Jul ---  (forgot to upload)
+Jul ---  (forgot to upload)  
 The filtering functionality was lost to the mists of time.  It has been re-worked to be more intuitive and added filtering by mediaTypes.
 
 - filter menu update: filter menu was displaying content for previous folder viewed
