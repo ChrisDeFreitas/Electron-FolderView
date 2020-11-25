@@ -29,9 +29,6 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - FireFox extenstion to transfer video urls to FolderView for downloading, and other tools
 
 ## App Notes
-0. About the Zip File  
-    - removed because of quota limits of Git LFS.  To use now it must be built from source, see below.
-    - will update when another solution is found
 
 1. Install:
     - Windows only; I use it on Win10, Win81 and Win7
@@ -124,11 +121,11 @@ autoListen=false
 port=8124
 ```
 
-## Filtering Folder Items  
-- filtering is based on item type, either a folder or file extension.  It may be expanded in the future as new needs arise.  
-- the filter menu displays all the item types found in the current folder.  Click on an item type to view only that item type.  
-- multiple item types may be filtered together.  
-- Show All is autommatically selected when a folder is opened.  
+## Filtering Folder Items
+- filtering is based on item type, either a folder or file extension.  It may be expanded in the future as new needs arise.
+- the filter menu displays all the item types found in the current folder.  Click on an item type to view only that item type.
+- multiple item types may be filtered together.
+- Show All is autommatically selected when a folder is opened.
 
 
 ## About FireFox Tools
@@ -153,14 +150,22 @@ port=8124
 - plan is to eventually create a plugin system to provide alternative playback options
 - the file management tools are not integrated because the browser's lock on video files are not immediately released (this requires new code that will pole files to determine when lock is released and move/delete operations can be applied)
 
+## Tutorial on how to use the program
+1. Run application as noted above
+2. Determine what you would like to change. The following locations locations contain notes and settings I use to control the application (the list will exapnd is I work on things):
+- ???
 
-## ToDo/Issues  
+## ToDo/Issues
+- update ytdl-core
+- change startup behaviour to only show open dialog, when folder not found on startup
+- leaver personal settings in config as example of how to use application
+- add a section on how to use the program
 - gallery zoom: fix mouse wheel zoom algorithm to zoom area under mouse only; currently zooms from center of image
 - filter menu: ?add invert filter function?
-- multi-select: sometimes delete key does not activate delete function 
+- multi-select: sometimes delete key does not activate delete function
 - dlgRename: sometimes the edit box does not accept text (re-opening dlg fixes)
 - add version to zip file name; remove unnecessary values from the settings files
-- create new dialog: view keyboardshortcuts.txt, F1 key  
+- create new dialog: view keyboardshortcuts.txt, F1 key
 - selectList: allow Shift+Click to select a range of items
 - SFTP dialog: re-write with async/await
 - SFTP dialog: sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
@@ -168,25 +173,25 @@ port=8124
 
 ## Changes
 
-Sep 07/20  
+Sep 07/20
 There are a lot of changes that I am still monitoring for issues.
 The main update is the addition of a VideoWall layout.  It displays a grid of video tiles, clicking a tile opens the video in the larger player.  File management routines could not be integrated because the browser's file locks are not  released immediately.  Also, The VideoWall setting dialog is using new code based on the polyfill for the <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog'>HTML Dialog Element</a>.  New dialogs will use this technology; at this point the old dialog code will remain as it works, therefore little is gained by refactoring.
-   
+
 - VideoWall layout: new, see "About VideoWall Layout" above
 - gallery zoom: no longer scrolls image when zooming with mouse wheel (see ToDo for details)
 - find dlg: add "Paste and search" button
-- find dlg: results now display search text 
-- refactored Layout menu  
+- find dlg: results now display search text
+- refactored Layout menu
 - more integrations of filter functionality into UI functions
 
 
-Jul ---  (forgot to upload)  
+Jul ---  (forgot to upload)
 The filtering functionality was lost to the mists of time.  It has been re-worked to be more intuitive and added filtering by mediaTypes.
 
 - filter menu update: filter menu was displaying content for previous folder viewed
 - filter menu update: menu items are no longer checked by default
 - filter menu update: when menu item selected all other items are hidden
-- filter menu update: added mediaTypes  
+- filter menu update: added mediaTypes
 - dlgFind: when rolled up header will also shrink to take less space vertically
 - icons only menu: now retains existing filter
 - layout menus: now retains existing filter
@@ -194,46 +199,46 @@ The filtering functionality was lost to the mists of time.  It has been re-worke
 - scale menus: now retains existing filter
 - shuffle menu: now retains existing filter
 
-Jun 16/20 - 3  
+Jun 16/20 - 3
 - Windows Explorer menu: Electron changed shell function from shell.openItem to shell.openPath
 
-Jun 16/20 - 2  
-Removed the zip file and Git LFS because the quota limits were reached. If the product was better documented I would not have even attempted it as a 1GB download limit on a 160MB file is ridiculous. 
+Jun 16/20 - 2
+Removed the zip file and Git LFS because the quota limits were reached. If the product was better documented I would not have even attempted it as a 1GB download limit on a 160MB file is ridiculous.
 
-Jun 16/20  
-I'm not sure if the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.  
+Jun 16/20
+I'm not sure if the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.
 
-New functions in dlgRename are working well.  I've used them a lot without incident.  
+New functions in dlgRename are working well.  I've used them a lot without incident.
 
-- folderNew() fix: requires the default path be translated from posix to win32  
-- folderNew() update: changed to accept a default path (was using the default application path)  
-- pathBar fix: folder items are now sorted alphabetically  
-- pathBar update: optimized loading of folder items  
-- pathBar update: renamed ui.var.apipath to ui.var.pathBarPath for clarity  
-- item grid update: optimized sort algorithm to speed loading folder items  
+- folderNew() fix: requires the default path be translated from posix to win32
+- folderNew() update: changed to accept a default path (was using the default application path)
+- pathBar fix: folder items are now sorted alphabetically
+- pathBar update: optimized loading of folder items
+- pathBar update: renamed ui.var.apipath to ui.var.pathBarPath for clarity
+- item grid update: optimized sort algorithm to speed loading folder items
 
 
-Jun 10/20  
+Jun 10/20
 Installed Git LFS to include a zip version of the application in ./dist/.  Tested: zip file works when downloaded from GitHub (via download button on the <a href="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/dist/FolderView-win32-x64.zip">FolderView-win32-x64.zip page</a>).
 
 
-Jun 9/20  
-Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.  
+Jun 9/20
+Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.
 
-Main goal was to simplify cleaning up media file names.  Created two major dlgRename features.  The first "Auto select left", automatically selects the trailing part of media file names containing format data.  The other feature allows selection steps (including "Delete Selection" and "Apply Changes") to be recorded, then played back against other files.  Although its fairly simple at this point, the code can be optimized and adapted for other file naming conventions.  Still being tested.  
+Main goal was to simplify cleaning up media file names.  Created two major dlgRename features.  The first "Auto select left", automatically selects the trailing part of media file names containing format data.  The other feature allows selection steps (including "Delete Selection" and "Apply Changes") to be recorded, then played back against other files.  Although its fairly simple at this point, the code can be optimized and adapted for other file naming conventions.  Still being tested.
 
-Along the way used dlgFind to lookup obscure media file names.  The RegEx search and Invert Results functions were previously implemented and are working well.  But added regex examples to th UI because despite being useful regex is terribly documented everywhere.  
+Along the way used dlgFind to lookup obscure media file names.  The RegEx search and Invert Results functions were previously implemented and are working well.  But added regex examples to th UI because despite being useful regex is terribly documented everywhere.
 
-- dlgRename update: added "Auto select left" button to automatically highight text to be trimmed.  Designed for media files.  Very simple at this point.  
-- dlgRename update: added Record/Play selection operations (see actionMap.js).  
-- dlgRename update: added checkbox to indicate whether selection controls should keep file extension.  Default to true for files, false for folders.  
+- dlgRename update: added "Auto select left" button to automatically highight text to be trimmed.  Designed for media files.  Very simple at this point.
+- dlgRename update: added Record/Play selection operations (see actionMap.js).
+- dlgRename update: added checkbox to indicate whether selection controls should keep file extension.  Default to true for files, false for folders.
 - dlgFind update: added regex examples for a quick reference
-- NewFolder function fixed: looks like the usage of showSaveDialog function changed from when the new folder function was originally created  
+- NewFolder function fixed: looks like the usage of showSaveDialog function changed from when the new folder function was originally created
 - vert layout fixed: dlgReplace fails to update ui element with message: "Cannot set property 'innerHTML' of undefined"
-- changed: video tag's preload=none (was metadata) because it was slowing down folders with lots of videos (>200)  
+- changed: video tag's preload=none (was metadata) because it was slowing down folders with lots of videos (>200)
 - fixed: when path argument points to an image, the image is now correctly displayed in the slideshow
 - fixed: first argument to FolderView.exe was not processed
-- found: strange error where under certain conditons the path must be prefixed with -- (eg electron main.js --path="c:/a/b/c" shuffle=true).   
+- found: strange error where under certain conditons the path must be prefixed with -- (eg electron main.js --path="c:/a/b/c" shuffle=true).
 - found: path operations will accept posix paths (so far) so will continue to use posix paths internally
 - update: startup errors are now written to Electron console
 - added: VSCode debugging for main process (main.js): https://www.electronjs.org/docs/tutorial/debugging-main-process-vscode
@@ -523,7 +528,7 @@ Apr 4/17:
 - https://github.com/tyzbit/Electron-FolderView
 - https://github.com/electron-userland/electron-packager
 - http://elusiveicons.com
-- https://github.com/GoogleChrome/dialog-polyfill  
+- https://github.com/GoogleChrome/dialog-polyfill
 - https://github.com/dmhendricks/file-icon-vectors
 - https://www.npmjs.com/package/image-size
 - https://github.com/npm/ini
