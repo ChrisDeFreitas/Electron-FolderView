@@ -156,14 +156,10 @@ port=8124
 - ???
 
 ## ToDo/Issues
-- update ytdl-core
-- change startup behaviour to only show open dialog, when folder not found on startup
-- leaver personal settings in config as example of how to use application
-- add a section on how to use the program
+- leave personal settings in config as example of how to use application
 - gallery zoom: fix mouse wheel zoom algorithm to zoom area under mouse only; currently zooms from center of image
 - filter menu: ?add invert filter function?
 - multi-select: sometimes delete key does not activate delete function
-- dlgRename: sometimes the edit box does not accept text (re-opening dlg fixes)
 - add version to zip file name; remove unnecessary values from the settings files
 - create new dialog: view keyboardshortcuts.txt, F1 key
 - selectList: allow Shift+Click to select a range of items
@@ -172,6 +168,12 @@ port=8124
 
 
 ## Changes
+
+Dec 5/20
+- videoDl.js: update ytdl-core to 4.01; modified usage of ytdl.getInfo() to be compatible
+- dlgRename not editable bug: added "isContentEditable=true"; Seems to be working so far??? 
+- change startup behaviour to only show open dialog, when folder not found on startup  
+
 
 Sep 07/20
 There are a lot of changes that I am still monitoring for issues.

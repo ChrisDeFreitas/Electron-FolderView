@@ -66,10 +66,10 @@ var dlgBulk=null			//F7
 //var dlgFind=null			//Ctrl+F
 
 if(fileErrors != null && fileErrors.length > 0){
-	console.error('FolderView startup errors:')
+	console.log('FolderView startup errors:')
 	ii=1
 	for(let err of fileErrors){
-		console.error(ii++, err)
+		console.log(ii++, err)
 	}
 }
 
@@ -132,7 +132,7 @@ function init() {
 	//renderer.fileFind()
 
 	if(typeof ui.args.videoURL == 'string' && ui.args.videoURL != ''){
-		videoDl.init({url:ui.args.videoURL})	
+		videoDl.init({url:ui.args.videoURL})
 	}
 	if(ui.args.videoWall === true){
 		videoWall.toggle()	//in videoWall.js
