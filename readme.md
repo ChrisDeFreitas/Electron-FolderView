@@ -139,16 +139,13 @@ port=8124
 
 
 ## About VideoWall Layout
-- working well, but still being monitored for bugs as it required a lot of code additions and changes
-- activate via Alt+T or main menu/Layout/Video Wall
-- when VideoWall layout is active, pressing ESC will toggle it's settings dialog
-- displays a customizable grid of video tiles.  The default grid is 3 X 3.  Be careful increasing the number of tiles as it will affect the computer's performance.
+- displays a grid of videos (tiles).  The default grid is 3 X 3.  Be careful increasing the number of tiles as it will affect system performance (default settings failed on an old Win7 i7, 16MB RAM).
+- click a tile to play in the larger video player
 - when a video finishes, the next unplayed video is played in the tile
-- click a tile to play video in player
-- when video in player finishes, the video in the next tile is played automatically. However, videos may be skipped because durations vary.
-- respects existing sort and shuffle settings
-- plan is to eventually create a plugin system to provide alternative playback options
-- the file management tools are not integrated because the browser's lock on video files are not immediately released (this requires new code that will pole files to determine when lock is released and move/delete operations can be applied)
+- Alt+T or main menu/Layout/Video Wall to activate
+- ESC will toggle the VideoWall settings dialog
+- settings: order/shuffle, grid width/height, play (videos in all tiles), reset app  
+- video tile context menu: copy, delete, move, play next/last, fullscreen  
 
 ## Tutorial on how to use the program
 1. Run application as noted above
@@ -168,14 +165,20 @@ port=8124
 
 
 ## Changes
+Jan 15/21  
+This update adds functionality to the VideoWall layout.  A few functions had to be converted to async to facilitate the new operations.  In particular I'm watching the ExecQue for side effects.  
 
-Dec 5/20
+- videoWall: no longer runs in fullscreen by default.  This allows the main menu to be accessed while videos are playing.  
+- videoWall: added main video context menu: fullscreen, inspect  
+- videoWal: added video tile context menu: copy, delete, move, play last/next video, fullscreen, inspect  
+
+Dec 5/20  
 - videoDl.js: update ytdl-core to 4.01; modified usage of ytdl.getInfo() to be compatible
 - dlgRename not editable bug: added "isContentEditable=true"; Seems to be working so far??? 
 - change startup behaviour to only show open dialog, when folder not found on startup  
 
 
-Sep 07/20
+Sep 07/20  
 There are a lot of changes that I am still monitoring for issues.
 The main update is the addition of a VideoWall layout.  It displays a grid of video tiles, clicking a tile opens the video in the larger player.  File management routines could not be integrated because the browser's file locks are not  released immediately.  Also, The VideoWall setting dialog is using new code based on the polyfill for the <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog'>HTML Dialog Element</a>.  New dialogs will use this technology; at this point the old dialog code will remain as it works, therefore little is gained by refactoring.
 

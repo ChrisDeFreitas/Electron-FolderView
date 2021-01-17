@@ -399,11 +399,7 @@ function browserLaunch(fldrobj) {
 		width: args.width	//1280,
 	})
 
-	/*globalShortcut.register('ctrl+F12', () => {
-		win.webContents.openDevTools()
-	})*/
-
-	win.on('closed', function () {
+		win.on('closed', function () {
 		win = null
 		//globalShortcut.unregisterAll()
 	})
