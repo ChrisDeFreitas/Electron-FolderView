@@ -187,7 +187,7 @@ The main update is the addition of a VideoWall layout.  It displays a grid of vi
 - more integrations of filter functionality into UI functions
 
 
-Jul ---  (forgot to upload)
+Jul ---  (forgot to upload)  
 The filtering functionality was lost to the mists of time.  It has been re-worked to be more intuitive and added filtering by mediaTypes.
 
 - filter menu update: filter menu was displaying content for previous folder viewed
@@ -201,13 +201,13 @@ The filtering functionality was lost to the mists of time.  It has been re-worke
 - scale menus: now retains existing filter
 - shuffle menu: now retains existing filter
 
-Jun 16/20 - 3
+Jun 16/20 - 3  
 - Windows Explorer menu: Electron changed shell function from shell.openItem to shell.openPath
 
-Jun 16/20 - 2
+Jun 16/20 - 2  
 Removed the zip file and Git LFS because the quota limits were reached. If the product was better documented I would not have even attempted it as a 1GB download limit on a 160MB file is ridiculous.
 
-Jun 16/20
+Jun 16/20  
 I'm not sure if the issues addressed here are long standing or introduced by new versions of Electron/nodejs.  But I was able to achieve substanital speed increases to the sorting algorithms of the pathBar and item grid.  They should be noticeable on folders with lots of files--but still looking for other ways to optimize the loading and handling of grid items.
 
 New functions in dlgRename are working well.  I've used them a lot without incident.
@@ -220,11 +220,11 @@ New functions in dlgRename are working well.  I've used them a lot without incid
 - item grid update: optimized sort algorithm to speed loading folder items
 
 
-Jun 10/20
+Jun 10/20  
 Installed Git LFS to include a zip version of the application in ./dist/.  Tested: zip file works when downloaded from GitHub (via download button on the <a href="https://github.com/ChrisDeFreitas/Electron-FolderView/blob/master/dist/FolderView-win32-x64.zip">FolderView-win32-x64.zip page</a>).
 
 
-Jun 9/20
+Jun 9/20  
 Pushed this through while testing changes to dlgFind, dlgRename and Electron 9.x because found error in ytdl-core that caused downloads to fail.  Resovled by updating to the latest version--no repository code changes required.
 
 Main goal was to simplify cleaning up media file names.  Created two major dlgRename features.  The first "Auto select left", automatically selects the trailing part of media file names containing format data.  The other feature allows selection steps (including "Delete Selection" and "Apply Changes") to be recorded, then played back against other files.  Although its fairly simple at this point, the code can be optimized and adapted for other file naming conventions.  Still being tested.
