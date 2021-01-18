@@ -147,10 +147,6 @@ port=8124
 - settings: order/shuffle, grid width/height, play (videos in all tiles), reset app  
 - video tile context menu: copy, delete, move, play next/last, fullscreen  
 
-## Tutorial on how to use the program
-1. Run application as noted above
-2. Determine what you would like to change. The following locations locations contain notes and settings I use to control the application (the list will exapnd is I work on things):
-- ???
 
 ## ToDo/Issues
 - leave personal settings in config as example of how to use application
