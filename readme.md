@@ -261,8 +261,7 @@ Apr 23/2020
 - updated ytdl-core to 2.01
 - updated Video Download to work with the new ytdl-core
 
-Jul --/2019
-
+Jul --/2019  
 - Last Folder (F8): updated algorithm to find last folder viewed
 - Video Download menu (F10): created to download Youtube videos
 - ffmpeg.exe: application now includes ./bin/ffmpeg.exe to combine audio and video streams into an .mkv file
@@ -275,8 +274,7 @@ Jul --/2019
 - removed sizeable:  functionality duplicated and expanded by folderWalk.js
 
 
-Jun 16/2019
-
+Jun 16/2019  
 Added a find dialog and an item index to make it easier to navigate large lists. The item index slides from the left side of the page--clicking an item scrolls it into view.  The item index is only available when the main window has scroll bars.
 
 - Find menu: opens a dialog to find folder items, Ctrl+F
@@ -289,8 +287,7 @@ Added a find dialog and an item index to make it easier to navigate large lists.
 - small tweaks and fixes
 
 
-Jun 9/2019
-
+Jun 9/2019  
 The vert layout was broken after the May 26 update. I took the opportunity to update the app to handle folders with over 400 audio/image/video items.  In these situations Chrome does a lot of disk thrashing as it tries to create thumbnails for the HTML controls--it looks like Chrome (as well as Windows) doesn't throttle disk access.  To avoid this I added the iconOnly menu item to only display file type icons. And made vert layout much easier to read and select items so working with long lists is easier.  The new column sort function of the FolderSize dialog also helps by allowing max/min item counts/sizes to be easily identified.
 
 The execQue has been very stable.  The item move functionality has been implemented there now.  And added the ability to kill copy jobs and pause/resume/stop the que; move jobs can't be killed because they are functions.
@@ -313,8 +310,7 @@ The execQue has been very stable.  The item move functionality has been implemen
 - added .m4v and .webp to the media types
 
 
-Jun 1/2019
-
+Jun 1/2019  
 Mainly bug fixes. Added "Folder Size" menu. Tried to display videos in the slideshow put ran into some issues with Photoswipe's zoom function.
 
 - ui.var.dblClickDelay: manually handling dlbclick events because the default click/dblclick events are triggered at the same time. For example, double-clicking an image will also trigger the click event, thereby launching the slideshow while the shell associated application is run.
@@ -326,8 +322,7 @@ Mainly bug fixes. Added "Folder Size" menu. Tried to display videos in the slide
 - dlgRename: no longer defaults to "Autoload Items" as modified item is updated in place
 - dlgRename: arrow keys now work when slideshow open due to Photoswipe keyboard event update
 
-May 26/2019
-
+May 26/2019  
 Refactored ui.js/gridLoad() and main.js/fldrObjGen(). It was a long time coming as the code was originally written for a web slideshow application, with a hasty conversion to Electron.
 
 - slideshow: now using Photoswipe v4.1.3,
@@ -336,8 +331,7 @@ Refactored ui.js/gridLoad() and main.js/fldrObjGen(). It was a long time coming 
 - main.js/fldrLoad(): optimized code that reads folder items; this started back in the April 29 update or so
 - random UI and code tweaks
 
-May 22/2019
-
+May 22/2019  
 Created a dialog box for execQue, dlgExecQ, to display status of commands executed. Still monitoring execQue; the limit of ui.var.execQueMax=1
 still provides best performance for large files--probably due to my laptop hardware.
 
@@ -369,8 +363,7 @@ The que will eventually be used to spawn all commands for now I'm watching it fo
 - slideshow: new feature allows viewing only items in selectList (if item clicked in selectList then only display images in selectList, else display all images)
 - grid: clicking background removes all selections
 
-May 10/2019
-
+May 10/2019  
 Primarily made it easier to copy/delete/edit/move/rename folder items.  After many years of use its a new direction for the application.
 And it seems to be working pretty well.  With the new rename dialog, I've gone rename crazy (perhaps due to years of trauma with Windows Explorer: F2, Home, delete, delete, etc)
 
@@ -486,11 +479,11 @@ Jul 20/17
 - added SFTP dialog with remote browse/download/delete functions
 - updated node.js and Electron versions to latest
 
-Apr 27/17
+Apr 27/17  
 - added F5 accelerator to menu App/Reload
 - added a separator and Reload to top menu
 
-Apr 15/17
+Apr 15/17  
 - configured Export List's save dialog
 - added path supplied on commandline to recent folders
 - removed Filter from context menu
@@ -504,7 +497,7 @@ Apr 15/17
 - recent list now stores last 15 folders (was 10)
 - changed app version to date format (ui.updateDate)
 
-Apr 14/17
+Apr 14/17  
 - manually changed version to 0.6.0
 - fixed bug in clipboard functions
 - added menu App/"Export List" F4, to save file properties to file or clipboard
@@ -512,7 +505,7 @@ Apr 14/17
 - added menu App/"Windows Explorer" F3
 - modified folder double-click action to load new folder items (not open new app)
 
-Apr 4/17:
+Apr 4/17  
 - added this section
 - added pathBar.js to select files and folders.  This is a custom control I created because I didn't like the default dialog box.  I have tried to find all the bugs but...
 - the pathBar's library paths are loaded from an .ini file: customLibraries.ini
