@@ -26,7 +26,8 @@ This is a work in progress.  Feel free to use and modify as you wish.
 - log messages are written to Javascript console (F12 or Ctrl+Shift+i)
 - find dialog with advanced search functions (regex, case, invert results, search subfolders)
 - Youtube video download
-- FireFox extenstion to transfer video urls to FolderView for downloading, and other tools
+- FireFox extenstion to transfer video urls to FolderView for downloading, and other tools  
+- Video wall layout, plays all videos in a folder in a grid.
 
 ## App Notes
 
