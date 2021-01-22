@@ -145,9 +145,9 @@ port=8124
 - when a video finishes, the next unplayed video is played in the tile
 - Alt+T or main menu/Layout/Video Wall to activate
 - ESC will toggle the VideoWall settings dialog
-- settings: order/shuffle, grid width/height, play (videos in all tiles), reset app  
+- settings: order/shuffle, grid width/height, play (videos in all tiles), scroll videos, reset app  
 - video tile context menu: copy, delete, move, play next/last, fullscreen  
-
+- when scrolling videos, videos are always displayed in sort order
 
 ## ToDo/Issues
 - leave personal settings in config as example of how to use application
@@ -162,6 +162,13 @@ port=8124
 
 
 ## Changes
+Jan 21/21  
+- VideoWall: code refactoring/optimizations
+- VideoWall dlg: changing values automatically updates layout
+- VideoWall dlg: added controls to view next/prior set of videos
+- VideoWall: fixed handling for videos.length < tiles.length 
+- VideoWall: now displays < three columns correctly  
+
 Jan 15/21  
 This update adds functionality to the VideoWall layout.  A few functions had to be converted to async to facilitate the new operations.  In particular I'm watching the ExecQue for side effects.  
 
