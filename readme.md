@@ -140,28 +140,41 @@ port=8124
 
 
 ## About VideoWall Layout
-- displays a grid of videos (tiles).  The default grid is 3 X 3.  Be careful increasing the number of tiles as it will affect system performance (default settings failed on an old Win7 i7, 16MB RAM).
-- click a tile to play in the larger video player
+- displays a grid of videos (tiles).  The default grid is 3 X 3.  Be careful increasing the number of tiles as it will affect system performance (default settings failed on an old Win7 i7, 6MB RAM).
 - when a video finishes, the next unplayed video is played in the tile
-- Alt+T or main menu/Layout/Video Wall to activate
-- ESC will toggle the VideoWall settings dialog
-- settings: order/shuffle, grid width/height, play (videos in all tiles), scroll videos, reset app  
-- video tile context menu: copy, delete, move, play next/last, fullscreen  
+- click a tile to play in the larger video player
+- press Alt+T or click main menu/Layout/Video Wall to activate
+- press ESC to toggle the VideoWall settings dialog
+- settings: order/shuffle, grid width/height, play (videos in all tiles), scroll videos, reset application  
+- video tile context menu: copy, delete, move, scroll next/last set, fullscreen, inspect  
+- video player context menu:  scroll next/last set, fullscreen, inspect  
 - when scrolling videos, videos are always displayed in sort order
 
 ## ToDo/Issues
-- leave personal settings in config as example of how to use application
-- gallery zoom: fix mouse wheel zoom algorithm to zoom area under mouse only; currently zooms from center of image
-- filter menu: ?add invert filter function?
-- multi-select: sometimes delete key does not activate delete function
-- add version to zip file name; remove unnecessary values from the settings files
-- create new dialog: view keyboardshortcuts.txt, F1 key
+- ChangeFolder: add new folder to folder history 
+- ChangeFolder: ESC does not always close
+- multi-select: sometimes Delete key does not activate delete function
 - selectList: allow Shift+Click to select a range of items
+- gallery zoom: fix mouse wheel zoom algorithm to zoom area under mouse only; currently zooms from center of image
+- create new dialog: view keyboardshortcuts.txt, F1 key
+- filter menu: ?add invert filter function?
+- add version to zip file name
 - SFTP dialog: re-write with async/await
 - SFTP dialog: sftpDownloadMax option only limits downloads of top level files and folders. So if a folder contains many files they won't be affected by sftpDownloadMax.
+- personal settings remain in config as example of how to use application
 
 
 ## Changes
+May 31/21
+- did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
+- forgot to upload the Feb 12 changes.  
+
+Feb 12/21 (not on github)
+- VideoWall: fixed bug in  tilePlayNext() when tile == null received
+- VideoWall dlg: mute button is now a toggle switch
+- VideoWall dlg: added "Find Dupes" context menu
+- dlgFind: added options parameter to control default settings
+
 Jan 21/21  
 - VideoWall: code refactoring/optimizations
 - VideoWall dlg: changing values automatically updates layout
