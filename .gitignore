@@ -3,7 +3,7 @@
 *.bak
 *.bat
 *.log
-dist/FolderView-win32-x64/
+dist/
 node_modules/
 package-lock.json
 

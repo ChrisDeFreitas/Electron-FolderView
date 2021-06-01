@@ -169,7 +169,7 @@ May 31/21
 - did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
 - forgot to upload the Feb 12 changes.  
 
-Feb 12/21 (not on github)
+Feb 12/21  
 - VideoWall: fixed bug in  tilePlayNext() when tile == null received
 - VideoWall dlg: mute button is now a toggle switch
 - VideoWall dlg: added "Find Dupes" context menu
