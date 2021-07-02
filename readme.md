@@ -165,6 +165,11 @@ port=8124
 
 
 ## Changes
+Jul 2/21
+- did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
+- dis "npm audit fix" to address vulnerabilities in dependent packages
+- electron-packager needs to be updated, but will test (and fix) before uploading
+
 May 31/21
 - did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
 - forgot to upload the Feb 12 changes.  

@@ -1,6 +1,6 @@
 {
   "name": "folderview",
-  "version": "2021.21.15",
+  "version": "2021.07.02",
   "description": "Browse folder contents, with image slideshows, playable videos, and handy tools. Built for Windows (sorry).",
   "keywords": [
     "directories",
@@ -43,7 +43,7 @@
     "sanitize-filename": "^1.6.1",
     "socket.io": "^2.4.1",
     "ssh2": "^0.5.5",
-    "ytdl-core": "^4.8.2"
+    "ytdl-core": "^4.8.3"
   },
   "devDependencies": {
     "electron-packager": "^14"
