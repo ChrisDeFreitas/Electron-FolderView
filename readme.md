@@ -66,9 +66,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * the executable is: dist\\FolderView-win32-x64\\FolderView.exe
     * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app
 
-## Commandline switches
-    - its safest to prefix path with --: FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)
-    - commandline arguments documented in main.js:
+## Commandline Switches
+    - its safest to prefix path with --:  
+    FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)  
+    - commandline arguments documented in main.js:  
 ```Javascript
 var argmap =
 {
