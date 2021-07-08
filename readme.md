@@ -91,7 +91,7 @@ var argmap =
     shuffle:{	type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
 	videoMetadata:{		type:'boolean',	default:false,		notes:'Load video metadata (thumbnails), will slow large folders', alias:['videometadata'] },
 	videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected; true = automatically open VideoDownload window.', alias:['videourl','--videoURL'] },
-			width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
+  width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 ```
 
@@ -168,7 +168,7 @@ port=8124
 ## Changes
 Jul 8/21  
 - Video Download: when switch videoURL=true the VideoDL window will open on startup  
-- Video Download: change VideoTitle control to be edit box to allow videos to be renamed  
+- Video Download: change VideoTitle control to an edit box so videos can be renamed  
 
 Jul 2/21  
 - did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
