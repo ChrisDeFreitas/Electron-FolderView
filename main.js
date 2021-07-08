@@ -29,7 +29,7 @@ var argmap = {
 		shuffle:{		type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()", alias:['--shuffle'] },
 		showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions", alias:['--showSlideCaptions'] },
 		videoMetadata:{		type:'boolean',	default:false,		notes:'Load video metadata (thumbnails), will slow large folders', alias:['videometadata'] },
-		videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected', alias:['videourl','--videoURL'] },
+		videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected; true = automatically open VideoDownload window.', alias:['videourl','--videoURL'] },
 		//videoWall:{		type:'boolean',	default:false,		notes:'Open Video Wall dialog', alias:['vidWall','--videoWall'] },
 		width:{			type:'number', default:0, notes:'default window width; 0 = max width', alias:['--width'] }
 }

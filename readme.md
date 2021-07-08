@@ -66,10 +66,10 @@ This is a work in progress.  Feel free to use and modify as you wish.
     * the executable is: dist\\FolderView-win32-x64\\FolderView.exe
     * the source and settings are in: dist\\FolderView-win32-x64\\resources\\app
 
-## Commandline Switches
-    - its safest to prefix path with --:  
+## Commandline Switches  
+  - its safest to prefix path with --:  
     FolderView.exe --path="c:/users/chris/pictures" shuffle=true scroll=true (it looks like path conflicts with an internal switch)  
-    - commandline arguments documented in main.js:  
+  - commandline arguments documented in main.js:  
 ```Javascript
 var argmap =
 {
@@ -90,8 +90,8 @@ var argmap =
 	showSlideCaptions:{	type:'boolean',	default:true,	notes:"Display slideshow captions" },
     shuffle:{	type:'boolean',	default:false,	notes:"shuffle grid items via arrShuffle()" },
 	videoMetadata:{		type:'boolean',	default:false,		notes:'Load video metadata (thumbnails), will slow large folders', alias:['videometadata'] },
-    videoURL:{	type:'string',	notes:'Open Video Download with this URL selected', alias:['videourl,videoUrl'] },
-	width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
+	videoURL:{		type:'string',	default:'',		notes:'Open Video Download with this URL selected; true = automatically open VideoDownload window.', alias:['videourl','--videoURL'] },
+			width:{	type:'number', default:0, notes:'default window width; 0 = max width' }
 }
 ```
 
@@ -166,12 +166,16 @@ port=8124
 
 
 ## Changes
-Jul 2/21
+Jul 8/21  
+- Video Download: when switch videoURL=true the VideoDL window will open on startup  
+- Video Download: change VideoTitle control to be edit box to allow videos to be renamed  
+
+Jul 2/21  
 - did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
 - dis "npm audit fix" to address vulnerabilities in dependent packages
 - electron-packager needs to be updated, but will test (and fix) before uploading
 
-May 31/21
+May 31/21  
 - did an "npm update" to get the latest code for ytdl-core, this will resolve video download errors.  
 - forgot to upload the Feb 12 changes.  
 
