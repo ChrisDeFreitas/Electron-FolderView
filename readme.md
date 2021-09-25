@@ -8,6 +8,14 @@ This app allows me to quickly add functionality to handle various file managemen
 
 This is a work in progress.  Feel free to use and modify as you wish.
 
+## Important Note, Sep 24/21
+I've discontinued development of this app on GitHub.  The changes made since Electron v9 are too substantial to manage at this point in time. The app uses Electron v9 and v15 is the latest.  
+
+I use the app daily without incident in the isolation of my LAN.  The security issues addressed by updates to Electron and other modules are not relevant in the context of personal use.  To exploit the security issues addressed by the updates one would have to manually insert code into the application--but this is true of any application and security issue.  
+
+In addition, the app was started in in 2017.  Technology has changed a lot since then and the experiments represented here are only relevant in the context of the most basic CSS/HTML/Javascript usage.  There are libraries and tools available now that simplify many of the technical problems addressed.  
+###
+
 
 ## Features
 - main purpose is to view folder items
