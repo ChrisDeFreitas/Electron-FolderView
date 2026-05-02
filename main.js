@@ -526,8 +526,7 @@ async function calculateHashesAsync(candidates, taskId, progressCallback) {
 }
 
 ipcMain.on('folder-scan-start', async (event, options) => {
-	const taskId = getTaskId()
-	const { folder, simple } = options
+	const { folder, simple, taskId } = options
 	
 	scanTasks[taskId] = {
 		cancelled: false,
@@ -560,7 +559,7 @@ ipcMain.on('folder-scan-cancel', (event, taskId) => {
 })
 
 ipcMain.on('folder-walk-start', async (event, options) => {
-	const taskId = getTaskId()
+	const { taskId, ...walkOptions } = options
 	
 	scanTasks[taskId] = {
 		cancelled: false,
@@ -570,7 +569,7 @@ ipcMain.on('folder-walk-start', async (event, options) => {
 	event.reply('folder-walk-started', { taskId })
 
 	try {
-		const result = await asyncFolderWalk(options, taskId, (progress) => {
+		const result = await asyncFolderWalk(walkOptions, taskId, (progress) => {
 			event.reply('folder-walk-progress', { taskId, progress })
 		})
 
@@ -593,8 +592,7 @@ ipcMain.on('folder-walk-cancel', (event, taskId) => {
 })
 
 ipcMain.on('duplicate-scan-start', async (event, options) => {
-	const taskId = getTaskId()
-	const { folder, includeSubfolders, skipZeroSize } = options
+	const { folder, includeSubfolders, skipZeroSize, taskId } = options
 	
 	scanTasks[taskId] = {
 		cancelled: false,
