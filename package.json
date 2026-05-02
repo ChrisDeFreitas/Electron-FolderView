@@ -17,7 +17,9 @@
   },
   "main": "main.js",
   "os": [
-    "win32"
+    "win32",
+    "darwin",
+    "linux"
   ],
   "config": {
     "progress": true,
