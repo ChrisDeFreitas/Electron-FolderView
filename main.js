@@ -3,12 +3,721 @@
 const fs = require('fs');
 const path = require('path');
 const url = require('url')
+const crypto = require('crypto')
 
 const electron = require('electron')
-const {app, BrowserWindow/*, dialog,  globalShortcut*/} = electron
+const {app, BrowserWindow, ipcMain/*, dialog,  globalShortcut*/} = electron
 const imgDimensions = require(__dirname+'/node_modules/image-size')
 
 exports.startTime = Date.now()
+
+let scanTasks = {}
+let hashTasks = {}
+
+function getTaskId() {
+	return Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9)
+}
+
+function asyncSafeLstat(apath) {
+	return new Promise((resolve) => {
+		fs.lstat(apath, (err, stat) => {
+			if (err) {
+				resolve(null)
+			} else {
+				resolve(stat)
+			}
+		})
+	})
+}
+
+async function asyncFldrObjGen(file, simple, taskId, progressCallback) {
+	if(file=='')
+		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, path argument has an error:[${file}].`]}
+	if(simple== undefined) simple = false
+
+	let exts={},
+			mediaTypes={},
+			folder = '',
+			defaultfile = '',
+			isDirectory = true,
+			stat = await asyncSafeLstat(file)
+	if(stat==null){
+		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, could not stat: [${file}].`]}
+	}
+
+	if(stat.isDirectory()==true){
+		file = pathTrailingSlash(file)
+		folder = file
+	}
+	else {
+		if(simple===true)
+			return {fldr:file, items:[], isDirectory:false, fileErrors:[]}
+		folder = path.dirname(file)
+		defaultfile = path.basename(file)
+		isDirectory = false
+	}
+
+	return new Promise((resolve, reject) => {
+		fs.readdir(folder, async (err, fls) => {
+			if (err) {
+				resolve({args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:isDirectory, fileErrors:[`Error reading directory: ${err.message}`]})
+				return
+			}
+
+			var fls2 = []
+			var id=-1
+			var defaultImageName=null
+			var defaultImageNum=null
+			var ferrors = []
+			var dirname__ = __dirname.replace(/\\/g,'/')
+			var processed = 0
+			var total = fls.length
+
+			for(var key in fls){
+				if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+					resolve({args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:isDirectory, fileErrors:['Cancelled by user']})
+					return
+				}
+
+				let val = fls[key],
+						fn = path.basename(val),
+						posixpath = path.join(folder, val).replace(/\\/g,'/')
+
+				stat = await asyncSafeLstat(posixpath)
+				if(stat===null) {
+					ferrors.push(`Could not stat: [${posixpath}]`)
+					continue
+				}
+				if(simple === true){
+					var obj = {
+						basename:fn,
+						date:stat.mtime,
+						size:stat.size,
+						isDirectory:stat.isDirectory(),
+						sortname:fn.toLowerCase(),
+					}
+					fls2.push(obj)
+					processed++
+					if (progressCallback && processed % 50 === 0) {
+						progressCallback({processed: processed, total: total})
+					}
+					continue
+				}
+
+				++id
+				let	ext = path.extname(val).toLowerCase()
+
+				if(isDirectory === false && defaultImageNum===null	&& defaultfile==fn) {
+					defaultImageName = fn
+					defaultImageNum = id
+				}
+
+				var obj = {
+					basename:fn, date:stat.mtime, size:stat.size,
+					isDirectory:stat.isDirectory(),
+					sortname:fn.toLowerCase(),
+					mediaType: 'unknown',
+					path: posixpath,
+					pid: id,
+					uid: id,
+					w: 320,
+					h: 200,
+					src: 'file:///'+posixpath,
+					title: val,
+					type: ext
+				}
+				if(obj.isDirectory===true){
+					obj.mediaType = 'folder'
+					if(obj.path[obj.path -1] != path.posix.sep)
+						obj.path += path.posix.sep
+					obj.src = 'file:///'+dirname__+"/resources/icons/folder-open.svg"
+					obj.type = 'folder'
+				}	else
+				if(imgtypes.indexOf(ext) >= 0){
+					obj.mediaType = 'image'
+					try{
+						var dim = imgDimensions(posixpath)
+						obj.w = dim.width
+						obj.h = dim.height
+					}
+					catch(x) {
+						obj.w = 160
+						obj.h = 100
+					}
+				}	else
+				if(vidtypes.indexOf(ext) >= 0){
+					obj.mediaType = 'video'
+				}	else
+				if(audtypes.indexOf(ext) >= 0){
+					obj.mediaType = 'audio'
+				}	else
+				if(doctypes.indexOf(ext) >= 0){			
+					obj.mediaType = 'document'
+				}	
+				else{
+					obj.src = 'file:///'+dirname__+"/resources/new_document_64.png"
+				}
+				if(exts[obj.type]===undefined) exts[obj.type]=1
+				else exts[obj.type]++
+				if(mediaTypes[obj.mediaType]===undefined) mediaTypes[obj.mediaType]=1
+				else mediaTypes[obj.mediaType]++
+				fls2.push(obj)
+				
+				processed++
+				if (progressCallback && processed % 50 === 0) {
+					progressCallback({processed: processed, total: total})
+				}
+			}
+
+			var result = null
+			if(simple===true){
+				result = {fldr:file, items:fls2, fileErrors:ferrors, isDirectory:isDirectory}
+			}
+			else{
+				args.defaultImageName = defaultImageName
+				args.defaultImageNum = defaultImageNum
+				result = {args:args, exts:exts, mediaTypes:mediaTypes, fldr:file, items:fls2, 
+									fileErrors:ferrors, isDirectory:isDirectory}
+			}
+			resolve(result)
+		})
+	})
+}
+
+async function asyncFolderWalk(options, taskId, progressCallback) {
+	let result = {
+		folder:options.folder,
+		find:options.find,
+		date:null,
+		isDirectory:null,
+		errors:[],
+		items:[],
+		fileCount:0,
+		fileSize:0,
+		folderCount:0,
+		folderSize:0,
+		treeCount:0,
+		treeSize:0
+	}
+
+	if(options.folder==null || options.folder=='') result.errors.push('options.folder is undefined')
+	if(options.summary==null) 			options.summary = false
+	if(options.find==null) 					options.find = ''
+	if(options.findCase == null)		options.findCase = false
+	if(options.findInvert == null)	options.findInvert = false
+	if(options.findRegex == null)		options.findRegex = false
+	if(options.subFolders == null)	options.subFolders = false
+
+	options.depth = (options.depth === undefined ?0 :++options.depth)
+
+	if(result.errors.length > 0)
+		return result
+
+	let folder = options.folder,
+			posixFolder = local_pathTrailingSlash( folder.replace(/\\/g,'/')),
+			summary = options.summary,
+			find = options.find,
+			findCase = options.findCase,
+			findInvert = options.findInvert,
+			findRegex = options.findRegex,
+			subFolders = options.subFolders,
+			depth = options.depth
+
+	result.isDirectory = true
+	let stat = await asyncSafeLstat(folder)
+	if(stat!==null){
+		if(stat.isDirectory()==false){
+			folder = path.dirname(folder)
+			result.isDirectory = false
+		}
+	}
+	result.date = stat.mtime
+
+	if(find != ''){
+		if(findRegex===true){
+			if(findCase===true)
+				find = new RegExp(find)
+			else
+				find = new RegExp(find, 'i')
+		}else
+		if(findCase===false)
+			find = find.toLowerCase()
+	}
+
+	return new Promise((resolve, reject) => {
+		fs.readdir(options.folder, async (err, items) => {
+			if (err) {
+				result.errors.push(`Error reading directory: ${err.message}`)
+				resolve(result)
+				return
+			}
+
+			let ferrors = [],
+					filecount = 0,
+					filesize = 0,
+					foldercount = 0,
+					foldersize = 0,
+					treecount = 0,
+					treesize = 0,
+					fnd = [],
+					processed = 0,
+					total = items.length
+
+			for(var key in items){
+				if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+					result.errors.push('Cancelled by user')
+					resolve(result)
+					return
+				}
+
+				let fn = items[key],
+						fullpath = path.join(folder, fn),
+						suboptions = null,	subresult = null
+
+				stat = await asyncSafeLstat(fullpath)
+				if(stat===null) {
+					ferrors.push(`Could not stat: [${fullpath}]`)
+					continue
+				}
+
+				let isdir = stat.isDirectory(),
+						findMatch = true,
+						itm = null
+
+				if(find !== ''){
+					if(findRegex===true){
+						findMatch = find.test(fn)
+					}else
+					if(findCase===true)
+						findMatch = (fn.indexOf(find) >= 0)
+					else
+						findMatch = (fn.toLowerCase().indexOf(find) >= 0)
+				}
+				if(findInvert === true) findMatch = !findMatch
+
+				if(findMatch == true 
+				|| (subFolders===true && isdir===true) 
+				){
+					itm = {
+							basename:	fn,
+							size:			stat.size,
+							date:			stat.mtime,
+							isDirectory: stat.isDirectory(),
+							path: 		posixFolder,
+							ext: 			path.extname(fn).toLowerCase(),
+							depth:		depth
+						}
+				}
+				if(findMatch===true){
+					treecount++
+					if(isdir===true){
+						foldercount++
+					}
+					else{
+						filecount++
+						filesize += itm.size
+						treesize += itm.size
+					}
+				}
+
+				if(subFolders===true && isdir === true){
+					suboptions = Object.assign({}, options, {folder:fullpath, depth:depth})
+					subresult = await asyncFolderWalk(suboptions, taskId, progressCallback)
+
+					if(summary === false){
+						filecount += subresult.fileCount
+						filesize 	+= subresult.fileSize
+						foldercount += subresult.folderCount
+						foldersize+= subresult.folderSize
+						treecount += subresult.treeCount
+						treesize  += subresult.treeSize
+					}
+					else{
+						foldersize+= subresult.treeSize
+						treecount += subresult.treeCount
+						treesize  += subresult.treeSize
+					}
+
+					if(itm != null) {
+						itm.fileCount 	= subresult.fileCount
+						itm.fileSize 		= subresult.fileSize
+						itm.folderCount = subresult.folderCount
+						itm.folderSize	= subresult.folderSize
+						itm.treeCount 	= subresult.treeCount
+						itm.treeSize  	= subresult.treeSize
+					}
+				}
+
+				if(itm != null){
+					if(summary===false){
+						if(findMatch===true)
+							fnd.push(itm)
+					}else
+					if(summary === true){
+						if(depth===0){
+							if(subFolders===true && itm.isDirectory === true)
+								fnd.push(itm)
+						}
+					}
+				}
+
+				if(subresult != null){
+					if(subresult.errors.length > 0){
+						subresult.errors.forEach(function(element) {
+							ferrors.push(element)
+						})
+					}
+					if(subresult.items.length > 0){
+						subresult.items.forEach(function(element) {
+							fnd.push(element)
+						})
+					}
+				}
+
+				processed++
+				if (progressCallback && processed % 100 === 0) {
+					progressCallback({processed: processed, total: total, phase: 'scanning'})
+				}
+			}
+
+			result.errors = ferrors
+			result.items = fnd
+			result.fileCount	= filecount
+			result.fileSize 	= filesize
+			result.folderCount= foldercount
+			result.folderSize = foldersize
+			result.treeCount	= treecount
+			result.treeSize 	= treesize
+			resolve(result)
+		})
+	})
+
+	function local_pathTrailingSlash(str, os){
+		str = str.trim()
+		if(str[str.length-1]!='/' && str[str.length-1]!='\\') str += '/'
+		return str
+	}
+}
+
+async function collectFilesAsync(folder, includeSubfolders, skipZeroSize, taskId, progressCallback) {
+	const result = []
+	const queue = [folder]
+	let processed = 0
+
+	while (queue.length > 0) {
+		if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+			return { cancelled: true, files: result }
+		}
+
+		const currentFolder = queue.shift()
+		
+		try {
+			const items = await new Promise((resolve, reject) => {
+				fs.readdir(currentFolder, (err, files) => {
+					if (err) reject(err)
+					else resolve(files)
+				})
+			})
+
+			for (let item of items) {
+				if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+					return { cancelled: true, files: result }
+				}
+
+				const fullPath = path.join(currentFolder, item)
+				const stat = await asyncSafeLstat(fullPath)
+
+				if (stat === null) continue
+
+				if (stat.isDirectory()) {
+					if (includeSubfolders) {
+						queue.push(fullPath)
+					}
+				} else if (stat.isFile()) {
+					if (skipZeroSize && stat.size === 0) {
+						continue
+					}
+					result.push({
+						path: fullPath.replace(/\\/g, '/'),
+						size: stat.size,
+						basename: item
+					})
+				}
+
+				processed++
+				if (progressCallback && processed % 50 === 0) {
+					progressCallback({ processed: processed, phase: 'collecting' })
+				}
+			}
+		} catch (e) {
+			continue
+		}
+	}
+
+	return { cancelled: false, files: result }
+}
+
+function groupBySize(files) {
+	const groups = {}
+	for (let file of files) {
+		const size = file.size.toString()
+		if (!groups[size]) {
+			groups[size] = []
+		}
+		groups[size].push(file)
+	}
+	return groups
+}
+
+async function calculateFileHashAsync(filePath, taskId) {
+	return new Promise((resolve, reject) => {
+		const hash = crypto.createHash('sha256')
+		const stream = fs.createReadStream(filePath, { highWaterMark: 65536 })
+		
+		stream.on('data', (chunk) => {
+			if (hashTasks[taskId] && hashTasks[taskId].cancelled) {
+				stream.destroy()
+				resolve(null)
+				return
+			}
+			hash.update(chunk)
+		})
+		
+		stream.on('end', () => {
+			resolve(hash.digest('hex'))
+		})
+		
+		stream.on('error', (err) => {
+			console.error('Hash calculation error:', err)
+			resolve(null)
+		})
+	})
+}
+
+async function calculateHashesAsync(candidates, taskId, progressCallback) {
+	const hashGroups = {}
+	let processed = 0
+	const total = candidates.length
+
+	for (let i = 0; i < candidates.length; i++) {
+		if (hashTasks[taskId] && hashTasks[taskId].cancelled) {
+			return { cancelled: true, hashGroups: hashGroups }
+		}
+
+		const file = candidates[i]
+		const hash = await calculateFileHashAsync(file.path, taskId)
+
+		if (hash) {
+			if (!hashGroups[hash]) {
+				hashGroups[hash] = []
+			}
+			hashGroups[hash].push(file)
+		}
+
+		processed++
+		if (progressCallback) {
+			progressCallback({ processed: processed, total: total, phase: 'hashing' })
+		}
+
+		await new Promise(resolve => setImmediate(resolve))
+	}
+
+	return { cancelled: false, hashGroups: hashGroups }
+}
+
+ipcMain.on('folder-scan-start', async (event, options) => {
+	const { folder, simple, taskId } = options
+	
+	scanTasks[taskId] = {
+		cancelled: false,
+		webContents: event.sender
+	}
+
+	event.reply('folder-scan-started', { taskId })
+
+	try {
+		const result = await asyncFldrObjGen(folder, simple, taskId, (progress) => {
+			event.reply('folder-scan-progress', { taskId, progress })
+		})
+
+		if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+			event.reply('folder-scan-cancelled', { taskId })
+		} else {
+			event.reply('folder-scan-complete', { taskId, result })
+		}
+	} catch (error) {
+		event.reply('folder-scan-error', { taskId, error: error.message })
+	} finally {
+		delete scanTasks[taskId]
+	}
+})
+
+ipcMain.on('folder-scan-cancel', (event, taskId) => {
+	if (scanTasks[taskId]) {
+		scanTasks[taskId].cancelled = true
+	}
+})
+
+ipcMain.on('folder-walk-start', async (event, options) => {
+	const { taskId, ...walkOptions } = options
+	
+	scanTasks[taskId] = {
+		cancelled: false,
+		webContents: event.sender
+	}
+
+	event.reply('folder-walk-started', { taskId })
+
+	try {
+		const result = await asyncFolderWalk(walkOptions, taskId, (progress) => {
+			event.reply('folder-walk-progress', { taskId, progress })
+		})
+
+		if (scanTasks[taskId] && scanTasks[taskId].cancelled) {
+			event.reply('folder-walk-cancelled', { taskId })
+		} else {
+			event.reply('folder-walk-complete', { taskId, result })
+		}
+	} catch (error) {
+		event.reply('folder-walk-error', { taskId, error: error.message })
+	} finally {
+		delete scanTasks[taskId]
+	}
+})
+
+ipcMain.on('folder-walk-cancel', (event, taskId) => {
+	if (scanTasks[taskId]) {
+		scanTasks[taskId].cancelled = true
+	}
+})
+
+ipcMain.on('duplicate-scan-start', async (event, options) => {
+	const { folder, includeSubfolders, skipZeroSize, taskId } = options
+	
+	scanTasks[taskId] = {
+		cancelled: false,
+		webContents: event.sender
+	}
+	hashTasks[taskId] = {
+		cancelled: false,
+		webContents: event.sender
+	}
+
+	event.reply('duplicate-scan-started', { taskId })
+
+	try {
+		event.reply('duplicate-scan-phase', { taskId, phase: 'collecting', message: 'Collecting files...' })
+		
+		const collectResult = await collectFilesAsync(folder, includeSubfolders, skipZeroSize, taskId, (progress) => {
+			event.reply('duplicate-scan-progress', { taskId, progress })
+		})
+
+		if (collectResult.cancelled || (scanTasks[taskId] && scanTasks[taskId].cancelled)) {
+			event.reply('duplicate-scan-cancelled', { taskId })
+			return
+		}
+
+		const files = collectResult.files
+		event.reply('duplicate-scan-files-collected', { taskId, fileCount: files.length })
+
+		if (files.length === 0) {
+			event.reply('duplicate-scan-complete', { 
+				taskId, 
+				result: { 
+					totalFiles: 0, 
+					duplicateGroups: [], 
+					totalDuplicateFiles: 0, 
+					wastedSpace: 0 
+				} 
+			})
+			return
+		}
+
+		event.reply('duplicate-scan-phase', { taskId, phase: 'grouping', message: 'Grouping files by size...' })
+		
+		const sizeGroups = groupBySize(files)
+		
+		let candidates = []
+		for (let size in sizeGroups) {
+			if (sizeGroups[size].length > 1) {
+				candidates = candidates.concat(sizeGroups[size])
+			}
+		}
+
+		if (candidates.length === 0) {
+			event.reply('duplicate-scan-complete', { 
+				taskId, 
+				result: { 
+					totalFiles: files.length, 
+					duplicateGroups: [], 
+					totalDuplicateFiles: 0, 
+					wastedSpace: 0,
+					noCandidates: true
+				} 
+			})
+			return
+		}
+
+		event.reply('duplicate-scan-phase', { 
+			taskId, 
+			phase: 'hashing', 
+			message: `Calculating hashes for ${candidates.length} potential duplicates...`,
+			total: candidates.length
+		})
+
+		const hashResult = await calculateHashesAsync(candidates, taskId, (progress) => {
+			event.reply('duplicate-scan-progress', { taskId, progress })
+		})
+
+		if (hashResult.cancelled || (hashTasks[taskId] && hashTasks[taskId].cancelled)) {
+			event.reply('duplicate-scan-cancelled', { taskId })
+			return
+		}
+
+		const hashGroups = hashResult.hashGroups
+		let duplicates = []
+		let totalDuplicateFiles = 0
+		let wastedSpace = 0
+
+		for (let hash in hashGroups) {
+			const group = hashGroups[hash]
+			if (group.length > 1) {
+				duplicates.push({
+					hash: hash,
+					size: group[0].size,
+					files: group
+				})
+				totalDuplicateFiles += group.length
+				wastedSpace += group[0].size * (group.length - 1)
+			}
+		}
+
+		const result = {
+			totalFiles: files.length,
+			duplicateGroups: duplicates,
+			totalDuplicateFiles: totalDuplicateFiles,
+			wastedSpace: wastedSpace
+		}
+
+		event.reply('duplicate-scan-complete', { taskId, result })
+
+	} catch (error) {
+		console.error('Duplicate scan error:', error)
+		event.reply('duplicate-scan-error', { taskId, error: error.message })
+	} finally {
+		delete scanTasks[taskId]
+		delete hashTasks[taskId]
+	}
+})
+
+ipcMain.on('duplicate-scan-cancel', (event, taskId) => {
+	if (scanTasks[taskId]) {
+		scanTasks[taskId].cancelled = true
+	}
+	if (hashTasks[taskId]) {
+		hashTasks[taskId].cancelled = true
+	}
+})
 
 //handle commandline arguments
 var argmap = {
