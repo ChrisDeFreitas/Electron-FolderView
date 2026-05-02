@@ -7,6 +7,7 @@ const url = require('url')
 const electron = require('electron')
 const {app, BrowserWindow/*, dialog,  globalShortcut*/} = electron
 const imgDimensions = require(__dirname+'/node_modules/image-size')
+const pathSecurity = require(__dirname+'/lib/pathSecurity.js')
 
 exports.startTime = Date.now()
 
@@ -216,6 +217,14 @@ function fldrObjGen(file, simple) {
 	//				pathBar.js uses simple===true
 	if(file=='') //process.exit(1)
 		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Error, path argument has an error:[${file}].`]}
+	
+	var pathValidation = pathSecurity.validatePath(file, 'folder load')
+	if(pathValidation.valid === false) {
+		console.error('fldrObjGen() path validation failed:', pathValidation.error)
+		return {args:args, exts:{}, mediaTypes:{}, fldr:file, items:[], isDirectory:null, fileErrors:[`Security Error: ${pathValidation.error}`]}
+	}
+	file = pathValidation.path
+	
 	if(simple== undefined) simple = false
 
 	let exts={},
